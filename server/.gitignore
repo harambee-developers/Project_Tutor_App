@@ -129,5 +129,5 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-#db-data
-db-data
+#docker-data
+docker-data
