@@ -1,8 +1,11 @@
 import React from 'react'
+import SearchAndFilter from './features/SearchAndFilter'
 
 function App() {
   return (
-    <div>App</div>
+    <div>
+      <SearchAndFilter/>
+    </div>
   )
 }
 
