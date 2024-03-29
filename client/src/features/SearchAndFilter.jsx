@@ -1,49 +1,83 @@
-import React from 'react'
-import { useState } from 'react'
+import React from "react";
+import { useState } from "react";
+import { ordersData } from "../data/dummy";
 
 const SearchAndFilter = () => {
+  const [query, setQuery] = useState("");
 
-    
-    const [name, setName] = useState('Mohammed');
-
-    const handleonClick = () => {
-        setName('Hamza')
-        console.log('button has been clicked')
-    }
-
-    // Dummy Data
-
-    const data = [
-        {
-            id: 1, name: 'Item 1',
-            category: 'Category A'
-        },
-        {
-            id: 2, name: 'Item 2',
-            category: 'Category B'
-        },
-
-    ]
+  console.log(ordersData.filter((order) => order.Location.includes("A")));
 
   return (
-    <nav className='flex justify-between items-center bg-gray-800'>
     <div>
-        <input placeholder='Search...' type="text" />
-        <p>My name is {name}</p>
-        <button onClick={handleonClick} >
-            Click me
-        </button>
-        <ul className='navbar-links'>
-            <li>
-             <a href="/">Home</a>
-            </li>
-            <li>
-            <a href="/">About</a>
-            </li>
-        </ul>
+      <h1 className="text-center">Contact Database</h1>
+      <input placeholder="Search..." type="text" />
+      <table className="min-w-full divide-y divide-gray-200">
+        <thead className="bg-gray-50">
+          <tr>
+            <th
+              scope="col"
+              className="px-6 py-3 text-left text-xs font-medium text-gray-500 marker:uppercase tracking-wide"
+            >
+              Customer Name
+            </th>
+            <th
+              scope="col"
+              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide"
+            >
+              Location
+            </th>
+            <th
+              scope="col"
+              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide"
+            >
+              OrderId
+            </th>
+            <th
+              scope="col"
+              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide"
+            >
+              OrderItems
+            </th>
+            <th
+              scope="col"
+              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide"
+            >
+              Status
+            </th>
+            <th
+              scope="col"
+              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide"
+            >
+              StatusBg
+            </th>
+            <th
+              scope="col"
+              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide"
+            >
+              TotalAmount
+            </th>
+          </tr>
+        </thead>
+        <tbody className="bg-white divide-y divide-gray-500">
+          {ordersData.map((data) => (
+            <tr key={data.OrderID}>
+              <td className="px-6 py-4 whitespace-nowrap">
+                {data.CustomerName}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">{data.Location}</td>
+              <td className="px-6 py-4 whitespace-nowrap">{data.OrderID}</td>
+              <td className="px-6 py-4 whitespace-nowrap">{data.OrderItems}</td>
+              <td className="px-6 py-4 whitespace-nowrap">{data.Status}</td>
+              <td className="px-6 py-4 whitespace-nowrap">{data.StatusBg}</td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                {data.TotalAmount}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
-    </nav>
-  )
-}
+  );
+};
 
-export default SearchAndFilter
+export default SearchAndFilter;
