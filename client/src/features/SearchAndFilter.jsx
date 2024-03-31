@@ -3,18 +3,27 @@ import { useState } from "react";
 import { ordersData } from "../data/dummy";
 
 const SearchAndFilter = () => {
-  
   const [query, setQuery] = useState("");
 
-  const filteredData = ordersData.filter(data => {
-    return data.CustomerName.toLowerCase().includes(query.toLowerCase())
-  })
+  const filteredData = ordersData.filter((data) => {
+    return data.CustomerName.toLowerCase().includes(query.toLowerCase());
+  });
 
   return (
     <div>
       <h1 className="text-center">Contact Database</h1>
       <br />
-      <input placeholder="Search..." type="search" value={query} onChange={e => setQuery(e.target.value)} />
+      <input
+        placeholder="Type to search..."
+        type="text"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        className="border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none"
+      />
+      <button
+        type="button"
+        className="absolute right-0 top-0 mt-5 mr-4"
+      ></button>
       <br />
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
