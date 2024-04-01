@@ -1,6 +1,6 @@
 import React from 'react'
-import SearchAndFilter from './features/SearchAndFilter'
-import Navbar from './layout/Navbar'
+import SearchAndFilter from './components/features/SearchAndFilter'
+import Navbar from './components/layout/Navbar'
 
 function App() {
   return (

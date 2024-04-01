@@ -43,7 +43,7 @@ export const ordersData = [
     StatusBg: "#FF5C8E",
   },
   {
-    id: 4,
+    id: 5,
     OrderID: 748975,
     CustomerName: "Miron Vitold",
     TotalAmount: 23.99,
@@ -53,7 +53,7 @@ export const ordersData = [
     StatusBg: "red",
   },
   {
-    id: 5,
+    id: 6,
     OrderID: 94757,
     CustomerName: "Omar Darobe",
     TotalAmount: 95.99,
@@ -63,7 +63,7 @@ export const ordersData = [
     StatusBg: "#FF5C8E",
   },
   {
-    id: 6,
+    id: 7,
     OrderID: 944895,
     CustomerName: "Lulia albu",
     TotalAmount: 17.99,
@@ -73,7 +73,7 @@ export const ordersData = [
     StatusBg: "#03C9D7",
   },
   {
-    id: 7,
+    id: 8,
     OrderID: 845954,
     CustomerName: "Penjani",
     TotalAmount: 59.99,
@@ -83,7 +83,7 @@ export const ordersData = [
     StatusBg: "#8BE78B",
   },
   {
-    id: 8,
+    id: 9,
     OrderID: 845954,
     CustomerName: "Jie Yan",
     TotalAmount: 87.99,
@@ -93,7 +93,7 @@ export const ordersData = [
     StatusBg: "#FB9678",
   },
   {
-    id: 9,
+    id: 10,
     OrderID: 874534,
     CustomerName: "Danai",
     TotalAmount: 122.99,
@@ -103,7 +103,7 @@ export const ordersData = [
     StatusBg: "#FF5C8E",
   },
   {
-    id: 10,
+    id: 11,
     OrderID: 38489,
     CustomerName: "Miron",
     TotalAmount: 87.99,
@@ -113,7 +113,7 @@ export const ordersData = [
     StatusBg: "#03C9D7",
   },
   {
-    id: 11,
+    id: 12,
     OrderID: 24546,
     CustomerName: "Frank",
     TotalAmount: 84.99,
@@ -123,7 +123,7 @@ export const ordersData = [
     StatusBg: "#8BE78B",
   },
   {
-    id: 12,
+    id: 13,
     OrderID: 874534,
     CustomerName: "Danai",
     TotalAmount: 122.99,
@@ -133,7 +133,7 @@ export const ordersData = [
     StatusBg: "#FF5C8E",
   },
   {
-    id: 13,
+    id: 14,
     OrderID: 10248,
     CustomerName: "Vinet",
 
@@ -144,7 +144,7 @@ export const ordersData = [
     StatusBg: "#FB9678",
   },
   {
-    id: 14,
+    id: 15,
     OrderID: 345653,
     CustomerName: "Carson Darrin",
     TotalAmount: 56.34,
@@ -154,7 +154,7 @@ export const ordersData = [
     StatusBg: "#8BE78B",
   },
   {
-    id: 15,
+    id: 16,
     OrderID: 390457,
     CustomerName: "Fran Perez",
     TotalAmount: 93.31,
@@ -164,7 +164,7 @@ export const ordersData = [
     StatusBg: "#03C9D7",
   },
   {
-    id: 16,
+    id: 17,
     OrderID: 893486,
     CustomerName: "Anika Viseer",
     TotalAmount: 93.31,
@@ -174,7 +174,7 @@ export const ordersData = [
     StatusBg: "#FF5C8E",
   },
   {
-    id: 17,
+    id: 18,
     OrderID: 748975,
     CustomerName: "Miron Vitold",
     TotalAmount: 23.99,
@@ -184,7 +184,7 @@ export const ordersData = [
     StatusBg: "red",
   },
   {
-    id: 18,
+    id: 19,
     OrderID: 94757,
     CustomerName: "Omar Darobe",
     TotalAmount: 95.99,
@@ -194,7 +194,7 @@ export const ordersData = [
     StatusBg: "#FF5C8E",
   },
   {
-    id: 19,
+    id: 20,
     OrderID: 944895,
     CustomerName: "Lulia albu",
     TotalAmount: 17.99,
@@ -204,7 +204,7 @@ export const ordersData = [
     StatusBg: "#03C9D7",
   },
   {
-    id: 20,
+    id: 21,
     OrderID: 845954,
     CustomerName: "Penjani",
     TotalAmount: 59.99,
@@ -214,7 +214,7 @@ export const ordersData = [
     StatusBg: "#8BE78B",
   },
   {
-    id: 21,
+    id: 22,
     OrderID: 845954,
     CustomerName: "Jie Yan",
     TotalAmount: 87.99,
@@ -224,7 +224,7 @@ export const ordersData = [
     StatusBg: "#FB9678",
   },
   {
-    id: 22,
+    id: 23,
     OrderID: 874534,
     CustomerName: "Danai",
     TotalAmount: 122.99,
@@ -234,7 +234,7 @@ export const ordersData = [
     StatusBg: "#FF5C8E",
   },
   {
-    id: 23,
+    id: 24,
     OrderID: 38489,
     CustomerName: "Miron",
     TotalAmount: 87.99,
@@ -244,7 +244,7 @@ export const ordersData = [
     StatusBg: "#03C9D7",
   },
   {
-    id: 24,
+    id: 25,
     OrderID: 24546,
     CustomerName: "Frank",
     TotalAmount: 84.99,
@@ -254,7 +254,7 @@ export const ordersData = [
     StatusBg: "#8BE78B",
   },
   {
-    id: 25,
+    id: 26,
     OrderID: 874534,
     CustomerName: "Danai",
     TotalAmount: 122.99,
@@ -264,7 +264,7 @@ export const ordersData = [
     StatusBg: "#FF5C8E",
   },
   {
-    id: 26,
+    id: 27,
     OrderID: 10248,
     CustomerName: "Vinet",
     TotalAmount: 32.38,
@@ -274,7 +274,7 @@ export const ordersData = [
     StatusBg: "#FB9678",
   },
   {
-    id: 27,
+    id: 28,
     OrderID: 345653,
     CustomerName: "Carson Darrin",
     TotalAmount: 56.34,
@@ -284,7 +284,7 @@ export const ordersData = [
     StatusBg: "#8BE78B",
   },
   {
-    id: 28,
+    id: 29,
     OrderID: 390457,
     CustomerName: "Fran Perez",
     TotalAmount: 93.31,
@@ -294,7 +294,7 @@ export const ordersData = [
     StatusBg: "#03C9D7",
   },
   {
-    id: 29,
+    id: 30,
     OrderID: 893486,
     CustomerName: "Anika Viseer",
     TotalAmount: 93.31,
@@ -304,7 +304,7 @@ export const ordersData = [
     StatusBg: "#FF5C8E",
   },
   {
-    id: 30,
+    id: 31,
     OrderID: 748975,
     CustomerName: "Miron Vitold",
     TotalAmount: 23.99,
@@ -314,7 +314,7 @@ export const ordersData = [
     StatusBg: "red",
   },
   {
-    id: 31,
+    id: 32,
     OrderID: 94757,
     CustomerName: "Omar Darobe",
     TotalAmount: 95.99,
@@ -324,7 +324,7 @@ export const ordersData = [
     StatusBg: "#FF5C8E",
   },
   {
-    id: 32,
+    id: 33,
     OrderID: 944895,
     CustomerName: "Lulia albu",
     TotalAmount: 17.99,
@@ -334,7 +334,7 @@ export const ordersData = [
     StatusBg: "#03C9D7",
   },
   {
-    id: 33,
+    id: 34,
     OrderID: 845954,
     CustomerName: "Penjani",
     TotalAmount: 59.99,
@@ -344,7 +344,7 @@ export const ordersData = [
     StatusBg: "#8BE78B",
   },
   {
-    id: 34,
+    id: 35,
     OrderID: 845954,
     CustomerName: "Jie Yan",
     TotalAmount: 87.99,
