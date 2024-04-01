@@ -4,13 +4,14 @@ import { useState } from "react";
 
 const SearchAndFilter = () => {
   const [data, setData] = useState([]);
+  const [query, setQuery] = useState("")
 
   // Fetch api data. Will use node api
 
   useEffect(() => {
     axios
       .get("http://localhost:7777/students")
-      .then((res) => setQuery(res.data))
+      .then((res) => setData(res.data))
       .catch((err) => console.log(err));
 
     console.log(data);
@@ -20,21 +21,21 @@ const SearchAndFilter = () => {
   //   return data.id.toLowerCase().includes(query.toLowerCase())
   // });
 
-  const handleCheck = (e) => {
-    setQuery(
-      query.filter((data) => data.id.toLowerCase().includes(e.toLowerCase()))
-    );
-  };
+  // const handleCheck = (e) => {
+  //   setQuery(
+  //     query.filter((data) => data.id.toLowerCase().includes(e.toLowerCase()))
+  //   );
+  // };
 
   return (
     <div>
-      <h1 className="text-center">Contact Database</h1>
+      <h1 className="text-center">Tutor Results</h1>
       <br />
       <input
         placeholder="Type to search..."
         type="text"
-        value={data}
-        onChange={(e) => setData(e.target.value)}
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
         className="border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none"
       />
       <br />
@@ -70,11 +71,11 @@ const SearchAndFilter = () => {
         </thead>
         <tbody className="bg-white divide-y divide-gray-500">
           {data.map((d) => (
-            <tr key={data.id}>
-              <td className="px-6 py-4 whitespace-nowrap">{data.Cid}</td>
-              <td className="px-6 py-4 whitespace-nowrap">{data.email}</td>
-              <td className="px-6 py-4 whitespace-nowrap">{data.username}</td>
-              <td className="px-6 py-4 whitespace-nowrap">{data.usertype}</td>
+            <tr key={d.id}>
+              <td className="px-6 py-4 whitespace-nowrap">{d.Cid}</td>
+              <td className="px-6 py-4 whitespace-nowrap">{d.email}</td>
+              <td className="px-6 py-4 whitespace-nowrap">{d.username}</td>
+              <td className="px-6 py-4 whitespace-nowrap">{d.usertype}</td>
             </tr>
           ))}
         </tbody>
