@@ -30,34 +30,34 @@ const Navbar = () => {
           className={
             isopen
               ? "md:flex md:items-center md:ml-8 md:mx-0 md:pb-0 pb-12 absolute md:static bg-teal-500 md:z-auto left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in"
-              : "hidden md:flex md:items-center md:ml-8 md:mx-0 md:pb-0 pb-12 absolute md:static bg-teal-500 md:z-auto left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in"
+              : "hidden md:flex md:items-center md:ml-4 md:mx-0 md:pb-0 pb-12 absolute md:static bg-teal-500 md:z-auto left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in"
           }
         >
           <li className="md:ml-1 md:my-0 my-7">
-            <a href="/" className="text-white hover:text-blue-500 mr-4">
+            <a href="/" className="text-white hover:text-blue-500 mr-4 md:text-base">
               Home
             </a>
           </li>
           <li className="md:ml-1 md:my-0 my-7">
-            <a href="/about" className="text-white hover:text-blue-500 mr-4">
+            <a href="/about" className="text-white hover:text-blue-500 mr-4 md:text-base">
               About
             </a>
           </li>
           <li className="md:ml-1 md:my-0 my-7">
             <a
               href="/tutorprofile"
-              className=" text-white hover:text-blue-500 mr-4"
+              className=" text-white hover:text-blue-500 mr-4 md:text-base"
             >
               Profiles
             </a>
           </li>
           <li className="md:my-0 my-7">
-            <button className="bg-transparent hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full md:ml-8">
+            <button className="bg-transparent hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full md:ml-8 md:text-base">
               <a href="/login">Login</a>
             </button>
           </li>
           <li className="md:my-0 my-7">
-            <button className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full md:ml-8">
+            <button className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full md:ml-8 md:text-base">
               <a href="/register">Sign Up</a>
             </button>
           </li>

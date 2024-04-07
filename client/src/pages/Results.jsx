@@ -1,24 +1,30 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
-import SearchAndFilter from "../components/features/SearchAndFilter";
 
 const Results = () => {
-  const [data, setData] = useState([]);
-  const [query, setQuery] = useState("");
-  
+  const [results, setResults] = useState([]);
+
+  const location = useLocation();
+
+  // parse in the wuery parameter from the URL
+  const searchParams = new URLSearchParams(location.search);
+  const query = searchParams.get("query");
+
   useEffect(() => {
     axios
       .get("http://localhost:7777/students")
-      .then((res) => setData(res.data))
+      .then((res) => setResults(res.data))
       .catch((err) => console.log(err));
-  }, []);
-  const filteredData = data.filter((d) => {
-    return d.email.toLowerCase().includes(query.toLowerCase());
+  }, [location.search]);
+
+  const filteredData = results.filter((data) => {
+    return data.email.toLowerCase().includes(query.toLowerCase());
   });
 
   return (
     <>
+    <p> There are {filteredData.length} results found</p>
       <table className="min-w-full divide-y divide-gray-200 table-auto hover:table-fixed">
         <thead className="bg-gray-50">
           <tr>
@@ -49,12 +55,12 @@ const Results = () => {
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-500">
-          {filteredData.map((d) => (
-            <tr key={d.id}>
-              <td className="px-6 py-4 whitespace-nowrap">{d.id}</td>
-              <td className="px-6 py-4 whitespace-nowrap">{d.email}</td>
-              <td className="px-6 py-4 whitespace-nowrap">{d.username}</td>
-              <td className="px-6 py-4 whitespace-nowrap">{d.usertype}</td>
+          {filteredData.map((data) => (
+            <tr key={data.id}>
+              <td className="px-6 py-4 whitespace-nowrap">{data.id}</td>
+              <td className="px-6 py-4 whitespace-nowrap">{data.email}</td>
+              <td className="px-6 py-4 whitespace-nowrap">{data.username}</td>
+              <td className="px-6 py-4 whitespace-nowrap">{data.usertype}</td>
             </tr>
           ))}
         </tbody>
