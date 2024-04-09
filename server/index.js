@@ -1,7 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const User = require('./model/User');
-const TutorProfile = require('./model/TutorProfile');
 
 const cors = require('cors')
 
@@ -29,7 +28,7 @@ app.use(function(req, res, next) {
 
 app.get('/tutors', async (req, res) => {
   try {
-    const tutors = await User.find({ profile: { $ne: null } });
+    const tutors = await User.find({ usertype: 'Tutor' });
     res.json(tutors);
   } catch (error) {
     console.error(error);
@@ -37,12 +36,11 @@ app.get('/tutors', async (req, res) => {
   }
 })
 
-app.get('/tutorProfile/:profileId', async (req, res) => {
+app.get('/user/:id', async (req, res) => {
   try {
-    const { profileId } = req.params;
-    const tutorProfile = await TutorProfile.findById(profileId);
-    
-    res.json(tutorProfile);
+    const { id } = req.params;
+    const user = await User.findById(id);
+    res.json(user);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal server error' });
@@ -51,7 +49,7 @@ app.get('/tutorProfile/:profileId', async (req, res) => {
 
 app.get('/students', async (req, res) => {
   try {
-    const students = await User.find({ profile: null });
+    const students = await User.find({ usertype: 'Student' });
     res.json(students);
   } catch (error) {
     console.error(error);

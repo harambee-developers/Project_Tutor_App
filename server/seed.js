@@ -4,33 +4,28 @@ const { faker } = require('@faker-js/faker');
 mongoose.connect('mongodb://admin:password@localhost:27017/?authMechanism=DEFAULT');
 
 const User = require('./model/User');
-const TutorProfile = require('./model/TutorProfile');
-
-
 
 function generateRandomHourlyRate() {
   return (Math.random() * (100 - 10) + 10).toFixed(2); 
 }
 
-function generateTutorProfiles() {
-  const profiles = [];
-  for (let i = 0; i < 500; i++) {
-    const bio = faker.lorem.sentence();
-    const hourlyRate = generateRandomHourlyRate();
-    profiles.push({ bio, hourlyRate });
-  }
-  return profiles;
+function generateTutorProfile() {
+  const bio = faker.lorem.sentence();
+  const hourlyRate = generateRandomHourlyRate();
+
+  return {
+    bio,
+    hourlyRate
+  };
 }
 
-function generateTutorsWithProfiles(insertedTutorProfiles) {
+function generateTutorsWithProfiles() {
   const usersWithProfiles = [];
   for (let i = 0; i < 500; i++) {
     const email = faker.internet.email();
     const username = faker.internet.userName();
     const usertype = 'Tutor';
-    const profileIndex = Math.floor(Math.random() * 500); 
-    const profileId = insertedTutorProfiles[profileIndex]._id;
-    usersWithProfiles.push({ email, username, usertype, profile: profileId });
+    usersWithProfiles.push({ email, username, usertype, profile: generateTutorProfile() });
   }
   return usersWithProfiles
 }
@@ -48,11 +43,7 @@ function generateStudents(){
 
 async function seed() {
   try {
-    const tutorProfiles = generateTutorProfiles();
-
-    const insertedTutorProfiles = await TutorProfile.create(tutorProfiles);
-
-    const tutors = generateTutorsWithProfiles(insertedTutorProfiles);
+    const tutors = generateTutorsWithProfiles();
 
     const students = generateStudents();
 
