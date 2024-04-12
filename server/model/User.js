@@ -7,6 +7,7 @@ const profileSchema = new mongoose.Schema({
 });
 
 const userSchema = new Schema({
+    avatarUrl: { type: String, required: true }, 
     email: { type: String, unique: true, required: true },
     username: { type: String, unique: true, required: true },
     usertype: { type: String, enum: ['Tutor', 'Student'], required: true },

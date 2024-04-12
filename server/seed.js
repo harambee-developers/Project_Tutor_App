@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { faker } = require('@faker-js/faker');
+const {generateRandomAvatarURL} = require('./generateAvatar')
 
 mongoose.connect('mongodb://admin:password@localhost:27017/?authMechanism=DEFAULT');
 
@@ -22,10 +23,11 @@ function generateTutorProfile() {
 function generateTutorsWithProfiles() {
   const usersWithProfiles = [];
   for (let i = 0; i < 500; i++) {
+    const avatarUrl = generateRandomAvatarURL();
     const email = faker.internet.email();
     const username = faker.internet.userName();
     const usertype = 'Tutor';
-    usersWithProfiles.push({ email, username, usertype, profile: generateTutorProfile() });
+    usersWithProfiles.push({ avatarUrl, email, username, usertype, profile: generateTutorProfile() });
   }
   return usersWithProfiles
 }
@@ -33,10 +35,11 @@ function generateTutorsWithProfiles() {
 function generateStudents(){
   const students = [];
   for (let i = 0; i < 500; i++) {
+    const avatarUrl = generateRandomAvatarURL();
     const email = faker.internet.email();
     const username = faker.internet.userName();
     const usertype = 'Student';
-    students.push({ email, username, usertype });
+    students.push({ avatarUrl, email, username, usertype });
   }
   return students
 }
