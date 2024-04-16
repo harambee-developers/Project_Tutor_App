@@ -24,6 +24,7 @@ const Results = () => {
 
   return (
     <>
+    <h1 className="mb-4 font-semibold text-3xl">Your Search Results</h1>
     <p> There are {filteredData.length} results found</p>
       <table className="min-w-full divide-y divide-gray-200 table-auto hover:table-fixed">
         <thead className="bg-gray-50">

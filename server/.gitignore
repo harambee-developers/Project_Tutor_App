@@ -130,4 +130,5 @@ dist
 .pnp.*
 
 #docker-data
+docker_data
 docker-data
