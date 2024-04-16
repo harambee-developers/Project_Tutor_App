@@ -2,7 +2,7 @@ import React from "react";
 
 const customFooter = () => {
   return (
-    <footer className="bg-teal-600 text-white py-8 sticky">
+    <footer className="bg-teal-500 text-white py-8 sticky">
       <div className="container mx-auto text-center">
         <p>&copy; 2024 EDUFIRE All rights reservered</p>
         <div className="mt-4">
