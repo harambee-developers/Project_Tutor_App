@@ -5,9 +5,9 @@ const Register = () => {
   return (
     <div className="flex items-center justify-center h-screen border">
     <div className="w-96 p-6 shadow-lg bg-white rounded-md">
-      <h1 className="text-3xl flex justify-center text-center font-semibold">
+      <h1 className="text-3xl flex justify-center text-center font-semibold gap-2 mb-4">
         <FaUser />
-         User Registration
+         Sign up
       </h1>
       <hr className="mt-3" />
       <div className="mt-3">

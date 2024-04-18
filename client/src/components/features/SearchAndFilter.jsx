@@ -25,7 +25,7 @@ const SearchAndFilter = () => {
   const handleOnChange = (value) => {
     // Fetch api data. Will use node api
     axios
-      .get("http://localhost:7777/students")
+      .get("http://localhost:7777/tutors")
       .then((res) => setData(res.data))
       .catch((err) => console.log(err));
 
@@ -67,14 +67,14 @@ const SearchAndFilter = () => {
         >
           <ul className="ml:2 py-2 text-sm text-gray-700 dark:text-gray-200 max-h-60 overflow-y-auto w-full">
             {query &&
-              filteredData.map((item) => (
+              filteredData.map((data) => (
                 <li
-                  key={item.id}
-                  onClick={() => setQuery(item.email)}
+                  key={data.id}
+                  onClick={() => setQuery(data.username)}
                   className="px-4 py-2 w-full hover:bg-blue-400 dark:hover:bg-gray-600 dark:hover:text-white"
                   type="button"
                 >
-                  {item.email}
+                  {data.username}
                 </li>
               ))}
           </ul>

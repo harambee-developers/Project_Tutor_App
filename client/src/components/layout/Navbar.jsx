@@ -23,10 +23,10 @@ const Navbar = () => {
         </div>
         {/* <!-- Hamburger Menu Mobile only --> */}
         <div
-          className="absolute right-8 top-6 cursor-pointer md:hidden mt-5"
+          className="absolute right-8 top-6 cursor-pointer md:hidden mt-5 text-gray-300"
           onClick={() => setOpen(!isopen)}
         >
-          <FiMenu size={30} name={isopen ? "showMenuNav" : "hideMenuNav"} />
+          <FiMenu size={30} />
         </div>
 
         {/* <!-- Nav Items --> */}
@@ -77,7 +77,7 @@ const Navbar = () => {
                 href="/tutorprofile"
                 className=" md:text-gray-700 hover:text-blue-500 mr-4 md:text-base text-sm"
               >
-                Profiles
+                Find a Tutor
               </a>
             </li>
             <li className="md:ml-1 md:my-0 my-7">

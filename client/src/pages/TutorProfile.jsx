@@ -37,8 +37,7 @@ const TutorProfile = () => {
           <div key={tutor._id} className="bg-white rounded-lg shadow-md p-4 flex items-center">
             <img src={tutor.avatarUrl} alt="Avatar" className="w-32 h-32 rounded-full mr-4" />
             <div>
-              <div className="font-semibold">Email: {tutor.email}</div>
-              <div className="font-semibold">Username: {tutor.username}</div>
+              <div className="font-semibold"> {tutor.username}</div>
               <div className="mt-2">
                 <span className="font-semibold">Bio:</span> {tutor.profile.bio}
               </div>
