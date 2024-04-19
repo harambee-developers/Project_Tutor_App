@@ -40,10 +40,10 @@ const Home = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div>/
       </section>
       {/* About us Section */}
-      <section className="py-16 bg-gray-100">
+      <section className="py-12 bg-gray-100">
         <div className="container mx-auto">
           <h2 className="text-3xl font-bold text-center mb-4">About Us</h2>
           <p className="text-sm text-gray-400 mb-8 text-center">

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { DiFsharp } from "react-icons/di";
 import { FiMenu } from "react-icons/fi";
 import logo from "../../assets/logo.png";
 import { IoCloseSharp } from "react-icons/io5";
@@ -22,11 +21,18 @@ const Navbar = () => {
           </span>
         </div>
         {/* <!-- Hamburger Menu Mobile only --> */}
-        <div
-          className="absolute right-8 top-6 cursor-pointer md:hidden mt-5 text-gray-300"
-          onClick={() => setOpen(!isopen)}
-        >
-          <FiMenu size={30} />
+        <div className="py-12 bg-transparent">
+          <span className="font-semibold text-xl md:hidden absolute left-10 top-0">
+            <a href="/">
+              <img src={logo} alt="logo" className="h-32 w-full" />
+            </a>
+          </span>
+          <div
+            className="absolute right-10 top-7 cursor-pointer md:hidden mt-5 text-gray-800"
+            onClick={() => setOpen(!isopen)}
+          >
+            <FiMenu size={30} />
+          </div>
         </div>
 
         {/* <!-- Nav Items --> */}
