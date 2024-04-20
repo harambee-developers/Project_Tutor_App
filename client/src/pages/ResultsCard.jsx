@@ -12,7 +12,7 @@ const ResultsCard = ({ user_id, avatarsrc, name, email, bio, rate }) => {
             className="h-10 w-10 object-cover"
           ></img>
           <div className="ml-2">
-            <a href={`/user/${user_id}`} className="font-bold">
+            <a href={`/tutor/${user_id}`} className="font-bold">
               {name}
             </a>
             <p>{email}</p>

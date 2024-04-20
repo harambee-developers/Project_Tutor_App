@@ -5,7 +5,8 @@ import ResultsCard from "./ResultsCard";
 
 const Results = () => {
   const [results, setResults] = useState([]);
-
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const location = useLocation();
 
   // parse in the query parameter from the URL
@@ -13,15 +14,31 @@ const Results = () => {
   const query = searchParams.get("query");
 
   useEffect(() => {
-    axios
-      .get("http://localhost:7777/tutors")
-      .then((res) => setResults(res.data))
-      .catch((err) => console.log(err));
+    const fetchTutors = async () => {
+      try {
+        const response = await axios.get("http://localhost:7777/tutors");
+        setResults(response.data);
+        setLoading(false);
+      } catch (error) {
+        setError(error.message);
+        setLoading(false);
+      }
+    };
+
+    fetchTutors();
   }, [location.search]);
 
   const filteredData = results.filter((data) => {
     return data.email.toLowerCase().includes(query.toLowerCase());
   });
+
+  if (loading) {
+    return <div className="text-center mt-8">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center mt-8">Error: {error}</div>;
+  }
 
   return (
     <>
@@ -30,8 +47,8 @@ const Results = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredData.map((data) => (
           <ResultsCard
-            key={data.id}
-            user_id={data.id}
+            key={data._id}
+            user_id={data._id}
             avatarsrc={data.avatarUrl}
             name={data.username}
             email={data.email}
@@ -45,3 +62,4 @@ const Results = () => {
 };
 
 export default Results;
+

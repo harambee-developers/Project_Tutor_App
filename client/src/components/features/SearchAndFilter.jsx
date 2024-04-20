@@ -48,7 +48,7 @@ const SearchAndFilter = () => {
           <div className="relative w-full mr-6">
             <input
               id="search-btn"
-              placeholder="Search"
+              placeholder="Search..."
               type="search"
               value={query}
               onKeyDown={handleKeyPress}

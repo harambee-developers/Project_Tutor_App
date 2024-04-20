@@ -33,9 +33,12 @@ const TutorProfile = () => {
   return (
     <div className="container mx-auto px-4">
       <div className="flex">
-        <select className="mr-4 mt-4 px-4 border-gray-400 rounded" id="Subjects">
+        <select
+          className="mr-4 mt-4 px-4 border-gray-400 rounded"
+          id="Subjects"
+        >
           <option value="" disabled selected>
-            Select a Subject...
+            All Subjects...
           </option>
           <option value="English">English</option>
           <option value="Maths">Maths</option>
@@ -67,7 +70,9 @@ const TutorProfile = () => {
               className="w-32 h-32 rounded-full mr-4"
             />
             <div>
-              <div className="font-semibold"> {tutor.username}</div>
+              <div className="font-semibold">
+                <a href={`tutor/${tutor._id}`}> {tutor.username}</a>
+              </div>
               <div className="mt-2">
                 <span className="font-semibold">Bio:</span> {tutor.profile.bio}
               </div>

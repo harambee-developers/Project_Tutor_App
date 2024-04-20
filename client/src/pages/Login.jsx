@@ -28,7 +28,7 @@ const Login = () => {
             Password
           </label>
           <input
-            type="text"
+            type="password"
             placeholder="Enter password..."
             id="password"
             className="border w-full text-base px-2 focus:outline-none focus:ring-0 focus:border-gray-500"
