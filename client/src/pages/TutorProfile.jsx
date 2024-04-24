@@ -50,10 +50,9 @@ const TutorProfile = () => {
             All Levels...
           </option>
           <option value="English">Primary</option>
-          <option value="Maths">KS3</option>
-          <option value="Maths">GCSE</option>
-          <option value="Science">A-Level</option>
-          <option value="Science">Degree</option>
+          <option value="Maths">KCPE</option>
+          <option value="Maths">KCSE</option>
+          <option value="Science">College or Degree Equivalent</option>
         </select>
         <SearchAndFilter />
       </div>

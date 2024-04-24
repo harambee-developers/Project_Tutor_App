@@ -35,7 +35,7 @@ const TutorProfilePage = () => {
   }
 
   return (
-    <div className="grid md:grid-cols-2 gap-10 p-10">
+    <div className="grid md:grid-cols-2 gap-10 p-20">
       {/* <!-- Tutor Card --> */}
       <div className=" bg-white shadow-lg rounded-lg overflow-hidden">
         <div className="p-2 md:flex">
@@ -60,7 +60,7 @@ const TutorProfilePage = () => {
       </div>
       {/* <!-- Contact Card --> */}
       <div className=" bg-white shadow-lg rounded-lg overflow-hidden">
-        <h1 className="font-semibold text:2xl items-center p-4">
+        <h1 className="font-semibold text:2xl items-center p-6">
           Contact {results.username}
         </h1>
         <div className="flex p-4 items-center">

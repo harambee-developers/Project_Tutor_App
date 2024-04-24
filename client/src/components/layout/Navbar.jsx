@@ -65,22 +65,6 @@ const Navbar = () => {
             <li className="md:ml-1 md:my-0 my-7">
               <a
                 href="/"
-                className="md:text-gray-700 hover:text-blue-500 mr-4 md:text-base text-sm"
-              >
-                Home
-              </a>
-            </li>
-            <li className="md:ml-1 md:my-0 my-7">
-              <a
-                href="/about"
-                className="md:text-gray-700 hover:text-blue-500 mr-4 md:text-base text-sm"
-              >
-                About
-              </a>
-            </li>
-            <li className="md:ml-1 md:my-0 my-7">
-              <a
-                href="/tutorprofile"
                 className=" md:text-gray-700 hover:text-blue-500 mr-4 md:text-base text-sm"
               >
                 Find a Tutor
