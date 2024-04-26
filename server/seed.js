@@ -10,6 +10,13 @@ function generateRandomHourlyRate() {
   return (Math.random() * (100 - 10) + 10).toFixed(2); 
 }
 
+function generateReview() {
+  const name = faker.internet.userName();
+  const description = faker.lorem.paragraph();
+  const rating = Math.floor(Math.random() * 5) + 1;
+  return { name, description, rating };
+}
+
 function generateTutorProfile() {
   const bio = faker.lorem.sentence();
   const hourlyRate = generateRandomHourlyRate();
@@ -27,7 +34,7 @@ function generateTutorsWithProfiles() {
     const email = faker.internet.email();
     const username = faker.internet.userName();
     const usertype = 'Tutor';
-    usersWithProfiles.push({ avatarUrl, email, username, usertype, profile: generateTutorProfile() });
+    usersWithProfiles.push({ avatarUrl, email, username, usertype, profile: generateTutorProfile(), review: generateReview() });
   }
   return usersWithProfiles
 }
