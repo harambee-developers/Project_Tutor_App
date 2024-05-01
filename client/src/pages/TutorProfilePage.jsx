@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
+import Calender from "../components/features/Calender";
 
 const TutorProfilePage = () => {
   const [results, setResults] = useState([]);
+  const [query, setQuery] = useState('')
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -54,8 +56,8 @@ const TutorProfilePage = () => {
           </div>
         </div>
         <div className="px-2">
-          <h1 className="py-5 font-semibold">About me</h1>
-          <p className="text-gray-600 mb-4">{results.profile.bio}</p>
+          <h1 className="px-2 font-semibold">About me</h1>
+          <p className="text-gray-600 mb-2 px-2">{results.profile.bio}</p>
         </div>
       </div>
       {/* <!-- Contact Card --> */}
@@ -78,7 +80,18 @@ const TutorProfilePage = () => {
       </div>
       {/* <!-- Review --> */}
       <div className=" bg-white shadow-lg rounded-lg overflow-hidden md:col-span-2">
-        <h1 className="font-semibold text:2xl items-center p-4">Reviews</h1>
+        <h1 className="font-semibold text:2xl items-center p-4">Ratings and Reviews</h1>
+        <div className="flex">
+          <span className="text-4xl items-center px-4">0</span>
+          <p className="items=center p-4"> No Reviews yet!</p>
+        </div>
+      </div>
+      {/* <!-- Availability --> */}
+      <div className=" bg-white shadow-lg rounded-lg overflow-hidden md:col-span-2">
+        <h1 className="font-semibold text:2xl items-center p-4">Availability</h1>
+        <div className="flex">
+          <Calender/>
+        </div>
       </div>
     </div>
   );

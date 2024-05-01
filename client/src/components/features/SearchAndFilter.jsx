@@ -1,26 +1,12 @@
 import React, { useEffect } from "react";
 import axios from "axios";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 
 const SearchAndFilter = () => {
   // data fetched from api stored in state variable
   const [data, setData] = useState([]);
   const [query, setQuery] = useState('')
-
-  let navigate = useNavigate();
-
-  const handleOnSubmit = (e) => {
-    e.preventDefault();
-    navigate(`/results?query=${query}`);
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      handleOnSubmit(e)
-    }
-  }
 
   const handleOnChange = (value) => {
     // Fetch api data. Will use node api
@@ -51,7 +37,6 @@ const SearchAndFilter = () => {
               placeholder="Search..."
               type="search"
               value={query}
-              onKeyDown={handleKeyPress}
               onChange={(e) => handleOnChange(e.target.value)}
               className="w-full mt-2 md:mt-0 p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             ></input>
