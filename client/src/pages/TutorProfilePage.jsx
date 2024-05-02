@@ -5,7 +5,6 @@ import Calender from "../components/features/Calender";
 
 const TutorProfilePage = () => {
   const [results, setResults] = useState([]);
-  const [query, setQuery] = useState('')
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -80,18 +79,26 @@ const TutorProfilePage = () => {
       </div>
       {/* <!-- Review --> */}
       <div className=" bg-white shadow-lg rounded-lg overflow-hidden md:col-span-2">
-        <h1 className="font-semibold text:2xl items-center p-4">Ratings and Reviews</h1>
+        <h1 className="font-semibold text:2xl items-center p-4">
+          Ratings and Reviews
+        </h1>
         <div className="flex">
           <span className="text-4xl items-center px-4">0</span>
           <p className="items=center p-4"> No Reviews yet!</p>
         </div>
       </div>
-      {/* <!-- Availability --> */}
+      {/* <!-- Subjects --> */}
       <div className=" bg-white shadow-lg rounded-lg overflow-hidden md:col-span-2">
-        <h1 className="font-semibold text:2xl items-center p-4">Availability</h1>
-        <div className="flex">
-          <Calender/>
-        </div>
+        <h1 className="font-semibold text:2xl items-center p-4">
+          Subjects
+        </h1>
+      </div>
+       {/* <!-- Availability --> */}
+      <div className=" bg-white shadow-lg rounded-lg overflow-hidden md:col-span-2">
+        <h1 className="font-semibold text:2xl items-center p-4">
+          Availability
+        </h1>
+        <Calender />
       </div>
     </div>
   );

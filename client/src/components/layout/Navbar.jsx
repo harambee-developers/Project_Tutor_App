@@ -2,11 +2,19 @@ import React, { useState } from "react";
 import { FiMenu } from "react-icons/fi";
 import logo from "../../assets/logo.png";
 import { IoCloseSharp } from "react-icons/io5";
+import { useAuth } from "../features/AuthContext";
+import picture from "../../assets/profile_stock.jpg";
 
 const Navbar = () => {
+  const { user, logout } = useAuth();
+
   const [isopen, setOpen] = useState(false);
   const closeMenu = () => {
     setOpen(false);
+  };
+
+  const handleLogout = () => {
+    logout();
   };
 
   return (
@@ -62,27 +70,58 @@ const Navbar = () => {
                 : "hidden md:flex md:items-center md:ml-8 md:mx-0 md:pb-0 pb-12 absolute md:static bg-transparent md:z-auto left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in"
             }
           >
-            <li className="md:ml-1 md:my-0 my-7">
-              <a
-                href="/"
-                className=" md:text-gray-700 hover:text-blue-500 mr-4 md:text-base text-sm"
-              >
-                Find a Tutor
-              </a>
-            </li>
-            <li className="md:ml-1 md:my-0 my-7">
-              <a
-                href="/login"
-                className=" md:text-gray-700 hover:text-blue-500 mr-4 md:text-base text-sm"
-              >
-                Login
-              </a>
-            </li>
-            <li className="md:my-0 my-7 md:ml-0">
-              <button className="text-sm bg-teal-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full md:ml-4 md:text-base">
-                <a href="/register">Sign Up</a>
-              </button>
-            </li>
+            {user ? (
+              <>
+                <li>
+                  <a
+                    href="/profile"
+                    className=" md:text-gray-700 hover:text-blue-500 mr-2 md:text-base text-sm"
+                  >
+                    Edit Profile
+                  </a>
+                </li>
+                <li>
+                  <button
+                    onClick={handleLogout}
+                    className="text-sm bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full md:ml-4 md:text-base"
+                  >
+                    logout
+                  </button>
+                </li>
+                <li>
+                  <img
+                    src={picture}
+                    alt="avatarUrl"
+                    className="h-8 w-8 rounded-full object-cover mx-8"
+                  />
+                </li>
+              </>
+            ) : (
+              <>
+                <></>
+                <li className="md:ml-1 md:my-0 my-7">
+                  <a
+                    href="/"
+                    className=" md:text-gray-700 hover:text-blue-500 mr-4 md:text-base text-sm"
+                  >
+                    Find a Tutor
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/login"
+                    className=" md:text-gray-700 hover:text-blue-500 mr-4 md:text-base text-sm"
+                  >
+                    Login
+                  </a>
+                </li>
+                <li>
+                  <button className="text-sm bg-teal-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full md:ml-4 md:text-base">
+                    <a href="/register">Sign Up</a>
+                  </button>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>

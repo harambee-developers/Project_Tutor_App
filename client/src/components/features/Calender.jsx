@@ -57,7 +57,7 @@ const Calender = () => {
   };
 
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto p-4">
       <div className="bg-white p-4 rounded-lg shadow-lg w-full">
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin]}
