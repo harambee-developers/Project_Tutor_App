@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FaUser, FaStar, FaBook } from "react-icons/fa";
+import { FaUser, FaStar, FaBook, FaCalendar } from "react-icons/fa";
 import MyProfile from "../components/profile/MyProfile";
 import Reviews from "../components/profile/Reviews";
 import Subjects from "../components/profile/Subjects";
+import Avaialbility from "../components/profile/Avaialbility";
 
 const EditTutorProfilePage = () => {
   const [results, setResults] = useState([]);
@@ -38,6 +39,8 @@ const EditTutorProfilePage = () => {
       return <MyProfile results={results} />;
     } else if (selectedTab === "Review") {
       return <Reviews />;
+    } else if (selectedTab === "Availability") {
+      return <Avaialbility />;
     } else {
       return <Subjects />;
     }
@@ -52,7 +55,7 @@ const EditTutorProfilePage = () => {
   }
 
   return (
-    <div className="grid md:grid-cols-3 gap-10 p-20">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-10 p-20">
       {/* <!-- Tutor Card --> */}
       <div className=" bg-white shadow-lg rounded-lg overflow-hidden col-span-3">
         <div className="p-2 md:flex">
@@ -72,7 +75,7 @@ const EditTutorProfilePage = () => {
         </div>
       </div>
       {/* <!-- Sidebar --> */}
-      <div className=" bg-white shadow-lg rounded-lg overflow-hidden col-span-1">
+      <div className=" bg-white shadow-lg rounded-lg overflow-hidden md:col-span-1 col-span-3">
         <ul>
           <li>
             <button
@@ -102,12 +105,22 @@ const EditTutorProfilePage = () => {
               Subjects
             </button>
           </li>
+          <li>
+            <button
+              className="w-full rounded flex justify-start text-center font-semibold gap-2 hover:bg-blue-500 hover:text-white hover:py-2 mb-4"
+              onClick={() => setSelectedTab("Availability")}
+            >
+              <FaCalendar />
+              Availability
+            </button>
+          </li>
         </ul>
       </div>
-      {/* <!-- My Profile --> */}
-      <div className=" bg-white shadow-lg rounded-lg overflow-hidden col-span-2">
-        <div>{renderComponent()}</div>
+      {/* <!-- Render Component based on sidebar link --> */}
+      <div className=" bg-white shadow-lg rounded-lg overflow-hidden md:col-span-2 min-h-screen w-full">
+        {renderComponent()}
       </div>
+      {/* <!-- Cancel and Save button on bottom --> */}
       <div className=" bg-white shadow-lg rounded-lg overflow-hidden col-span-3">
         <div className="flex justify-end">
           <button className="text-sm bg-gray-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded md:ml-4 md:text-base">

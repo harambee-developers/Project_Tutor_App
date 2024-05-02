@@ -5,7 +5,8 @@ const EditableTextBox = ({
   isEditable,
   onToggleEdit,
   saveText,
-  className
+  className,
+  rows,
 }) => {
   const [text, setText] = useState(initialSTate);
 
@@ -29,7 +30,13 @@ const EditableTextBox = ({
     <div>
       {isEditable ? (
         <div className={className}>
-          <input type="text" value={text} onChange={handleInputChange} className='rounded' />
+          <textarea
+            type="text"
+            value={text}
+            onChange={handleInputChange}
+            className="rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 w-full py-2 px-3 sm:text-sm"
+            rows={rows}
+          />
         </div>
       ) : (
         <div className={className}>
