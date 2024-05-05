@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FaUser, FaStar, FaBook, FaCalendar } from "react-icons/fa";
+import { FaUser, FaStar, FaBook, FaCalendar, FaCamera } from "react-icons/fa";
 import MyProfile from "../components/profile/MyProfile";
 import Reviews from "../components/profile/Reviews";
 import Subjects from "../components/profile/Subjects";
 import Avaialbility from "../components/profile/Avaialbility";
+import StarRating from "../components/features/StarRating";
+import ProfilePictureModal from "../components/features/ProfilePictureModal";
 
 const EditTutorProfilePage = () => {
   const [results, setResults] = useState([]);
@@ -12,6 +14,7 @@ const EditTutorProfilePage = () => {
   const [error, setError] = useState(null);
   const [isButtonClicked, setIsButtonClicked] = useState(false);
   const [selectedTab, setSelectedTab] = useState("Profile");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchTutors = async () => {
@@ -59,17 +62,28 @@ const EditTutorProfilePage = () => {
       {/* <!-- Tutor Card --> */}
       <div className=" bg-white shadow-lg rounded-lg overflow-hidden col-span-3">
         <div className="p-2 md:flex">
-          <img
-            src={results.avatarUrl}
-            alt="image"
-            className="h-32 w-32 md:h-48 object-cover md:w-48"
-          />
+          <div className="relative w-32 h-32">
+            <img
+              src={results.avatarUrl}
+              alt="image"
+              className="h-full w-full object-cover rounded=full"
+            />
+            <div className="absolute bottom-2 left-2">
+              <button className="bg-gray-800 bg-opacity-50 p-2 rounded-full">
+                <FaCamera className="h-6 w-6 text-white" onClick={() => setIsModalOpen(true)} />
+                <ProfilePictureModal
+                  isOpen={isModalOpen}
+                  onClose={() => setIsModalOpen(false)}
+                />
+              </button>
+            </div>
+          </div>
           <div className="">
             <div className="px-2 mt-5 uppercase tracking-wide text-sm text-gray-700 font-semibold mb-2">
               {results.username}
             </div>
-            <div className="px-2 tracking-wide  text-sm text-gray-700 mb-2">
-              Goal Oriented and Success guaranteed!
+            <div className="p-4 rounded-lg">
+              {<StarRating rating={"3.5"} />}
             </div>
           </div>
         </div>
@@ -119,17 +133,6 @@ const EditTutorProfilePage = () => {
       {/* <!-- Render Component based on sidebar link --> */}
       <div className=" bg-white shadow-lg rounded-lg overflow-hidden md:col-span-2 min-h-screen w-full">
         {renderComponent()}
-      </div>
-      {/* <!-- Cancel and Save button on bottom --> */}
-      <div className=" bg-white shadow-lg rounded-lg overflow-hidden col-span-3">
-        <div className="flex justify-end">
-          <button className="text-sm bg-gray-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded md:ml-4 md:text-base">
-            Cancel
-          </button>
-          <button className="text-sm bg-teal-500 hover:bg-blue-700 text-white font-bold py-2 px-8 rounded md:ml-4 md:text-base">
-            Save
-          </button>
-        </div>
       </div>
     </div>
   );

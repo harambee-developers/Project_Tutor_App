@@ -1,8 +1,20 @@
-import React from 'react'
+import React, {useState} from 'react'
+import DaySelector from '../features/DaySelector'
 
 const Avaialbility = () => {
+  const [availability, setAvailability] = useState([])  
+  const handleDaySelection = (day, isSelected) => {
+    if (isSelected) {
+      setAvailability([...availability, day])
+    } else {
+      setAvailability(availability.filter(d => d !== day))
+    }
+  }
   return (
-    <div>Avaialbility</div>
+    <div className='p-4'>
+      <h1 className='font-semibold text-xl mb-4'>Set your Availability</h1>
+      <DaySelector onSelectDay={handleDaySelection}/>
+    </div>
   )
 }
 

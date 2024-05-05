@@ -20,7 +20,7 @@ function generateReview() {
 function generateTutorProfile() {
   const bio = faker.lorem.sentence();
   const hourlyRate = generateRandomHourlyRate();
-
+  mongoose
   return {
     bio,
     hourlyRate

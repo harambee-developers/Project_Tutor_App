@@ -27,9 +27,9 @@ const EditableTextBox = ({
   };
 
   return (
-    <div>
+    <div className="w-1/2">
       {isEditable ? (
-        <div className={className}>
+        <div>
           <textarea
             type="text"
             value={text}

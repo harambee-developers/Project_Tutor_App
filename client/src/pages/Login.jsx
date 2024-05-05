@@ -12,9 +12,11 @@ const Login = () => {
   const handleLogin = async () => {
     try {
       await login(uname, pword);
-      toast.success('Login succesful!', {position: toast.POSITION.TOP_CENTER})
+      // toast.success('Login succesful!', {position: toast.POSITION.TOP_CENTER})
+      setUname('')
+      setpword('')
     } catch (error) {
-      toast.error('Login Failed', {position: toast.POSITION.TOP_CENTER})
+      // toast.error('Login Failed', {position: toast.POSITION.TOP_CENTER})
       console.error("Login failed:", error);
     }
   };
@@ -39,6 +41,7 @@ const Login = () => {
             value={uname}
             id="username"
             className="border w-full text-base px-2 focus:outline-none focus:ring-0 focus:border-gray-500"
+            required
           />
         </div>
         <div className="mt-3">
@@ -53,6 +56,7 @@ const Login = () => {
             value={pword}
             id="password"
             className="border w-full text-base px-2 focus:outline-none focus:ring-0 focus:border-gray-500"
+            required
           />
         </div>
         <div className="mt-3 flex justify-between items-center">

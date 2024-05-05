@@ -1,7 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const User = require('./model/User');
-
 const cors = require('cors')
 
 const app = express();
@@ -55,6 +54,12 @@ app.get('/students', async (req, res) => {
     console.error(error);
     res.status(500).json({ message: 'Internal server error' });
   }
+})
+
+app.post('/api/availability', (req, res) => {
+  const availabilityData = req.body
+  console.log('Received Data successfully: ', availabilityData)
+  req.status(200).json({message: 'Availability data received and processed'})
 })
 
 app.use((err, req, res, next) => {

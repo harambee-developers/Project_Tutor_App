@@ -10,7 +10,7 @@ const MyProfile = ({ results }) => {
           <label htmlFor="field1" className="w-1/3 px-2">
             UserName:
           </label>
-          <EditableTextBox initialSTate={results.username} isEditable={true} rows="1" />
+          <EditableTextBox initialSTate={results.username} isEditable={true} rows="1" className='w-full' />
         </div>
         <div className="flex items-center text-gray-700">
           <label htmlFor="field2" className="w-1/3 px-2">
@@ -26,6 +26,7 @@ const MyProfile = ({ results }) => {
             initialSTate={results.profile.bio}
             isEditable={true}
             rows="4"
+            className='w-full'
           />
         </div>
       </form>
