@@ -11,7 +11,7 @@ const Avaialbility = () => {
     }
   }
   return (
-    <div className='p-4'>
+    <div className='min-h-screen'>
       <h1 className='font-semibold text-xl mb-4'>Set your Availability</h1>
       <DaySelector onSelectDay={handleDaySelection}/>
     </div>

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 const DaySelector = () => {
   const dayOfWeek = [
@@ -44,7 +45,7 @@ const DaySelector = () => {
     setAvailability(updatedAvailability);
     //   logging availability state when a checkbox is checked. Allows me to view what the data would look like once it gets processed to the backend.
 
-    console.log("Availablity state: ", updatedAvailability);
+    console.log("Availablity state: ", JSON.stringify(updatedAvailability));
   };
 
   const isTimeSlotSelected = (day, time) => {
@@ -53,20 +54,12 @@ const DaySelector = () => {
 
   const saveAvailability = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/availability", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(availability),
-      });
-
-      if (response.ok) {
-        console.log(availability);
-        console.log("Avaiability data saved successfully!");
-      } else {
-        throw new Error("Failed to save availability data");
-      }
+      const response = await axios.post(
+        "http://localhost:7777/availability",
+        JSON.stringify(availability)
+      );
+      console.log("Response:", response.data);
+      console.log("Availability data saved successfully");
     } catch (error) {
       console.error("Error saving availability", error);
     }

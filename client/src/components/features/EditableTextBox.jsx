@@ -1,48 +1,23 @@
 import React, { useState } from "react";
 
-const EditableTextBox = ({
-  initialSTate,
-  isEditable,
-  onToggleEdit,
-  saveText,
-  className,
-  rows,
-}) => {
+const EditableTextBox = ({ initialSTate, rows, childData}) => {
   const [text, setText] = useState(initialSTate);
 
   const handleInputChange = (e) => {
-    setText(e.target.value);
-  };
-
-  const handleSaveClick = () => {
-    saveText(text); // call the saveTexty function passed from the parent component
-
-    onToggleEdit(false);
-    //toggle editable state off
-  };
-
-  const handleCancelClick = () => {
-    setText(initialSTate);
-    onToggleEdit(false);
+    const data = e.target.value;
+    setText(data);
+    console.log(data)
   };
 
   return (
     <div className="w-1/2">
-      {isEditable ? (
-        <div>
-          <textarea
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 w-full py-2 px-3 sm:text-sm"
-            rows={rows}
-          />
-        </div>
-      ) : (
-        <div className={className}>
-          <span>{text}</span>
-        </div>
-      )}
+        <textarea
+          type="text"
+          value={text}
+          onChange={handleInputChange}
+          className="rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 w-full py-2 px-3 sm:text-sm"
+          rows={rows}
+        />
     </div>
   );
 };

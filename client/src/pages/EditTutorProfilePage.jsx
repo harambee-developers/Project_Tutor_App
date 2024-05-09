@@ -13,7 +13,7 @@ const EditTutorProfilePage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isButtonClicked, setIsButtonClicked] = useState(false);
-  const [selectedTab, setSelectedTab] = useState("Profile");
+  const [selectedTab, setSelectedTab] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
@@ -33,20 +33,23 @@ const EditTutorProfilePage = () => {
     fetchTutors();
   }, []);
 
-  const handleOnClick = () => {
-    setIsButtonClicked(!isButtonClicked);
-  };
-
   const renderComponent = () => {
-    if (selectedTab === "Profile") {
-      return <MyProfile results={results} />;
-    } else if (selectedTab === "Review") {
-      return <Reviews />;
-    } else if (selectedTab === "Availability") {
-      return <Avaialbility />;
-    } else {
-      return <Subjects />;
-    }
+    switch (selectedTab) {
+      case "Profile":
+        return <MyProfile results={results} />;
+      case "Review":
+        return <Reviews />;
+      case "Subjects":
+        return <Subjects />;
+      case "Availability":
+        return <Avaialbility />;
+      default:
+        return null
+  };
+}
+
+  const handleOnClick = (value) => {
+    setSelectedTab(value);
   };
 
   if (loading) {
@@ -69,13 +72,16 @@ const EditTutorProfilePage = () => {
               className="h-full w-full object-cover rounded=full"
             />
             <div className="absolute bottom-2 left-2">
-              <button className="bg-gray-800 bg-opacity-50 p-2 rounded-full">
-                <FaCamera className="h-6 w-6 text-white" onClick={() => setIsModalOpen(true)} />
+              <div className="bg-gray-800 bg-opacity-50 p-2 rounded-full">
+                <FaCamera
+                  className="h-6 w-6 text-white"
+                  onClick={() => setIsModalOpen(true)}
+                />
                 <ProfilePictureModal
                   isOpen={isModalOpen}
                   onClose={() => setIsModalOpen(false)}
                 />
-              </button>
+              </div>
             </div>
           </div>
           <div className="">
@@ -94,8 +100,8 @@ const EditTutorProfilePage = () => {
           <li>
             <button
               className={`w-full rounded flex justify-start text-center font-semibold gap-2 hover:bg-blue-500 hover:text-white hover:py-2 mb-4
-          ${isButtonClicked ? "bg-blue-500 text-white py-2 mb-4" : ""} `}
-              onClick={() => setSelectedTab("Profile")}
+              ${selectedTab === "Profile" ? "bg-blue-500 text-white py-2 mb-4" : ""} `}
+              onClick={() => handleOnClick("Profile")}
             >
               <FaUser />
               My Profile
@@ -103,8 +109,9 @@ const EditTutorProfilePage = () => {
           </li>
           <li>
             <button
-              className="w-full rounded flex justify-start text-center font-semibold gap-2 hover:bg-blue-500 hover:text-white hover:py-2 mb-4"
-              onClick={() => setSelectedTab("Review")}
+              className={`w-full rounded flex justify-start text-center font-semibold gap-2 hover:bg-blue-500 hover:text-white hover:py-2 mb-4
+              ${selectedTab === "Review" ? "bg-blue-500 text-white py-2 mb-4" : ""} `}
+              onClick={() => handleOnClick("Review")}
             >
               <FaStar />
               Reviews
@@ -112,8 +119,9 @@ const EditTutorProfilePage = () => {
           </li>
           <li>
             <button
-              className="w-full rounded flex justify-start text-center font-semibold gap-2 hover:bg-blue-500 hover:text-white hover:py-2 mb-4"
-              onClick={() => setSelectedTab("Subjects")}
+              className={`w-full rounded flex justify-start text-center font-semibold gap-2 hover:bg-blue-500 hover:text-white hover:py-2 mb-4
+              ${selectedTab === "Subjects" ? "bg-blue-500 text-white py-2 mb-4" : ""} `}
+              onClick={() => handleOnClick("Subjects")}
             >
               <FaBook />
               Subjects
@@ -121,8 +129,9 @@ const EditTutorProfilePage = () => {
           </li>
           <li>
             <button
-              className="w-full rounded flex justify-start text-center font-semibold gap-2 hover:bg-blue-500 hover:text-white hover:py-2 mb-4"
-              onClick={() => setSelectedTab("Availability")}
+              className={`w-full rounded flex justify-start text-center font-semibold gap-2 hover:bg-blue-500 hover:text-white hover:py-2 mb-4
+              ${selectedTab === "Availability" ? "bg-blue-500 text-white py-2 mb-4" : ""} `}
+              onClick={() => handleOnClick("Availability")}
             >
               <FaCalendar />
               Availability
