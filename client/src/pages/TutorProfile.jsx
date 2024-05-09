@@ -30,6 +30,11 @@ const TutorProfile = () => {
     return <div className="text-center mt-8">Error: {error}</div>;
   }
 
+  const handleFilteredTutors = (filteredTutors) => {
+    // Update tutors state based on filtered results
+    setTutors(filteredTutors);
+  };
+
   return (
     <div className="container mx-auto px-4">
       <div className="flex">
@@ -54,7 +59,10 @@ const TutorProfile = () => {
           <option value="Maths">KCSE</option>
           <option value="Science">College or Degree Equivalent</option>
         </select>
-        <SearchAndFilter />
+        <SearchAndFilter
+          data={tutors} // Pass the tutors data to SearchAndFilter component
+          setData={handleFilteredTutors} 
+        />
       </div>
       <h2 className="text-2xl font-bold mb-6 mt-10">Tutors</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -80,7 +88,7 @@ const TutorProfile = () => {
                 {tutor.profile.hourlyRate}
               </div>
               <div className="mt-3">
-                <button class="bg-green-500 hover:bg-green-600 text-xs text-white font-bold py-2 px-3 rounded">
+                <button className="bg-green-500 hover:bg-green-600 text-xs text-white font-bold py-2 px-3 rounded">
                   Availability
                 </button>
               </div>

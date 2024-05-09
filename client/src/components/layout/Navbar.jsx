@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FiMenu } from "react-icons/fi";
 import logo from "../../assets/logo.png";
 import { IoCloseSharp } from "react-icons/io5";
@@ -6,8 +6,8 @@ import { useAuth } from "../features/AuthContext";
 import picture from "../../assets/profile_stock.jpg";
 
 const Navbar = () => {
-  const { user, logout } = useAuth();
-
+  const {user: authUser, logout } = useAuth();
+  const [user, setUser] = useState(null)
   const [isopen, setOpen] = useState(false);
   const closeMenu = () => {
     setOpen(false);
@@ -16,6 +16,15 @@ const Navbar = () => {
   const handleLogout = () => {
     logout();
   };
+
+  useEffect(() => {
+    // Check if user data exists in localStorage on component mount
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      const userData = JSON.parse(storedUser);
+      setUser(userData); // Assuming you have a way to set user data in your component state
+    }
+  }, []); // Empty dependency array ensures this effect runs only once on component mount
 
   return (
     <nav className="shadow:md w-full top-0 bg-gray-200">
@@ -130,5 +139,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-// md:flex md:items-center md:ml-8 md:mx-0 md:pb-0 pb-12 absolute md:static bg-transparent md:z-auto left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in

@@ -70,10 +70,10 @@ const TutorProfilePage = () => {
           </p>
           <p>/per hour</p>
         </div>
-        <button className="w-3/4 m-4 bg-teal-500 hover:bg-blue-600 text-white py-2 rounded-full">
+        <button className="w-full mr-8 bg-teal-500 hover:bg-blue-600 text-white py-2 rounded-full">
           Book Now
         </button>
-        <button className="w-3/4 m-4 bg-teal-500 hover:bg-blue-600 text-white py-2 rounded-full">
+        <button className="w-full mr-8 mt-4 mb-4 bg-transparent hover:bg-blue-600 hover:text-white text-black py-2 rounded-full">
           Send Message
         </button>
       </div>

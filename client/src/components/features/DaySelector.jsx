@@ -56,7 +56,6 @@ const DaySelector = () => {
     try {
       const response = await axios.post(
         "http://localhost:7777/availability",
-        JSON.stringify(availability)
       );
       console.log("Response:", response.data);
       console.log("Availability data saved successfully");
