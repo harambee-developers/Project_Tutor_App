@@ -1,22 +1,25 @@
 import React, { useState } from "react";
 import { FaUser } from "react-icons/fa";
 import { useAuth } from "../components/features/AuthContext";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const { login } = useAuth();
+  const navigate = useNavigate();
   const [uname, setUname] = useState("");
   const [pword, setpword] = useState("");
 
   const handleLogin = async () => {
     try {
       await login(uname, pword);
-      // toast.success('Login succesful!', {position: toast.POSITION.TOP_CENTER})
-      setUname('')
-      setpword('')
+      toast.success('Login successful!', { position: "top-center" });
+      navigate('/confirm')
+      setUname("");
+      setpword("");
     } catch (error) {
-      // toast.error('Login Failed', {position: toast.POSITION.TOP_CENTER})
+      toast.error('Login Failed', { position: "top-center" });
       console.error("Login failed:", error);
     }
   };

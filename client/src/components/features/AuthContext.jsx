@@ -7,20 +7,15 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   const login = async (username, password) => {
-    // API requrest to authenticate user and receive token
-
-    // const response = await fetch("api/login", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "appilcation/json" },
-    //   body: JSON.stringify({ username, password }),
-    // });
-
-    // if (response.ok) {
-    //   const { accessToken } = await response.json();
-
-    //   localStorage.setItem("accessToken", accessToken);
-    //   setUser({ username });
-    // }
+      // // Here, replace with your actual login API endpoint
+      // const response = await axios.post("/login", { username, password });
+      // if (response.status === 200) {
+      //   const { user, accessToken } = response.data;
+      //   localStorage.setItem("accessToken", accessToken); // Save token
+      //   localStorage.setItem("user", JSON.stringify(user)); // Save user data
+      //   setUser(user);
+      //   console.log("Login is successful", user);
+      // }
 
     console.log("Logging in....");
     if (username === "TestUser" && password === "testpassword") {
@@ -37,13 +32,16 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     console.log("Logging out.....");
     localStorage.removeItem("user");
+    // localStorage.removeItem("accessToken"); // Remove token
     setUser(null);
     console.log("logout successful!");
   };
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
+    // const token = localStorage.getItem("accessToken");
     if (storedUser) {
+      // Optionally verify the token's validity with your backend here
       setUser(JSON.parse(storedUser));
     }
   }, []);

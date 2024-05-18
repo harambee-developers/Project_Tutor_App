@@ -12,7 +12,6 @@ const EditTutorProfilePage = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isButtonClicked, setIsButtonClicked] = useState(false);
   const [selectedTab, setSelectedTab] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -80,6 +79,7 @@ const EditTutorProfilePage = () => {
                 <ProfilePictureModal
                   isOpen={isModalOpen}
                   onClose={() => setIsModalOpen(false)}
+                  results={results}
                 />
               </div>
             </div>

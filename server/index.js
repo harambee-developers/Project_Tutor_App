@@ -100,6 +100,34 @@ app.put("/profile/:userid", async (req, res) => {
   }
 });
 
+app.put("/picture/:userid", async (req, res) => {
+  const userId = req.params.userid;
+  const { avatarUrl } = req.body;
+  try {
+    // query user by id
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {
+        'avatarUrl' : avatarUrl
+      },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: "User is not found" });
+    }
+
+    res.json(updatedUser);
+
+    await updatedUser.save()
+
+    console.log("Received Data successfully: ", updatedUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
