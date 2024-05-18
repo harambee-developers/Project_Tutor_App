@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const User = require("./model/User");
+const authRoutes = require('./routes/auth');
 
 const app = express();
 const PORT = process.env.PORT || 7777;
@@ -27,6 +28,8 @@ app.use(function (req, res, next) {
     next();
   }
 });
+
+app.use('/api/auth', authRoutes);
 
 app.get("/tutors", async (req, res) => {
   try {
