@@ -34,7 +34,8 @@ function generateTutorsWithProfiles() {
     const email = faker.internet.email();
     const username = faker.internet.userName();
     const usertype = 'Tutor';
-    usersWithProfiles.push({ avatarUrl, email, username, usertype, profile: generateTutorProfile(), review: generateReview() });
+    const password = faker.internet.password();
+    usersWithProfiles.push({ avatarUrl, email, username, usertype, password, profile: generateTutorProfile(), review: generateReview() });
   }
   return usersWithProfiles
 }
@@ -46,7 +47,8 @@ function generateStudents(){
     const email = faker.internet.email();
     const username = faker.internet.userName();
     const usertype = 'Student';
-    students.push({ avatarUrl, email, username, usertype });
+    const password = faker.internet.password();
+    students.push({ avatarUrl, email, username, usertype, password });
   }
   return students
 }
