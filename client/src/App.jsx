@@ -22,6 +22,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/" element={<TutorProfile />} />
           <Route path="/tutor/:userId" element={<TutorProfilePage />} />
+          <Route path="/dashboard" element={<EditTutorProfilePage />} />
           {/* Protected Routes */}
           <Route path="/profile" element={<PrivateRoute element={EditTutorProfilePage} />} />
           {/* Fallback Private Route (for any unmatched private routes) */}

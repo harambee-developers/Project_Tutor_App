@@ -65,7 +65,7 @@ const DaySelector = () => {
   };
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto p-4">
       <table className="min-w-full divide-y divide-gray-200">
         <thead>
           <tr className="bg-gray-200">

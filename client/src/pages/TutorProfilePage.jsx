@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import Calender from "../components/features/Calender";
+import StarRating from "../components/features/StarRating";
+import InitialsCircle from "../data/initialsCircle";
 
 const TutorProfilePage = () => {
   const [results, setResults] = useState([]);
@@ -50,7 +52,10 @@ const TutorProfilePage = () => {
               {results.username}
             </div>
             <div className="px-2 tracking-wide  text-sm text-gray-700 mb-2">
-              Goal Oriented and Success guaranteed!
+              <StarRating rating={results.profile.review.rating} />
+            </div>
+            <div className="px-2 tracking-wide  text-sm text-gray-700 mb-2">
+              {results.headline}
             </div>
           </div>
         </div>
@@ -60,7 +65,7 @@ const TutorProfilePage = () => {
         </div>
       </div>
       {/* <!-- Contact Card --> */}
-      <div className=" bg-white shadow-lg rounded-lg overflow-hidden">
+      <div className=" bg-white shadow-lg rounded-lg overflow-hidden px-4">
         <h1 className="font-semibold text:2xl items-center p-6">
           Contact {results.username}
         </h1>
@@ -82,18 +87,39 @@ const TutorProfilePage = () => {
         <h1 className="font-semibold text:2xl items-center p-4">
           Ratings and Reviews
         </h1>
-        <div className="flex">
-          <span className="text-4xl items-center px-4">0</span>
-          <p className="items=center p-4"> No Reviews yet!</p>
+        <div>
+          <span className="text-8xl items-center px-4">
+            {results.profile.review.rating}
+          </span>
+          <div className="p-4 rounded-lg">
+            {<StarRating rating={results.profile.review.rating} />}
+          </div>
+          <hr className="mb-5 items-center justify-center" />
+          <div className="flex mb-5 px-5">
+            <InitialsCircle
+              name={results.profile.review.name}
+              size={50}
+              backgroundColor="bg-red-500"
+              textColor="text-white"
+            />
+            <div className="ml-5">
+              <h1 className="font-semibold text:2xl items-center px-4">
+                {results.profile.review.name}
+              </h1>
+              <p className="items=center p-4">
+                {" "}
+                {results.profile.review.description}
+              </p>
+            </div>
+          </div>
+          <hr />
         </div>
       </div>
       {/* <!-- Subjects --> */}
       <div className=" bg-white shadow-lg rounded-lg overflow-hidden md:col-span-2">
-        <h1 className="font-semibold text:2xl items-center p-4">
-          Subjects
-        </h1>
+        <h1 className="font-semibold text:2xl items-center p-4">Subjects</h1>
       </div>
-       {/* <!-- Availability --> */}
+      {/* <!-- Availability --> */}
       <div className=" bg-white shadow-lg rounded-lg overflow-hidden md:col-span-2">
         <h1 className="font-semibold text:2xl items-center p-4">
           Availability

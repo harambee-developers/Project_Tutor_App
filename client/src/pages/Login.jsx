@@ -1,25 +1,23 @@
 import React, { useState } from "react";
 import { FaUser } from "react-icons/fa";
 import { useAuth } from "../components/features/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const { login } = useAuth();
-  const navigate = useNavigate();
-  const [uname, setUname] = useState("");
-  const [pword, setpword] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
     try {
-      await login(uname, pword);
-      toast.success('Login successful!', { position: "top-center" });
-      navigate('/confirm')
-      setUname("");
-      setpword("");
+      await login(username, password);
+      toast.success("Login successful!", { position: "top-center" });
+      setUsername("");
+      setPassword("");
     } catch (error) {
-      toast.error('Login Failed', { position: "top-center" });
+      toast.error("Login Failed", { position: "top-center" });
       console.error("Login failed:", error);
     }
   };
@@ -39,9 +37,10 @@ const Login = () => {
           </label>
           <input
             type="text"
+            name="username"
             placeholder="Enter Username..."
-            onChange={(e) => setUname(e.target.value)}
-            value={uname}
+            onChange={(e) => setUsername(e.target.value)}
+            value={username}
             id="username"
             className="border w-full text-base px-2 focus:outline-none focus:ring-0 focus:border-gray-500"
             required
@@ -54,9 +53,10 @@ const Login = () => {
           </label>
           <input
             type="password"
+            name="password"
             placeholder="Enter password..."
-            onChange={(e) => setpword(e.target.value)}
-            value={pword}
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
             id="password"
             className="border w-full text-base px-2 focus:outline-none focus:ring-0 focus:border-gray-500"
             required
@@ -82,7 +82,7 @@ const Login = () => {
             className="border-2 bg-teal-500 border-teal-700 text-white py-1 w-full rounded-md hover-bg-transparent hover:text-teal-500 font-semibold"
             type="submit"
           >
-            Login
+            Submit
           </button>
         </div>
       </div>

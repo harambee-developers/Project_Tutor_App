@@ -3,9 +3,9 @@ const {Schema, model} = mongoose;
 const {genSalt, hash} = require('bcryptjs');
 
   const reviewSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    description: { type: String, required: true },
-    rating: {type: Number, required: true }
+    name: { type: String, required: false },
+    description: { type: String, required: false },
+    rating: {type: Number, required: false }
   })
 
   const profileSchema = new mongoose.Schema({
@@ -15,8 +15,10 @@ const {genSalt, hash} = require('bcryptjs');
   });
 
   const userSchema = new Schema({
-      avatarUrl: { type: String, required: true }, 
+      avatarUrl: { type: String, required: false }, 
+      avatar: { type: Buffer, required: false },
       email: { type: String, unique: true, required: true },
+      headline: { type: String, required: false },
       password: { type: String, required: true },
       username: { type: String, unique: true, required: true },
       usertype: { type: String, enum: ['Tutor', 'Student'], required: true },

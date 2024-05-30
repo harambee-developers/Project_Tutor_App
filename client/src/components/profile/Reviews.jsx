@@ -2,10 +2,10 @@ import React from "react";
 
 const Reviews = () => {
   return (
-    <div>
+    <div className="p-4">
       <section id="review-section">
         <div>
-          <h1 className="font-semibold text-gray-700 text-xl mb-2">Reviews</h1>
+          <h1 className="font-semibold text-gray-700 text-xl mb-2 p-4">Reviews</h1>
           <table className="min-w-full bg-white border-collapse divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>

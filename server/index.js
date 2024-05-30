@@ -1,35 +1,60 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const authRoutes = require("./routes/auth");
 const User = require("./model/User");
-const authRoutes = require('./routes/auth');
+const fs = require('fs');
+const util = require('util');
+const mkdir = util.promisify(fs.mkdir);
+const multer = require("multer");
+
+const storage = multer.diskStorage({
+  destination: async (req, file, cb) => {
+    const uploadPath = path.join(__dirname, '/uploads/', req.user.id);
+    if (!fs.existsSync(uploadPath)){
+      await mkdir(uploadPath, { recursive: true });
+    }
+    cb(null, uploadPath);
+  },
+  filename: (req, file, cb) => {
+    // filename logic remains the same
+  }
+});
+
+require("dotenv").config();
 
 const app = express();
 const PORT = process.env.PORT || 7777;
-require("dotenv").config();
 
-const { MONGO_INITDB_ROOT_USERNAME, MONGO_INITDB_ROOT_PASSWORD } = process.env;
+const {
+  MONGO_INITDB_ROOT_USERNAME,
+  MONGO_INITDB_ROOT_PASSWORD,
+  FRONTEND_URL,
+  JWT_SECRET,
+} = process.env;
+
+if (!JWT_SECRET) {
+  console.error("Missing JWT_SECRET in environment variables.");
+  process.exit(1);
+}
+
 mongoose.connect(
   `mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@localhost:27017/?authMechanism=DEFAULT`
 );
 
+const corsOptions = {
+  origin: FRONTEND_URL,
+  credentials: true,
+};
+
+app.use('/uploads', express.static('uploads'));
+app.use(cors(corsOptions));
 app.use(express.json());
+app.use(cookieParser());
 
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-
-  if (req.method === "OPTIONS") {
-    res.sendStatus(200);
-  } else {
-    next();
-  }
-});
-
-app.use('/api/auth', authRoutes);
+// Routes
+app.use("/api/auth", authRoutes);
 
 app.get("/tutors", async (req, res) => {
   try {
@@ -65,8 +90,8 @@ app.get("/students", async (req, res) => {
 app.post("/availability", async (req, res) => {
   try {
     const availabilityData = req.body;
-    const data = res.json(availabilityData);
-    console.log("Received Data successfully: ", data);
+    res.json(availabilityData);
+    console.log("Received Data successfully: ", availabilityData);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -75,28 +100,25 @@ app.post("/availability", async (req, res) => {
 
 app.put("/profile/:userid", async (req, res) => {
   const userId = req.params.userid;
-  const { username, email, profile } = req.body;
+  const { username, email, profile, headline } = req.body;
   try {
-    // query user by id
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       {
-        'profile.bio' : profile.bio,
-        'username': username,
-        'email': email,
+        "profile.bio": profile.bio,
+        username: username,
+        email: email,
+        headline: headline,
       },
       { new: true }
     );
 
     if (!updatedUser) {
-      return res.status(404).json({ error: "User is not found" });
+      return res.status(404).json({ error: "User not found" });
     }
 
     res.json(updatedUser);
-
-    await updatedUser.save()
-
-    console.log("Received Data successfully: ", updatedUser);
+    console.log("Updated profile successfully: ", updatedUser);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -105,29 +127,39 @@ app.put("/profile/:userid", async (req, res) => {
 
 app.put("/picture/:userid", async (req, res) => {
   const userId = req.params.userid;
-  const { avatarUrl } = req.body;
+  const { avatar } = req.body;
   try {
-    // query user by id
     const updatedUser = await User.findByIdAndUpdate(
       userId,
-      {
-        'avatarUrl' : avatarUrl
-      },
+      { avatar: avatar },
       { new: true }
     );
 
     if (!updatedUser) {
-      return res.status(404).json({ error: "User is not found" });
+      return res.status(404).json({ error: "User not found" });
     }
 
     res.json(updatedUser);
-
-    await updatedUser.save()
-
-    console.log("Received Data successfully: ", updatedUser);
+    console.log("Updated picture successfully: ", updatedUser);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+app.delete("/api/users/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findByIdAndDelete(id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({ message: "User deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
   }
 });
 

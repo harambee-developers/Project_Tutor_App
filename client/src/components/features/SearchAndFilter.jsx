@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { FaSearch } from "react-icons/fa";
 
 const SearchAndFilter = ({ data, setData }) => {
@@ -11,19 +11,17 @@ const SearchAndFilter = ({ data, setData }) => {
         item.username.toLowerCase().includes(query.toLowerCase())
       );
       setFilteredData(filteredResults);
-      setData(filteredResults); // Update parent component data with filtered results
-      // Call filterResults function when query or data changes
     };
     filterResults();
-  }, [query, data, setData]);
+  }, [query, data]);
 
-  const handleOnChange = (value) => {
+  const handleOnChange = useCallback((value) => {
     setQuery(value);
-  };
+  }, []); // handleOnChange doesn't depend on any other state or props
 
-  const handleDropdownItemClick = (username) => {
-    setQuery(username);
-  };
+  const handleDropdownItemClick = useCallback((username) => {
+    setQuery(username); // This function also might benefit from useCallback
+  }, []);
 
   return (
     <>

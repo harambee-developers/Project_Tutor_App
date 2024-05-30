@@ -2,11 +2,21 @@ import axios from "axios";
 import React, { useRef, useState } from "react";
 import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
+import { useAuth } from "./AuthContext";
 
-const ProfilePictureModal = ({ isOpen, onClose, results }) => {
+const ProfilePictureModal = ({ isOpen, onClose }) => {
   const [selectedImage, setSelectedImage] = useState(null);
-  const [crop, setCrop] = useState({ aspect: 1 / 1 });
+  const [avatarUrl, setAvatarUrl] = useState(null);
+  const [crop, setCrop] = useState({
+    unit: "%", // Can be 'px' or '%'
+    x: 25,
+    y: 25,
+    width: 50,
+    height: 50,
+  });
   const imgRef = useRef(null);
+  const [aspect, setAspect] = useState(16 / 9);
+  const { user: authUser } = useAuth();
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -19,39 +29,67 @@ const ProfilePictureModal = ({ isOpen, onClose, results }) => {
     }
   };
 
-  const handleCropChange = (newCrop) => {
-    setCrop(newCrop);
-  };
-
-  const handleCropComplete = (croppedArea, croppedAreaPixels) => {
-    if (imgRef.current && croppedArea.width && croppedArea.height) {
-      const croppedImageUrl = getCroppedImg(imgRef.current, croppedAreaPixels);
-      onSave(croppedImageUrl, croppedArea); // Pass cropping info to onSave
+  const onImageLoad = (e) => {
+    if (aspect) {
+      const { width, height } = e.currentTarget;
+      setCrop(centerAspectCrop(width, height, aspect));
     }
   };
 
-  const getCroppedImg = (image, { x, y, width, height }) => {
-    const canvas = document.createElement("canvas");
-    canvas.width = width;
-    canvas.height = height;
-    const ctx = canvas.getContext("2d");
-    ctx.drawImage(image, x, y, width, height, 0, 0, width, height);
-    return canvas.toDataURL("image/jpeg");
+  const handleCropComplete = (crop, pixelCrop) => {
+    console.log("Crop completed:", crop, pixelCrop);
   };
 
   const handleSave = async () => {
-    try {
-      const response = await axios.put(
-        "http://localhost:7777/picture/661f46deaef4b520b8df50d4",
-        selectedImage
+    console.log("Save button clicked");
+
+    if (selectedImage && imgRef.current && crop.width && crop.height) {
+      console.log("Image Reference:", imgRef.current);
+      console.log("Crop Info:", crop);
+
+      const canvas = document.createElement("canvas");
+      const scaleX = imgRef.current.naturalWidth / imgRef.current.width;
+      const scaleY = imgRef.current.naturalHeight / imgRef.current.height;
+      canvas.width = crop.width;
+      canvas.height = crop.height;
+      const ctx = canvas.getContext("2d");
+
+      ctx.drawImage(
+        imgRef.current,
+        crop.x * scaleX,
+        crop.y * scaleY,
+        crop.width * scaleX,
+        crop.height * scaleY,
+        0,
+        0,
+        crop.width,
+        crop.height
       );
-      console.log(selectedImage);
-      console.log("Response:", response.data);
-      console.log("Availability data saved successfully");
-    } catch (error) {
-      console.error("Error saving availability", error);
+
+      canvas.toBlob(async (blob) => {
+        console.log("Blob created", blob);
+        const formData = new FormData();
+        formData.append("profileImage", blob, "profile-pic.jpg");
+        formData.append("userId", authUser.userId); // Add the userId field
+
+        try {
+          const response = await axios({
+            method: "post",
+            url: "http://localhost:7777/api/auth/profile/upload",
+            data: formData,
+            headers: { "Content-Type": "multipart/form-data" },
+          });
+          console.log("Picture data saved successfully:", response.data);
+          setAvatarUrl(response.data.filePath); // Update the avatar URL in the state
+          onClose();
+          onClose();
+        } catch (error) {
+          console.error("Error saving Picture:", error);
+        }
+      }, "image/jpeg");
+    } else {
+      console.log("Required conditions for image saving are not met");
     }
-    onClose();
   };
 
   if (!isOpen) {
@@ -65,19 +103,19 @@ const ProfilePictureModal = ({ isOpen, onClose, results }) => {
           <h2 className="text-lg font-semibold mb-4">Change Profile Picture</h2>
           {selectedImage && (
             <div className="mb-4">
-              <img
-                src={selectedImage}
-                alt="avatarUrl"
-                className="max-w-full mb-5 rounded-md"
-              />
               <ReactCrop
-                src={selectedImage}
                 crop={crop}
-                onChange={handleCropChange}
+                onChange={(c) => setCrop(c)}
                 onComplete={handleCropComplete}
-                imageStyle={{ maxHeight: "300px", maxWidth: "100%" }}
-                ref={imgRef}
-              />
+                minHeight={100}
+              >
+                <img
+                  ref={imgRef}
+                  src={selectedImage}
+                  alt="Crop me"
+                  onload={onImageLoad}
+                />
+              </ReactCrop>
             </div>
           )}
           <input type="file" accept="image/*" onChange={handleImageChange} />
@@ -94,6 +132,15 @@ const ProfilePictureModal = ({ isOpen, onClose, results }) => {
             >
               Save
             </button>
+            {avatarUrl && (
+              <div className="mt-4">
+                <img
+                  src={avatarUrl}
+                  alt="Profile Avatar"
+                  style={{ width: "100%", maxHeight: "300px" }}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>

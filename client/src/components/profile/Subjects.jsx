@@ -27,11 +27,11 @@ const Subjects = () => {
   };
 
   return (
-    <div>
+    <div className="p-4">
       <section className="subjects-section">
         <div>
           <div className="flex justify-between items-center mb-2">
-            <h1 className="font-semibold text-gray-700 text-xl">Subjects</h1>
+            <h1 className="font-semibold text-gray-700 text-xl p-4">Subjects</h1>
             <button
               className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               onClick={addRow}

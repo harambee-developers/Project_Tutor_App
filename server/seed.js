@@ -20,26 +20,34 @@ function generateReview() {
 function generateTutorProfile() {
   const bio = faker.lorem.sentence();
   const hourlyRate = generateRandomHourlyRate();
-  mongoose
   return {
     bio,
-    hourlyRate
+    hourlyRate,
+    review:generateReview()
   };
 }
 
-function generateTutorsWithProfiles() {
+async function generateTutorsWithProfiles() {
   const usersWithProfiles = [];
   for (let i = 0; i < 500; i++) {
     const avatarUrl = generateRandomAvatarURL();
     const email = faker.internet.email();
+    const password = 'defaultPassword123'
     const username = faker.internet.userName();
     const usertype = 'Tutor';
-    usersWithProfiles.push({ avatarUrl, email, username, usertype, profile: generateTutorProfile(), review: generateReview() });
+    usersWithProfiles.push({
+      avatarUrl,
+      email,
+      username,
+      password,
+      usertype,
+      profile: generateTutorProfile(),
+    });
   }
-  return usersWithProfiles
+  return usersWithProfiles;
 }
 
-function generateStudents(){
+function generateStudents() {
   const students = [];
   for (let i = 0; i < 500; i++) {
     const avatarUrl = generateRandomAvatarURL();
@@ -48,18 +56,16 @@ function generateStudents(){
     const usertype = 'Student';
     students.push({ avatarUrl, email, username, usertype });
   }
-  return students
+  return students;
 }
 
 async function seed() {
   try {
-    const tutors = generateTutorsWithProfiles();
-
+    const tutors = await generateTutorsWithProfiles();
     const students = generateStudents();
 
     await User.create(tutors);
-    
-    await User.create(students)
+    await User.create(students);
 
     console.log('Database seeded successfully');
   } catch (error) {
