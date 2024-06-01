@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import SearchAndFilter from "../components/features/SearchAndFilter";
+import StarRating from "../components/features/StarRating";
 
 const TutorProfile = () => {
   const [tutors, setTutors] = useState([]);
@@ -61,7 +62,7 @@ const TutorProfile = () => {
         </select>
         <SearchAndFilter
           data={tutors} // Pass the tutors data to SearchAndFilter component
-          setData={handleFilteredTutors} 
+          setData={handleFilteredTutors}
         />
       </div>
       <h2 className="text-2xl font-bold mb-6 mt-10">Tutors</h2>
@@ -81,7 +82,10 @@ const TutorProfile = () => {
                 <a href={`tutor/${tutor._id}`}> {tutor.username}</a>
               </div>
               <div className="mt-2">
-                <span className="font-semibold">Bio:</span> {tutor.profile.bio}
+                <StarRating rating={tutor.profile.review.rating} />
+              </div>
+              <div className="mt-2">
+                <p>{tutor.headline}</p>
               </div>
               <div className="mt-2">
                 <span className="font-semibold">Hourly Rate:</span> ${" "}

@@ -48,7 +48,7 @@ const MyProfile = ({ results }) => {
           <label htmlFor="field1" className="w-1/3 px-4">
             Username:
           </label>
-          <div className="w-1/2">
+          <div className="w-full px-4">
             <input
               type="text"
               name="username"
@@ -62,7 +62,7 @@ const MyProfile = ({ results }) => {
           <label htmlFor="field2" className="w-1/3 px-4">
             Headline:
           </label>
-          <div className="w-1/2">
+          <div className="w-full px-4">
             <input
               type="text"
               name="headline"
@@ -76,7 +76,7 @@ const MyProfile = ({ results }) => {
           <label htmlFor="field3" className="w-1/3 px-4">
             Email:
           </label>
-          <div className="w-1/2">
+          <div className="w-full px-4">
             <input
               type="text"
               name="email"
@@ -90,7 +90,7 @@ const MyProfile = ({ results }) => {
           <label htmlFor="field4" className="w-1/3 px-4">
             Biography:
           </label>
-          <div className="w-1/2">
+          <div className="w-full px-4">
             <textarea
               type="text"
               name="bio"
@@ -104,7 +104,7 @@ const MyProfile = ({ results }) => {
         <div className="flex items-center justify-end m-4">
           <button
             type="submit"
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            className="px-4 py-2 bg-teal-500 text-white rounded hover:bg-blue-600"
           >
             Submit
           </button>

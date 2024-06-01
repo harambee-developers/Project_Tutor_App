@@ -37,6 +37,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     logout();
+    alert('You have successfully logged out')
     navigate("/login");
   };
 
@@ -52,7 +53,7 @@ const Navbar = () => {
           {isOpen ? <IoCloseSharp size={30} onClick={closeMenu} /> : <FiMenu size={30} />}
         </button>
         <div className={`${isOpen ? "flex" : "hidden"} md:flex items-center justify-center absolute md:relative inset-0 md:inset-auto bg-black md:bg-transparent bg-opacity-75 md:bg-opacity-0 transition-all duration-500 ease-in-out`}>
-          <ul className="md:flex md:items-center md:space-x-4 md:space-y-0 space-y-4 text-sm">
+          <ul className="md:flex md:items-center md:space-x-4 md:space-y-0 space-y-4 text-base">
             {authUser ? (
               <>
                 <li><Link to="/dashboard" className="text-gray-700 hover:text-blue-500">Edit Profile</Link></li>

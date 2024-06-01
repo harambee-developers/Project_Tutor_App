@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaUser } from "react-icons/fa";
 import { useAuth } from "../components/features/AuthContext";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -9,11 +9,13 @@ const Login = () => {
   const { login } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate()
 
   const handleLogin = async () => {
     try {
       await login(username, password);
       toast.success("Login successful!", { position: "top-center" });
+      navigate('/confirm')
       setUsername("");
       setPassword("");
     } catch (error) {

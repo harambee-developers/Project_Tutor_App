@@ -23,10 +23,7 @@ function App() {
           <Route path="/" element={<TutorProfile />} />
           <Route path="/tutor/:userId" element={<TutorProfilePage />} />
           <Route path="/dashboard" element={<EditTutorProfilePage />} />
-          {/* Protected Routes */}
-          <Route path="/profile" element={<PrivateRoute element={EditTutorProfilePage} />} />
-          {/* Fallback Private Route (for any unmatched private routes) */}
-          <Route path="/confirm" element={<PrivateRoute element={LoginConfirmation} />} />
+          <Route path="/confirm" element={<LoginConfirmation />} />
         </Routes>
         <ToastContainer />
         <CustomFooter />

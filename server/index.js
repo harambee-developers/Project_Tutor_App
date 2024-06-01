@@ -87,11 +87,24 @@ app.get("/students", async (req, res) => {
   }
 });
 
-app.post("/availability", async (req, res) => {
+app.post("/availability/:userid", async (req, res) => {
+  const userId = req.params.userid;
+  const { availability } = req.body;
   try {
-    const availabilityData = req.body;
-    res.json(availabilityData);
-    console.log("Received Data successfully: ", availabilityData);
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {
+        "profile.availability": availability
+      },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.json(updatedUser);
+    console.log("Received Data successfully: ", updatedUser);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -119,6 +132,28 @@ app.put("/profile/:userid", async (req, res) => {
 
     res.json(updatedUser);
     console.log("Updated profile successfully: ", updatedUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+app.put("/subject/:userid", async (req, res) => {
+  const userId = req.params.userid;
+  const { subjects } = req.body;
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { "profile.subject": subjects },  // Replace the entire subjects array
+      { new: true, runValidators: true }  // Return the updated document and run schema validators
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.json(updatedUser);
+    console.log("Updated subject data successfully: ", updatedUser);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });

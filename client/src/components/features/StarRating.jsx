@@ -1,9 +1,9 @@
 import React from "react";
 
 const StarRating = ({ rating }) => {
-    const numericRating = Number(rating)
-    const isValidRating = !isNaN(numericRating) &&
-    numericRating >= 0 && numericRating <= 5
+  const numericRating = Number(rating);
+  const isValidRating =
+    !isNaN(numericRating) && numericRating >= 0 && numericRating <= 5;
 
   const maxStars = 5;
   const fullStars = Math.floor(numericRating);

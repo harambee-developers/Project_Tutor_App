@@ -17,6 +17,7 @@ const ProfilePictureModal = ({ isOpen, onClose }) => {
   const imgRef = useRef(null);
   const [aspect, setAspect] = useState(16 / 9);
   const { user: authUser } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -41,7 +42,7 @@ const ProfilePictureModal = ({ isOpen, onClose }) => {
   };
 
   const handleSave = async () => {
-    console.log("Save button clicked");
+    setIsLoading(true); // Start loading
 
     if (selectedImage && imgRef.current && crop.width && crop.height) {
       console.log("Image Reference:", imgRef.current);
@@ -81,15 +82,17 @@ const ProfilePictureModal = ({ isOpen, onClose }) => {
           });
           console.log("Picture data saved successfully:", response.data);
           setAvatarUrl(response.data.filePath); // Update the avatar URL in the state
-          onClose();
+          alert("Data saved successfully");
           onClose();
         } catch (error) {
           console.error("Error saving Picture:", error);
         }
       }, "image/jpeg");
     } else {
+      alert("Required conditions for image saving are not met");
       console.log("Required conditions for image saving are not met");
     }
+    setIsLoading(false); // end loading
   };
 
   if (!isOpen) {
@@ -118,7 +121,7 @@ const ProfilePictureModal = ({ isOpen, onClose }) => {
               </ReactCrop>
             </div>
           )}
-          <input type="file" accept="image/*" onChange={handleImageChange} />
+          <input type="file" accept="image/*" onChange={handleImageChange}/>
           <div className="mt-4 flex justify-end">
             <button
               className="px-4 py-2 bg-gray-300 rounded mr-4"
@@ -127,7 +130,7 @@ const ProfilePictureModal = ({ isOpen, onClose }) => {
               Cancel
             </button>
             <button
-              className="px-4 py-2 bg-blue-500 rounded text-white"
+              className="px-4 py-2 bg-teal-500 rounded text-white"
               onClick={handleSave}
             >
               Save

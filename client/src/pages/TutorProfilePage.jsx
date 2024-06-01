@@ -4,6 +4,7 @@ import axios from "axios";
 import Calender from "../components/features/Calender";
 import StarRating from "../components/features/StarRating";
 import InitialsCircle from "../data/initialsCircle";
+import ShowMoreText from "../components/features/ShowMoreText";
 
 const TutorProfilePage = () => {
   const [results, setResults] = useState([]);
@@ -37,6 +38,10 @@ const TutorProfilePage = () => {
     return <div className="text-center mt-8">Error: {error}</div>;
   }
 
+  // Check if reviews exist
+  const hasReviews =
+    results.profile && results.profile.review && results.profile.review.rating;
+
   return (
     <div className="grid md:grid-cols-2 gap-10 p-20">
       {/* <!-- Tutor Card --> */}
@@ -61,69 +66,125 @@ const TutorProfilePage = () => {
         </div>
         <div className="px-2">
           <h1 className="px-2 font-semibold">About me</h1>
-          <p className="text-gray-600 mb-2 px-2">{results.profile.bio}</p>
+          <p className="text-gray-600 mb-2 px-2">
+            <ShowMoreText text={results.profile.bio} limit={100} />
+          </p>
         </div>
       </div>
       {/* <!-- Contact Card --> */}
       <div className=" bg-white shadow-lg rounded-lg overflow-hidden px-4">
-        <h1 className="font-semibold text:2xl items-center p-6">
+        <h1 className="font-semibold text:2xl items-center py-6">
           Contact {results.username}
         </h1>
         <div className="flex p-4 items-center">
-          <p className="p-4 font-bold text-3xl">
+          <p className="py-4 font-bold text-3xl">
             $ {results.profile.hourlyRate}
           </p>
-          <p>/per hour</p>
+          <p className="px-2">/ per hour</p>
         </div>
-        <button className="w-full mr-8 bg-teal-500 hover:bg-blue-600 text-white py-2 rounded-full">
+        <select
+          className="w-full mt-4 mb-4 text-black px-4 py-2"
+          id="Levels"
+        >
+          <option value="" disabled selected>
+            Select subject and levels
+          </option>
+          <option value="English">Primary</option>
+          <option value="Maths">KCPE</option>
+          <option value="Maths">KCSE</option>
+          <option value="Science">College or Degree Equivalent</option>
+        </select>
+        <button className="w-full mr-8 mt-4 mb-4 bg-teal-500 hover:bg-blue-600 text-white py-2 rounded-full">
           Book Now
         </button>
-        <button className="w-full mr-8 mt-4 mb-4 bg-transparent hover:bg-blue-600 hover:text-white text-black py-2 rounded-full">
+        <button className="w-full mr-8 mt-4 mb-4 hover:bg-blue-600 hover:text-white text-black py-2 rounded-full">
           Send Message
         </button>
       </div>
       {/* <!-- Review --> */}
-      <div className=" bg-white shadow-lg rounded-lg overflow-hidden md:col-span-2">
-        <h1 className="font-semibold text:2xl items-center p-4">
-          Ratings and Reviews
-        </h1>
-        <div>
-          <span className="text-8xl items-center px-4">
-            {results.profile.review.rating}
-          </span>
-          <div className="p-4 rounded-lg">
-            {<StarRating rating={results.profile.review.rating} />}
-          </div>
-          <hr className="mb-5 items-center justify-center" />
-          <div className="flex mb-5 px-5">
-            <InitialsCircle
-              name={results.profile.review.name}
-              size={50}
-              backgroundColor="bg-red-500"
-              textColor="text-white"
-            />
-            <div className="ml-5">
-              <h1 className="font-semibold text:2xl items-center px-4">
-                {results.profile.review.name}
-              </h1>
-              <p className="items=center p-4">
-                {" "}
-                {results.profile.review.description}
-              </p>
+      <div className="bg-white shadow-lg rounded-lg overflow-hidden md:col-span-2">
+        <h1 className="font-semibold text-xl p-4">Ratings and Reviews</h1>
+        {hasReviews ? (
+          <div>
+            {/* All the content that displays reviews */}
+            <span className="text-8xl px-4">
+              {results.profile.review.rating}
+            </span>
+            <div className="p-4 rounded-lg">
+              <StarRating rating={results.profile.review.rating} />
             </div>
+            <hr className="mb-5" />
+            <div className="flex mb-5 px-5">
+              <InitialsCircle
+                name={results.profile.review.name}
+                size={50}
+                backgroundColor="bg-red-500"
+                textColor="text-white"
+              />
+              <div className="ml-5">
+                <h1 className="font-semibold text-xl px-4">
+                  {results.profile.review.name}
+                </h1>
+                <p className="p-4">{results.profile.review.description}</p>
+              </div>
+            </div>
+            <hr />
           </div>
-          <hr />
+        ) : (
+          <div className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+          No reviews listed.
         </div>
+        )}
       </div>
       {/* <!-- Subjects --> */}
-      <div className=" bg-white shadow-lg rounded-lg overflow-hidden md:col-span-2">
-        <h1 className="font-semibold text:2xl items-center p-4">Subjects</h1>
-      </div>
+      <div className="bg-white shadow-lg rounded-lg overflow-hidden md:col-span-2">
+  <h1 className="font-semibold text-xl p-4">Subjects</h1>
+  {results.profile && results.profile.subject && results.profile.subject.length > 0 ? (
+    <table className="min-w-full leading-normal">
+      <thead>
+        <tr>
+          <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+            Subject
+          </th>
+          <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+            Qualification
+          </th>
+          <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+            Price
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {results.profile.subject.map((subject, index) => (
+          <tr key={index}>
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+              <div className="flex items-center">
+                <div className="ml-3">
+                  <p className="text-gray-900 whitespace-no-wrap">
+                    {subject.subject}
+                  </p>
+                </div>
+              </div>
+            </td>
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+              <p className="text-gray-900 whitespace-no-wrap">{subject.qualification}</p>
+            </td>
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+              <p className="text-gray-900 whitespace-no-wrap">${subject.price}/hr</p>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  ) : (
+    <div className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+      No subjects listed.
+    </div>
+  )}
+</div>
       {/* <!-- Availability --> */}
       <div className=" bg-white shadow-lg rounded-lg overflow-hidden md:col-span-2">
-        <h1 className="font-semibold text:2xl items-center p-4">
-          Availability
-        </h1>
+        <h1 className="font-semibold text-xl items-center p-4">Availability</h1>
         <Calender />
       </div>
     </div>

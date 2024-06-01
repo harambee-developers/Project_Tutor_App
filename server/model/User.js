@@ -1,40 +1,63 @@
 const mongoose = require("mongoose");
-const {Schema, model} = mongoose;
-const {genSalt, hash} = require('bcryptjs');
+const { Schema, model } = mongoose;
+const { genSalt, hash } = require("bcryptjs");
 
-  const reviewSchema = new mongoose.Schema({
-    name: { type: String, required: false },
-    description: { type: String, required: false },
-    rating: {type: Number, required: false }
-  })
+const availabilitySchema = new mongoose.Schema(
+  {
+    availability: {
+      Monday: Map,
+      Tuesday: Map,
+      Wednesday: Map,
+      Thursday: Map,
+      Friday: Map,
+      Saturday: Map,
+      Sunday: Map,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-  const profileSchema = new mongoose.Schema({
-    bio: { type: String, default: null },
-    hourlyRate: { type: Number, required: true },
-    review: { type: reviewSchema }
-  });
+const reviewSchema = new mongoose.Schema({
+  name: { type: String, default:null },
+  description: { type: String, default:null},
+  rating: { type: Number, default:0 },
+});
 
-  const userSchema = new Schema({
-      avatarUrl: { type: String, required: false }, 
-      avatar: { type: Buffer, required: false },
-      email: { type: String, unique: true, required: true },
-      headline: { type: String, required: false },
-      password: { type: String, required: true },
-      username: { type: String, unique: true, required: true },
-      usertype: { type: String, enum: ['Tutor', 'Student'], required: true },
-      profile: { type: profileSchema } 
-  });
+const subjectSchema = new mongoose.Schema({
+  subject: { type: String, required: true },
+  qualification: { type: String, required: true },
+  price: { type: Number, required: true },
+});
 
-  userSchema.pre('save', async function(next) {
-      if (!this.isModified('password')) {
-        return next();
-      }
-      const salt = await genSalt(10);
-      this.password = await hash(this.password, salt);
-      next();
-  });
+const profileSchema = new mongoose.Schema({
+  bio: { type: String, default: null },
+  hourlyRate: { type: Number, required: true },
+  review: { type: reviewSchema },
+  subject: [subjectSchema],
+  availability: { type: availabilitySchema },
+});
+
+const userSchema = new Schema({
+  avatarUrl: { type: String, required: false },
+  email: { type: String, unique: true, required: true },
+  headline: { type: String, required: false },
+  password: { type: String, required: true },
+  username: { type: String, unique: true, required: true },
+  usertype: { type: String, enum: ["Tutor", "Student"], required: true },
+  profile: { type: profileSchema },
+});
+
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
+    return next();
+  }
+  const salt = await genSalt(10);
+  this.password = await hash(this.password, salt);
+  next();
+});
 
 const User = model("User", userSchema);
-
 
 module.exports = User;

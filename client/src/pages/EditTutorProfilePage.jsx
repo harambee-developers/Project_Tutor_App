@@ -7,7 +7,7 @@ import Subjects from "../components/profile/Subjects";
 import Availability from "../components/profile/Availability"; // Corrected spelling from 'Avaialbility'
 import StarRating from "../components/features/StarRating";
 import ProfilePictureModal from "../components/features/ProfilePictureModal";
-import defaultProfilePic from "../assets/default_avatar.jpg"
+import defaultProfilePic from "../assets/default_avatar.jpg";
 import { useAuth } from "../components/features/AuthContext";
 
 const EditTutorProfilePage = () => {
@@ -46,7 +46,7 @@ const EditTutorProfilePage = () => {
       case "Review":
         return <Reviews />;
       case "Subjects":
-        return <Subjects />;
+        return <Subjects initialSubjects={results.profile.subject}/>;
       case "Availability":
         return <Availability />;
       default:
@@ -72,7 +72,7 @@ const EditTutorProfilePage = () => {
         <div className="p-2 md:flex">
           <div className="relative w-32 h-32">
             <img
-              src={results.avatarUrl || {defaultProfilePic}}
+              src={results.avatarUrl || { defaultProfilePic }}
               alt="Profile"
               className="h-full w-full object-cover rounded-full"
             />
@@ -102,53 +102,72 @@ const EditTutorProfilePage = () => {
           <li>
             <button
               onClick={() => handleOnClick("Profile")}
-              className={`w-full rounded flex justify-start text-center font-semibold gap-2 hover:bg-blue-500 hover:text-white hover:py-2 mb-4 ${
+              className={`w-full rounded flex justify-start text-center font-semibold gap-2 hover:bg-teal-500 hover:text-white hover:py-2 mb-4 ${
                 selectedTab === "Profile"
-                  ? "bg-blue-500 text-white py-2 mb-4"
+                  ? "bg-teal-500 text-white py-2 mb-4"
                   : ""
               }`}
             >
-              {" "}
-              <FaUser /> My Profile
+              <div className="flex space-x-2">
+                <div className="px-2 py-1">
+                  <FaUser />
+                </div>
+                <p>My Profile</p>
+              </div>
             </button>
           </li>
           <li>
             <button
               onClick={() => handleOnClick("Review")}
-              className={`w-full rounded flex justify-start text-center font-semibold gap-2 hover:bg-blue-500 hover:text-white hover:py-2 mb-4 ${
+              className={`w-full rounded flex justify-start text-center font-semibold gap-2 hover:bg-teal-500 hover:text-white hover:py-2 mb-4 ${
                 selectedTab === "Review"
-                  ? "bg-blue-500 text-white py-2 mb-4"
+                  ? "bg-teal-500 text-white py-2 mb-4"
                   : ""
               }`}
             >
               {" "}
-              <FaStar /> Reviews
+              <div className="flex space-x-2">
+                <div className="px-2 py-1">
+                  <FaStar />
+                </div>
+                <p>Reviews</p>
+              </div>
             </button>
           </li>
           <li>
             <button
               onClick={() => handleOnClick("Subjects")}
-              className={`w-full rounded flex justify-start text-center font-semibold gap-2 hover:bg-blue-500 hover:text-white hover:py-2 mb-4 ${
+              className={`w-full rounded flex justify-start text-center font-semibold gap-2 hover:bg-teal-500 hover:text-white hover:py-2 mb-4 ${
                 selectedTab === "Subjects"
-                  ? "bg-blue-500 text-white py-2 mb-4"
+                  ? "bg-teal-500 text-white py-2 mb-4"
                   : ""
               }`}
             >
               {" "}
-              <FaBook /> Subjects
+              <div className="flex space-x-2">
+                <div className="px-2 py-1">
+                  <FaBook />
+                </div>
+                <p>Subjects</p>
+              </div>
             </button>
           </li>
           <li>
             <button
               onClick={() => handleOnClick("Availability")}
-              className={`w-full rounded flex justify-start text-center font-semibold gap-2 hover:bg-blue-500 hover:text-white hover:py-2 mb-4 ${
+              className={`w-full rounded flex justify-start text-center font-semibold gap-2 hover:bg-teal-500 hover:text-white hover:py-2 mb-4 ${
                 selectedTab === "Availability"
-                  ? "bg-blue-500 text-white py-2 mb-4"
+                  ? "bg-teal-500 text-white py-2 mb-4"
                   : ""
               }`}
             >
               {" "}
-              <FaCalendar /> Availability
+              <div className="flex space-x-2">
+                <div className="px-2 py-1">
+                  <FaCalendar />
+                </div>
+                <p>Availability</p>
+              </div>
             </button>
           </li>
         </ul>

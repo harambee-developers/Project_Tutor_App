@@ -26,8 +26,6 @@ if (!JWT_SECRET) {
   process.exit(1);
 }
 
-console.log("JWT_SECRET:", JWT_SECRET); // Debugging statement
-
 // Rate limiter middleware to protect login endpoint
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -140,8 +138,6 @@ router.get("/verify-token", async (req, res) => {
   }
 
   try {
-    console.log("Verifying token with secret:", JWT_SECRET); // Debugging statement
-    console.log("Verifying token:", token); // Debugging statement
     const decoded = jwt.verify(token, JWT_SECRET);
     res.json({
       valid: true,

@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useAuth } from "./AuthContext";
 
 const DaySelector = () => {
+  const { user } = useAuth();
   const dayOfWeek = [
     "Monday",
     "Tuesday",
@@ -52,18 +54,6 @@ const DaySelector = () => {
     return availability[day] && availability[day][time];
   };
 
-  const saveAvailability = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost:7777/availability",
-      );
-      console.log("Response:", response.data);
-      console.log("Availability data saved successfully");
-    } catch (error) {
-      console.error("Error saving availability", error);
-    }
-  };
-
   return (
     <div className="overflow-x-auto p-4">
       <table className="min-w-full divide-y divide-gray-200">
@@ -102,12 +92,6 @@ const DaySelector = () => {
         </tbody>
       </table>
       <div className="flex items-center justify-end mt-4">
-        <button
-          onClick={saveAvailability}
-          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
-          Save Availability
-        </button>
       </div>
     </div>
   );
