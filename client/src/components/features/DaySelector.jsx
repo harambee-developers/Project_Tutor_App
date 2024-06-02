@@ -1,9 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
-import { useAuth } from "./AuthContext";
 
-const DaySelector = () => {
-  const { user } = useAuth();
+const DaySelector = ({onAvailabilityChange}) => {
   const dayOfWeek = [
     "Monday",
     "Tuesday",
@@ -32,26 +29,24 @@ const DaySelector = () => {
   const [availability, setAvailability] = useState({});
 
   const toggleTimeSlot = (day, time) => {
-    const dayAvailability = availability[day] || {};
-    const updatedDayAvailability = {
-      ...dayAvailability,
-      [day]: {
-        ...dayAvailability,
-        [time]: !dayAvailability[time],
-      },
-    };
+    const timesForDay = availability[day] || [];
+    const updatedTimesForDay = timesForDay.includes(time)
+        ? timesForDay.filter(t => t !== time) // Remove time if it's already in the array
+        : [...timesForDay, time]; // Add time if it's not in the array
+
     const updatedAvailability = {
-      ...availability,
-      [day]: updatedDayAvailability,
+        ...availability,
+        [day]: updatedTimesForDay,
     };
     setAvailability(updatedAvailability);
     //   logging availability state when a checkbox is checked. Allows me to view what the data would look like once it gets processed to the backend.
+    onAvailabilityChange(updatedAvailability); // Update parent's state
 
     console.log("Availablity state: ", JSON.stringify(updatedAvailability));
   };
 
   const isTimeSlotSelected = (day, time) => {
-    return availability[day] && availability[day][time];
+    return availability[day] ? availability[day].includes(time) : false;
   };
 
   return (

@@ -49,11 +49,8 @@ function generateDefaultProfile() {
 
 router.post("/register", upload.single("avatar"), async (req, res) => {
   const { username, email, password, usertype } = req.body;
-  const avatar = req.file?.buffer; // This contains the image data
 
-  if (!avatar) {
-    return res.status(400).json({ error: "Avatar image is required" });
-  }
+  const avatarUrl = `${req.protocol}://${req.get('host')}/images/default_avatar.jpg`; // Path to default avatar
 
   try {
     const existingUser = await User.findOne({ email });
@@ -63,7 +60,7 @@ router.post("/register", upload.single("avatar"), async (req, res) => {
     const user = new User({
       username,
       email,
-      avatar,
+      avatarUrl,
       password,
       usertype,
       profile: generateDefaultProfile(),
@@ -101,7 +98,7 @@ router.post(
       const token = jwt.sign(
         { userId: user._id, username: user.username },
         JWT_SECRET,
-        { expiresIn: "1d" }
+        { expiresIn: "1d" } 
       );
 
       // Set the token in a secure, httpOnly cookie

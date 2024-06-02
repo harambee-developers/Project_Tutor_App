@@ -42,7 +42,7 @@ const MyProfile = ({ results }) => {
 
   return (
     <>
-      <form className="space-y-4" onSubmit={saveProfile}>
+      <form className="space-y-4 p-4" onSubmit={saveProfile}>
         <h1 className="font-semibold text-gray-700 text-xl p-4">My Profile</h1>
         <div className="flex items-center text-gray-700">
           <label htmlFor="field1" className="w-1/3 px-4">

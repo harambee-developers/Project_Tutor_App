@@ -15,7 +15,7 @@ const LoginConfirmation = () => {
   }, [navigate])
 
   return (
-    <div className="text-center">
+    <div className="text-center min-h-screen">
       <h1 className="mt-10">Welcome, {user ? user.username : "Guest"}!</h1>
       <p>Your login was successful. Enjoy your stay!</p>
     </div>

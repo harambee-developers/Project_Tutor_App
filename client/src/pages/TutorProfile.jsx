@@ -37,7 +37,7 @@ const TutorProfile = () => {
   };
 
   return (
-    <div className="container mx-auto px-4">
+    <div className="container mx-auto px-4 min-h-screen">
       <div className="flex">
         <select
           className="mr-4 mt-4 px-4 border-gray-400 rounded"

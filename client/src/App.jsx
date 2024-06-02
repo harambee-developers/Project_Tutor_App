@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "./components/layout/Navbar";
-import CustomFooter from "./components/layout/customFooter";
+import CustomFooter from "./components/layout/CustomFooter";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { faker } = require('@faker-js/faker');
 const {generateRandomAvatarURL} = require('./generateAvatar')
 
-mongoose.connect('mongodb://admin:password@localhost:27017/?authMechanism=DEFAULT');
+mongoose.connect(`mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@localhost:27017/?authMechanism=DEFAULT`);
 
 const User = require('./model/User');
 

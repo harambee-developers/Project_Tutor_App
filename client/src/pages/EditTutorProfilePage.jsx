@@ -59,11 +59,11 @@ const EditTutorProfilePage = () => {
   };
 
   if (loading) {
-    return <div className="text-center mt-8">Loading...</div>;
+    return <div className="text-center mt-8 min-h-screen">Loading...</div>;
   }
 
   if (error) {
-    return <div className="text-center mt-8">Error: {error}</div>;
+    return <div className="text-center mt-8 min-h-screen">Error: {error}</div>;
   }
 
   return (
@@ -172,7 +172,7 @@ const EditTutorProfilePage = () => {
           </li>
         </ul>
       </div>
-      <div className="bg-white shadow-lg rounded-lg overflow-hidden md:col-span-2 min-h-screen w-full">
+      <div className="bg-white shadow-lg rounded-lg overflow-hidden md:col-span-2 col-span-3 min-h-screen w-full">
         {renderComponent()}
       </div>
     </div>

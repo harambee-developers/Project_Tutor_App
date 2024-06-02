@@ -4,15 +4,10 @@ const { genSalt, hash } = require("bcryptjs");
 
 const availabilitySchema = new mongoose.Schema(
   {
-    availability: {
-      Monday: Map,
-      Tuesday: Map,
-      Wednesday: Map,
-      Thursday: Map,
-      Friday: Map,
-      Saturday: Map,
-      Sunday: Map,
-    },
+    days: [{
+      day: { type: String, index: true }, // Adding an index to 'day' field
+      times: [String]
+    }]
   },
   {
     timestamps: true,
@@ -36,7 +31,7 @@ const profileSchema = new mongoose.Schema({
   hourlyRate: { type: Number, required: true },
   review: { type: reviewSchema },
   subject: [subjectSchema],
-  availability: { type: availabilitySchema },
+  availability: [availabilitySchema],
 });
 
 const userSchema = new Schema({

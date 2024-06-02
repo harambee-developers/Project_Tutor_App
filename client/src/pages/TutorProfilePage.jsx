@@ -82,10 +82,7 @@ const TutorProfilePage = () => {
           </p>
           <p className="px-2">/ per hour</p>
         </div>
-        <select
-          className="w-full mt-4 mb-4 text-black px-4 py-2"
-          id="Levels"
-        >
+        <select className="w-full mt-4 mb-4 text-black px-4 py-2" id="Levels">
           <option value="" disabled selected>
             Select subject and levels
           </option>
@@ -132,56 +129,62 @@ const TutorProfilePage = () => {
           </div>
         ) : (
           <div className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-          No reviews listed.
-        </div>
+            No reviews listed.
+          </div>
         )}
       </div>
       {/* <!-- Subjects --> */}
-      <div className="bg-white shadow-lg rounded-lg overflow-hidden md:col-span-2">
-  <h1 className="font-semibold text-xl p-4">Subjects</h1>
-  {results.profile && results.profile.subject && results.profile.subject.length > 0 ? (
-    <table className="min-w-full leading-normal">
-      <thead>
-        <tr>
-          <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-            Subject
-          </th>
-          <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-            Qualification
-          </th>
-          <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-            Price
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        {results.profile.subject.map((subject, index) => (
-          <tr key={index}>
-            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-              <div className="flex items-center">
-                <div className="ml-3">
-                  <p className="text-gray-900 whitespace-no-wrap">
-                    {subject.subject}
-                  </p>
-                </div>
-              </div>
-            </td>
-            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-              <p className="text-gray-900 whitespace-no-wrap">{subject.qualification}</p>
-            </td>
-            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-              <p className="text-gray-900 whitespace-no-wrap">${subject.price}/hr</p>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  ) : (
-    <div className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-      No subjects listed.
-    </div>
-  )}
-</div>
+      <div className="bg-white shadow-lg rounded-lg overflow-hidden md:col-span-2 px-4">
+        <h1 className="font-semibold text-xl py-4">Subjects</h1>
+        {results.profile &&
+        results.profile.subject &&
+        results.profile.subject.length > 0 ? (
+          <table className="min-w-full leading-normal">
+            <thead>
+              <tr>
+                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  Subject
+                </th>
+                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  Qualification
+                </th>
+                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  Price
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {results.profile.subject.map((subject, index) => (
+                <tr key={index}>
+                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <div className="flex items-center">
+                      <div className="ml-3">
+                        <p className="text-gray-900 whitespace-no-wrap">
+                          {subject.subject}
+                        </p>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <p className="text-gray-900 whitespace-no-wrap">
+                      {subject.qualification}
+                    </p>
+                  </td>
+                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <p className="text-gray-900 whitespace-no-wrap">
+                      ${subject.price}/hr
+                    </p>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <div className="py-5 border-b border-gray-200 bg-white text-sm">
+            No subjects listed.
+          </div>
+        )}
+      </div>
       {/* <!-- Availability --> */}
       <div className=" bg-white shadow-lg rounded-lg overflow-hidden md:col-span-2">
         <h1 className="font-semibold text-xl items-center p-4">Availability</h1>
