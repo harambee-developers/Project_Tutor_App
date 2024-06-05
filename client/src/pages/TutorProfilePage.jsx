@@ -1,34 +1,49 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import Calender from "../components/features/Calender";
 import StarRating from "../components/features/StarRating";
 import InitialsCircle from "../data/initialsCircle";
 import ShowMoreText from "../components/features/ShowMoreText";
+import AvailabilityTable from "../components/features/AvailabilityTable";
 
 const TutorProfilePage = () => {
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [availability, setAvailability] = useState([]);
 
   const { userId } = useParams();
 
   useEffect(() => {
-    const fetchTutors = async () => {
+    const fetchTutorData = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:7777/user/${userId}`
-        );
+        const response = await axios.get(`http://localhost:7777/user/${userId}`);
         setResults(response.data);
-        setLoading(false);
       } catch (error) {
         setError(error.message);
+      } finally {
         setLoading(false);
       }
     };
 
-    fetchTutors();
-  }, []);
+    const fetchAvailability = async () => {
+      try {
+        const response = await axios.get(`http://localhost:7777/availability/${userId}`);
+        const availabilityData = response.data[0].days ? response.data[0].days.map(dayInfo => ({
+          day: dayInfo.day,
+          times: dayInfo.times
+        })) : [];
+        console.log("Response: ", response.data[0].days)
+        console.log("Data: ", availabilityData)
+        setAvailability(availabilityData);
+      } catch (error) {
+        setError(error.message);
+      }
+    };
+
+    fetchTutorData();
+    fetchAvailability();
+  }, [userId]);
 
   if (loading) {
     return <div className="text-center mt-8">Loading...</div>;
@@ -38,13 +53,10 @@ const TutorProfilePage = () => {
     return <div className="text-center mt-8">Error: {error}</div>;
   }
 
-  // Check if reviews exist
-  const hasReviews =
-    results.profile && results.profile.review && results.profile.review.rating;
+  const hasReviews = results?.profile?.review?.rating;
 
   return (
     <div className="grid md:grid-cols-2 gap-10 p-20">
-      {/* <!-- Tutor Card --> */}
       <div className=" bg-white shadow-lg rounded-lg overflow-hidden">
         <div className="p-2 md:flex">
           <img
@@ -71,7 +83,6 @@ const TutorProfilePage = () => {
           </p>
         </div>
       </div>
-      {/* <!-- Contact Card --> */}
       <div className=" bg-white shadow-lg rounded-lg overflow-hidden px-4">
         <h1 className="font-semibold text:2xl items-center py-6">
           Contact {results.username}
@@ -98,12 +109,10 @@ const TutorProfilePage = () => {
           Send Message
         </button>
       </div>
-      {/* <!-- Review --> */}
       <div className="bg-white shadow-lg rounded-lg overflow-hidden md:col-span-2">
         <h1 className="font-semibold text-xl p-4">Ratings and Reviews</h1>
         {hasReviews ? (
           <div>
-            {/* All the content that displays reviews */}
             <span className="text-8xl px-4">
               {results.profile.review.rating}
             </span>
@@ -133,12 +142,9 @@ const TutorProfilePage = () => {
           </div>
         )}
       </div>
-      {/* <!-- Subjects --> */}
       <div className="bg-white shadow-lg rounded-lg overflow-hidden md:col-span-2 px-4">
         <h1 className="font-semibold text-xl py-4">Subjects</h1>
-        {results.profile &&
-        results.profile.subject &&
-        results.profile.subject.length > 0 ? (
+        {results.profile?.subject?.length > 0 ? (
           <table className="min-w-full leading-normal">
             <thead>
               <tr>
@@ -185,10 +191,9 @@ const TutorProfilePage = () => {
           </div>
         )}
       </div>
-      {/* <!-- Availability --> */}
       <div className=" bg-white shadow-lg rounded-lg overflow-hidden md:col-span-2">
         <h1 className="font-semibold text-xl items-center p-4">Availability</h1>
-        <Calender />
+        <AvailabilityTable availability={availability} /> {/* Render AvailabilityTable component */}
       </div>
     </div>
   );

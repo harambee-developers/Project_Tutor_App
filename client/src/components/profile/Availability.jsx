@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DaySelector from "../features/DaySelector";
 import axios from "axios";
 import { useAuth } from "../features/AuthContext";
@@ -8,31 +8,49 @@ const Availability = () => {
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:7777/availability/${user.userId}`);
+        // Ensure data is in the expected format, e.g., [{day: "Monday", times: ["8:00AM", "9:00AM"]}]
+        setAvailability(response.data[0].days || []);
+      } catch (error) {
+        console.error("Error fetching availability data:", error);
+      }
+    };
+  
+    fetchData();
+  }, [user.userId]);
+
   const handleAvailabilityChange = (newAvailability) => {
     setAvailability(newAvailability);
   };
 
   const saveAvailability = async () => {
-    console.log("data is: ", availability);
-    setIsLoading(true); // Start loading
+    const validDays = availability.filter(
+      (day) => day.day && day.times.length > 0
+    );
+    setIsLoading(true);
     try {
       const response = await axios.put(
         `http://localhost:7777/availability/${user.userId}`,
-        { days: availability }
+        { days: validDays }
       );
       console.log("Data:", response.data);
       alert("Availability data saved successfully");
-      console.log("Availability data saved successfully");
     } catch (error) {
       console.error("Error saving availability", error);
     }
-    setIsLoading(false); // Start loading
+    setIsLoading(false);
   };
 
   return (
     <div className="min-h-screen p-4">
       <h1 className="font-semibold text-xl mb-4 p-4">Set your Availability</h1>
-      <DaySelector onAvailabilityChange={handleAvailabilityChange} />
+      <DaySelector
+        onAvailabilityChange={handleAvailabilityChange}
+        availability={availability}
+      />
       <div className="flex justify-end p-4">
         <button
           onClick={saveAvailability}
@@ -41,7 +59,7 @@ const Availability = () => {
           }`}
           disabled={isLoading}
         >
-          Save Availability
+          Save
         </button>
       </div>
     </div>

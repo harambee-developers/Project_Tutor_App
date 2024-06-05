@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FaUser, FaStar, FaBook, FaCalendar, FaCamera } from "react-icons/fa";
+import {
+  FaUser,
+  FaStar,
+  FaBook,
+  FaCalendar,
+  FaCamera,
+  FaTrash,
+} from "react-icons/fa";
 import MyProfile from "../components/profile/MyProfile";
 import Reviews from "../components/profile/Reviews";
 import Subjects from "../components/profile/Subjects";
@@ -9,6 +16,8 @@ import StarRating from "../components/features/StarRating";
 import ProfilePictureModal from "../components/features/ProfilePictureModal";
 import defaultProfilePic from "../assets/default_avatar.jpg";
 import { useAuth } from "../components/features/AuthContext";
+import ConfirmationDelete from "../components/features/ConfirmationDelete";
+import { useNavigate } from "react-router-dom";
 
 const EditTutorProfilePage = () => {
   const [results, setResults] = useState([]);
@@ -16,7 +25,9 @@ const EditTutorProfilePage = () => {
   const [error, setError] = useState(null);
   const [selectedTab, setSelectedTab] = useState("Profile");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { user: authUser } = useAuth();
+  const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
+  const { user: authUser, logout } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchTutorProfile = async () => {
@@ -39,6 +50,21 @@ const EditTutorProfilePage = () => {
     }
   }, [authUser]);
 
+  const handleDeleteProfile = async () => {
+    try {
+      await axios.delete(
+        `http://localhost:7777/users/delete/${authUser.userId}`
+      );
+      alert("Profile deleted successfully");
+      // Redirect to another page and log out the user
+      logout();
+      navigate("/login");
+    } catch (error) {
+      console.error("Error deleting profile:", error);
+      setError("Failed to delete profile");
+    }
+  };
+
   const renderComponent = () => {
     switch (selectedTab) {
       case "Profile":
@@ -46,7 +72,7 @@ const EditTutorProfilePage = () => {
       case "Review":
         return <Reviews />;
       case "Subjects":
-        return <Subjects initialSubjects={results.profile.subject}/>;
+        return <Subjects initialSubjects={results.profile.subject} />;
       case "Availability":
         return <Availability />;
       default:
@@ -69,32 +95,51 @@ const EditTutorProfilePage = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-10 p-20">
       <div className="bg-white shadow-lg rounded-lg overflow-hidden col-span-3">
-        <div className="p-2 md:flex">
-          <div className="relative w-32 h-32">
-            <img
-              src={results.avatarUrl || { defaultProfilePic }}
-              alt="Profile"
-              className="h-full w-full object-cover rounded-full"
-            />
-            <div className="absolute bottom-2 left-2">
-              <div className="bg-gray-800 bg-opacity-50 p-2 rounded-full">
-                <FaCamera
-                  className="h-6 w-6 text-white"
-                  onClick={() => setIsModalOpen(true)}
-                />
-                <ProfilePictureModal
-                  isOpen={isModalOpen}
-                  onClose={() => setIsModalOpen(false)}
-                />
+        <div className="p-2 md:flex justify-between items-center">
+          <div className="flex items-center">
+            {" "}
+            {/* Container for the image and camera icon */}
+            <div className="relative w-32 h-32">
+              <img
+                src={results.avatarUrl || { defaultProfilePic }}
+                alt="Profile"
+                className="h-full w-full object-cover rounded-full"
+              />
+              <div className="absolute bottom-2 left-2">
+                <div className="bg-gray-800 bg-opacity-50 p-2 rounded-full">
+                  <FaCamera
+                    className="h-6 w-6 text-white"
+                    onClick={() => setIsModalOpen(true)}
+                  />
+                  <ProfilePictureModal
+                    isOpen={isModalOpen}
+                    onClose={() => setIsModalOpen(false)}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="px-2 mt-5 uppercase tracking-wide text-sm text-gray-700 font-semibold mb-2">
+              {results.username}
+              <div className="py-4 rounded-lg">
+                <StarRating rating={results.profile.review.rating} />
               </div>
             </div>
           </div>
-          <div className="px-2 mt-5 uppercase tracking-wide text-sm text-gray-700 font-semibold mb-2">
-            {results.username}
-            <div className="py-4 rounded-lg">
-              <StarRating rating={results.profile.review.rating} />
-            </div>
-          </div>
+          <button
+            onClick={() => setIsModalDeleteOpen(true)}
+            className="ml-auto bg-red-500 text-white p-2 rounded hover:bg-red-700 transition duration-150 ease-in-out"
+            title="Delete Profile"
+          >
+            <FaTrash className="h-6 w-6" /> {/* FontAwesome Trash Icon */}
+          </button>
+          <ConfirmationDelete
+            isOpen={isModalDeleteOpen}
+            onClose={() => setIsModalDeleteOpen(false)}
+            onConfirm={() => {
+              handleDeleteProfile();
+              setIsModalDeleteOpen(false);
+            }}
+          />
         </div>
       </div>
       <div className="bg-white shadow-lg rounded-lg overflow-hidden md:col-span-1 col-span-3">

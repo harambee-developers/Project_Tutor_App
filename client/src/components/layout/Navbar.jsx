@@ -1,6 +1,6 @@
 // Improved Navbar with React Router's Link and better toggle handling
 import React, { useState, useEffect } from "react";
-import { FiMenu } from "react-icons/fi";
+import { FiMenu} from "react-icons/fi";
 import logo from "../../assets/logo.png";
 import { IoCloseSharp } from "react-icons/io5";
 import { useAuth } from "../features/AuthContext";
@@ -49,7 +49,7 @@ const Navbar = () => {
             <img src={logo} alt="logo" className="h-32 md:w-full" />
           </Link>
         </div>
-        <button className="absolute right-10 top-7 cursor-pointer md:hidden mt-5 text-gray-800 z-10" onClick={toggleMenu}>
+        <button className="absolute right-10 top-7 cursor-pointer md:hidden mt-5 text-gray-800 z-10 hover:text-white" onClick={toggleMenu}>
           {isOpen ? <IoCloseSharp size={30} /> : <FiMenu size={30} />}
         </button>
         <div className={`${isOpen ? "flex" : "hidden"} md:flex items-center justify-center absolute md:relative inset-0 md:inset-auto bg-black md:bg-transparent bg-opacity-75 md:bg-opacity-0 transition-all duration-500 ease-in-out`}>
