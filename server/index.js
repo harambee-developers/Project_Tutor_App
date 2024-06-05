@@ -88,13 +88,38 @@ app.get("/students", async (req, res) => {
   }
 });
 
+// GET endpoint to fetch user availability
+app.get("/availability/:userid", async (req, res) => {
+  const userId = req.params.userid;
+
+  try {
+    const user = await User.findById(userId).select("profile.availability");
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.json(user.profile.availability);
+  } catch (error) {
+    console.error("Error fetching availability:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 app.put("/availability/:userid", async (req, res) => {
   const userId = req.params.userid;
   const { days } = req.body; // This assumes the front end sends the data structured as { days: [...] }
 
-  if (!days || days.length === 0) {
-    return res.status(400).json({ error: "No availability data provided" });
+  if (
+    !days ||
+    !Array.isArray(days) ||
+    days.some((day) => typeof day.day !== "string" || !Array.isArray(day.times))
+  ) {
+    return res
+      .status(400)
+      .json({ error: "Invalid availability data provided" });
   }
+
+  console.log("Received days:", days); // Confirm structure
 
   try {
     const user = await User.findById(userId);
@@ -104,7 +129,7 @@ app.put("/availability/:userid", async (req, res) => {
     }
 
     // Directly set the availability to the days array from the request
-    user.profile.availability.days = days;
+    user.profile.availability = {days: days};
 
     // Save the updated user
     const updatedUser = await user.save();
@@ -188,7 +213,7 @@ app.put("/picture/:userid", async (req, res) => {
   }
 });
 
-app.delete("/api/users/:id", async (req, res) => {
+app.delete("/users/delete/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const user = await User.findByIdAndDelete(id);
