@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import Calender from "../components/features/Calender";
+import PaymentModal from "../components/features/PaymentModal";
 
 const TutorProfilePage = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { userId } = useParams();
 
@@ -25,7 +27,7 @@ const TutorProfilePage = () => {
     };
 
     fetchTutors();
-  }, []);
+  }, [userId]);
 
   if (loading) {
     return <div className="text-center mt-8">Loading...</div>;
@@ -34,6 +36,9 @@ const TutorProfilePage = () => {
   if (error) {
     return <div className="text-center mt-8">Error: {error}</div>;
   }
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   return (
     <div className="grid md:grid-cols-2 gap-10 p-20">
@@ -70,10 +75,13 @@ const TutorProfilePage = () => {
           </p>
           <p>/per hour</p>
         </div>
-        <button className="w-full mr-8 bg-teal-500 hover:bg-blue-600 text-white py-2 rounded-full">
+        <button
+          className="w-3/4 m-4 bg-teal-500 hover:bg-blue-600 text-white py-2 rounded-full"
+          onClick={openModal}
+        >
           Book Now
         </button>
-        <button className="w-full mr-8 mt-4 mb-4 bg-transparent hover:bg-blue-600 hover:text-white text-black py-2 rounded-full">
+        <button className="w-3/4 m-4 bg-teal-500 hover:bg-blue-600 text-white py-2 rounded-full">
           Send Message
         </button>
       </div>
@@ -100,6 +108,7 @@ const TutorProfilePage = () => {
         </h1>
         <Calender />
       </div>
+      <PaymentModal isOpen={isModalOpen} onRequestClose={closeModal} />
     </div>
   );
 };
