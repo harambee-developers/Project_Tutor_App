@@ -5,6 +5,8 @@ const User = require("../model/User");
 const multer = require("multer");
 const rateLimit = require("express-rate-limit");
 const { body, validationResult } = require("express-validator");
+const fs = require('fs')
+const path = require('path')
 
 require("dotenv").config();
 
@@ -12,16 +14,23 @@ const router = express.Router();
 
 // Ensure uploads directory exists
 const uploadDir = path.join(__dirname, "uploads");
-fs.access(uploadDir)
-  .catch(() => fs.mkdir(uploadDir))
-  .then(() => {
+fs.access(uploadDir, fs.constants.F_OK, (err) => {
+  if (err) {
+    // Directory does not exist or no permission, attempt to create it
+    fs.mkdir(uploadDir, (err) => {
+      if (err) {
+        console.error("Error creating uploads directory:", err);
+      } else {
+        console.log("Uploads directory created successfully.");
+      }
+    });
+  } else {
     console.log("Uploads directory is ready.");
-  })
-  .catch((err) => {
-    console.error("Error setting up the uploads directory:", err);
-  });
+  }
+});
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
+    console.log("Setting destination:", uploadDir);
     cb(null, uploadDir); // Set the file upload destination folder
   },
   filename: function (req, file, cb) {
