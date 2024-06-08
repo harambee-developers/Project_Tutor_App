@@ -65,6 +65,14 @@ const EditTutorProfilePage = () => {
     }
   };
 
+  const curriculumLevels = [
+    { id: 1, name: "GCSE" },
+    { id: 2, name: "A-Level" },
+    { id: 3, name: "IB" },
+    { id: 4, name: "Undergraduate" },
+    { id: 5, name: "Postgraduate" },
+  ];
+
   const renderComponent = () => {
     switch (selectedTab) {
       case "Profile":

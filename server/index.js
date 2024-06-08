@@ -6,21 +6,6 @@ const authRoutes = require("./routes/auth");
 const User = require("./model/User");
 const fs = require("fs");
 const util = require("util");
-const mkdir = util.promisify(fs.mkdir);
-const multer = require("multer");
-
-const storage = multer.diskStorage({
-  destination: async (req, file, cb) => {
-    const uploadPath = path.join(__dirname, "/uploads/", req.user.id);
-    if (!fs.existsSync(uploadPath)) {
-      await mkdir(uploadPath, { recursive: true });
-    }
-    cb(null, uploadPath);
-  },
-  filename: (req, file, cb) => {
-    // filename logic remains the same
-  },
-});
 
 require("dotenv").config();
 

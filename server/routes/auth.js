@@ -9,15 +9,26 @@ const { body, validationResult } = require("express-validator");
 require("dotenv").config();
 
 const router = express.Router();
-// Set up multer for file uploads
+
+// Ensure uploads directory exists
+const uploadDir = path.join(__dirname, "uploads");
+fs.access(uploadDir)
+  .catch(() => fs.mkdir(uploadDir))
+  .then(() => {
+    console.log("Uploads directory is ready.");
+  })
+  .catch((err) => {
+    console.error("Error setting up the uploads directory:", err);
+  });
 const storage = multer.diskStorage({
-  destination: function(req, file, cb) {
-    cb(null, 'uploads/'); // Set the file upload destination folder
+  destination: function (req, file, cb) {
+    cb(null, uploadDir); // Set the file upload destination folder
   },
-  filename: function(req, file, cb) {
-    cb(null, Date.now() + '-' + file.originalname); // Name the file to prevent overwriting
-  }
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + "-" + file.originalname); // Name the file to prevent overwriting
+  },
 });
+
 const upload = multer({ storage: storage });
 
 const { JWT_SECRET } = process.env;
@@ -50,7 +61,9 @@ function generateDefaultProfile() {
 router.post("/register", upload.single("avatar"), async (req, res) => {
   const { username, email, password, usertype } = req.body;
 
-  const avatarUrl = `${req.protocol}://${req.get('host')}/images/default_avatar.jpg`; // Path to default avatar
+  const avatarUrl = `${req.protocol}://${req.get(
+    "host"
+  )}/images/default_avatar.jpg`; // Path to default avatar
 
   try {
     const existingUser = await User.findOne({ email });
@@ -98,7 +111,7 @@ router.post(
       const token = jwt.sign(
         { userId: user._id, username: user.username },
         JWT_SECRET,
-        { expiresIn: "1d" } 
+        { expiresIn: "1d" }
       );
 
       // Set the token in a secure, httpOnly cookie
@@ -119,9 +132,9 @@ router.post(
 router.post("/logout", (req, res) => {
   // Clear the authentication cookie
   res.cookie("token", "", {
-      httpOnly: true,
-      sameSite: "Strict",
-      expires: new Date(0)  // Set the cookie to expire immediately
+    httpOnly: true,
+    sameSite: "Strict",
+    expires: new Date(0), // Set the cookie to expire immediately
   });
 
   res.status(200).json({ message: "Logged out successfully" });
@@ -147,22 +160,30 @@ router.get("/verify-token", async (req, res) => {
   }
 });
 
-router.post('/profile/upload', upload.single('profileImage'), async (req, res) => {
-  const userId = req.body.userId; // Extract userId sent from the frontend
-  try {
-    const filePath = `/uploads/${req.file.filename}`
-    const user = await User.findById(userId);
-    if (user) {
-      user.avatarUrl = `${req.protocol}://${req.get('host')}${filePath}`;
-      await user.save();
-      res.send({ message: 'Profile image updated successfully!', filePath: user.avatarUrl });
-    } else {
-      res.status(404).send({ message: 'User not found' });
+router.post(
+  "/profile/upload",
+  upload.single("profileImage"),
+  async (req, res) => {
+    const userId = req.body.userId; // Extract userId sent from the frontend
+
+    try {
+      const filePath = `/uploads/${req.file.filename}`;
+      const user = await User.findById(userId);
+      if (user) {
+        user.avatarUrl = `${req.protocol}://${req.get("host")}${filePath}`;
+        await user.save();
+        res.send({
+          message: "Profile image updated successfully!",
+          filePath: user.avatarUrl,
+        });
+      } else {
+        res.status(404).send({ message: "User not found" });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: "Failed to upload image" });
     }
-  } catch (error) {
-    console.error(error);
-    res.status(500). send({ message: 'Failed to upload image' });
   }
-});
+);
 
 module.exports = router;

@@ -13,11 +13,13 @@ const TutorProfilePage = () => {
   const [availability, setAvailability] = useState([]);
 
   const { userId } = useParams();
-
+  
   useEffect(() => {
     const fetchTutorData = async () => {
       try {
-        const response = await axios.get(`http://localhost:7777/user/${userId}`);
+        const response = await axios.get(
+          `http://localhost:7777/user/${userId}`
+        );
         setResults(response.data);
       } catch (error) {
         setError(error.message);
@@ -28,13 +30,17 @@ const TutorProfilePage = () => {
 
     const fetchAvailability = async () => {
       try {
-        const response = await axios.get(`http://localhost:7777/availability/${userId}`);
-        const availabilityData = response.data[0].days ? response.data[0].days.map(dayInfo => ({
-          day: dayInfo.day,
-          times: dayInfo.times
-        })) : [];
-        console.log("Response: ", response.data[0].days)
-        console.log("Data: ", availabilityData)
+        const response = await axios.get(
+          `http://localhost:7777/availability/${userId}`
+        );
+        const availabilityData = response.data[0].days
+          ? response.data[0].days.map((dayInfo) => ({
+              day: dayInfo.day,
+              times: dayInfo.times,
+            }))
+          : [];
+        console.log("Response: ", response.data[0].days);
+        console.log("Data: ", availabilityData);
         setAvailability(availabilityData);
       } catch (error) {
         setError(error.message);
@@ -143,7 +149,7 @@ const TutorProfilePage = () => {
         )}
       </div>
       <div className="bg-white shadow-lg rounded-lg overflow-hidden md:col-span-2 px-4">
-        <h1 className="font-semibold text-xl py-4">Subjects</h1>
+        <h1 className="font-semibold text-xl py-4">Subjects Offered</h1>
         {results.profile?.subject?.length > 0 ? (
           <table className="min-w-full leading-normal">
             <thead>
@@ -193,7 +199,8 @@ const TutorProfilePage = () => {
       </div>
       <div className=" bg-white shadow-lg rounded-lg overflow-hidden md:col-span-2">
         <h1 className="font-semibold text-xl items-center p-4">Availability</h1>
-        <AvailabilityTable availability={availability} /> {/* Render AvailabilityTable component */}
+        <AvailabilityTable availability={availability} />{" "}
+        {/* Render AvailabilityTable component */}
       </div>
     </div>
   );
