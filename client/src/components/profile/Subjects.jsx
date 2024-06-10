@@ -53,7 +53,7 @@ const Subjects = ({ initialSubjects = [] }) => {
 
     setIsLoading(true);
     try {
-      const response = await axios.put(`http://localhost:7777/subject/${user.userId}`, { subjects: rows });
+      const response = await axios.put(`http://localhost:7777/api/user/subject/${user.userId}`, { subjects: rows });
       console.log("Data:", response.data);
       alert("Data saved successfully");
     } catch (error) {

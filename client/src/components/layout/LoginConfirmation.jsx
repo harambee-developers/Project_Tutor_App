@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const LoginConfirmation = () => {
   const { user } = useAuth();
-  const navigate = useNavigate
+  const navigate = useNavigate()
 
   useEffect(() => {
     const timer = setTimeout(() => {

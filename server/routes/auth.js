@@ -1,16 +1,17 @@
-const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const User = require("../model/User");
-const multer = require("multer");
+const path = require("path");
 const rateLimit = require("express-rate-limit");
+const multer = require("multer");
+const express = require("express");
+const fs = require("fs");
+const { User } = require("../model/User");
 const { body, validationResult } = require("express-validator");
-const fs = require('fs')
-const path = require('path')
 
 require("dotenv").config();
 
 const router = express.Router();
+const { JWT_SECRET } = process.env;
 
 // Ensure uploads directory exists
 const uploadDir = path.join(__dirname, "uploads");
@@ -28,6 +29,7 @@ fs.access(uploadDir, fs.constants.F_OK, (err) => {
     console.log("Uploads directory is ready.");
   }
 });
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     console.log("Setting destination:", uploadDir);
@@ -39,12 +41,6 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
-
-const { JWT_SECRET } = process.env;
-if (!JWT_SECRET) {
-  console.error("Missing JWT_SECRET in environment variables.");
-  process.exit(1);
-}
 
 // Rate limiter middleware to protect login endpoint
 const loginLimiter = rateLimit({

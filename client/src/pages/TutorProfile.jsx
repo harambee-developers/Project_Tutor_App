@@ -11,7 +11,7 @@ const TutorProfile = () => {
   useEffect(() => {
     const fetchTutors = async () => {
       try {
-        const response = await axios.get("http://localhost:7777/tutors");
+        const response = await axios.get("http://localhost:7777/api/user/tutors");
         setTutors(response.data);
         setLoading(false);
       } catch (error) {

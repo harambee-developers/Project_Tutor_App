@@ -2,23 +2,31 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import StarRating from "../components/features/StarRating";
+import io from "socket.io-client";
 import InitialsCircle from "../data/initialsCircle";
 import ShowMoreText from "../components/features/ShowMoreText";
 import AvailabilityTable from "../components/features/AvailabilityTable";
+import ChatModal from "../components/features/ChatModal";
+
+// Connect to the WebSocket server
+const socket = io.connect("http://localhost:7777", {
+  withCredentials: true,
+  transports: ["websocket", "polling"],
+});
 
 const TutorProfilePage = () => {
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [availability, setAvailability] = useState([]);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { userId } = useParams();
-  
+
   useEffect(() => {
     const fetchTutorData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:7777/user/${userId}`
+          `http://localhost:7777/api/user/user/${userId}`
         );
         setResults(response.data);
       } catch (error) {
@@ -31,7 +39,7 @@ const TutorProfilePage = () => {
     const fetchAvailability = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:7777/availability/${userId}`
+          `http://localhost:7777/api/user/availability/${userId}`
         );
         const availabilityData = response.data[0].days
           ? response.data[0].days.map((dayInfo) => ({
@@ -50,6 +58,27 @@ const TutorProfilePage = () => {
     fetchTutorData();
     fetchAvailability();
   }, [userId]);
+
+  const [message, setMessage] = useState(
+    `Hi! I’m looking for a tutor. Are you available for a free meeting? I’d like to find out more about how you work. I’m looking forward to your reply!`
+  );
+
+  const sendMessage = () => {
+    if (message.trim()) {
+      // Socket operations
+      socket.emit("joinRoom", 'Student');
+
+      socket.emit("sendMessage", {
+        senderId: userId, // this should match the logged-in user's ID or something unique
+        receiverId: userId, // Ensure this matches a receiver ID expected on the server
+        content: message
+      });
+      
+      setMessage("");
+
+      setIsModalOpen(false); // Close modal after sending
+    }
+  };
 
   if (loading) {
     return <div className="text-center mt-8">Loading...</div>;
@@ -108,12 +137,30 @@ const TutorProfilePage = () => {
           <option value="Maths">KCSE</option>
           <option value="Science">College or Degree Equivalent</option>
         </select>
-        <button className="w-full mr-8 mt-4 mb-4 bg-teal-500 hover:bg-blue-600 text-white py-2 rounded-full">
+        <button className="w-full mr-8 mt-4 mb-4 bg-teal-500 hover:bg-teal-600 hover:text-white text-black py-2 rounded-full">
           Book Now
         </button>
-        <button className="w-full mr-8 mt-4 mb-4 hover:bg-blue-600 hover:text-white text-black py-2 rounded-full">
+        <button
+          className="w-full mr-8 mt-4 mb-4 hover:bg-teal-600 bg-teal-500 hover:text-white text-black py-2 rounded-full"
+          onClick={() => setIsModalOpen(true)}
+        >
           Send Message
         </button>
+        <ChatModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+          <h2 className="text-lg font-semibold mb-4">Send a Message</h2>
+          <textarea
+            className="w-full p-4 border rounded"
+            placeholder="Type your message here..."
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
+          <button
+            className="w-full mt-4 bg-teal-500 hover:bg-teal-600 hover:text-white text-black py-2 rounded-full"
+            onClick={sendMessage}
+          >
+            Send
+          </button>
+        </ChatModal>
       </div>
       <div className="bg-white shadow-lg rounded-lg overflow-hidden md:col-span-2">
         <h1 className="font-semibold text-xl p-4">Ratings and Reviews</h1>

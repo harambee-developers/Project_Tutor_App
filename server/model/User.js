@@ -4,10 +4,12 @@ const { genSalt, hash } = require("bcryptjs");
 
 const availabilitySchema = new mongoose.Schema(
   {
-    days: [{
-      day: { type: String, index: true }, // Adding an index to 'day' field
-      times: [String]
-    }]
+    days: [
+      {
+        day: { type: String, index: true }, // Adding an index to 'day' field
+        times: [String],
+      },
+    ],
   },
   {
     timestamps: true,
@@ -15,9 +17,9 @@ const availabilitySchema = new mongoose.Schema(
 );
 
 const reviewSchema = new mongoose.Schema({
-  name: { type: String, default:null },
-  description: { type: String, default:null},
-  rating: { type: Number, default:0 },
+  name: { type: String, default: null },
+  description: { type: String, default: null },
+  rating: { type: Number, default: 0 },
 });
 
 const subjectSchema = new mongoose.Schema({
@@ -34,15 +36,20 @@ const profileSchema = new mongoose.Schema({
   availability: [availabilitySchema],
 });
 
-const userSchema = new Schema({
-  avatarUrl: { type: String, required: false },
-  email: { type: String, unique: true, required: true },
-  headline: { type: String, required: false },
-  password: { type: String, required: true },
-  username: { type: String, unique: true, required: true },
-  usertype: { type: String, enum: ["Tutor", "Student"], required: true },
-  profile: { type: profileSchema },
-});
+const userSchema = new Schema(
+  {
+    avatarUrl: { type: String, required: false },
+    email: { type: String, unique: true, required: true },
+    headline: { type: String, required: false },
+    password: { type: String, required: true },
+    username: { type: String, unique: true, required: true },
+    usertype: { type: String, enum: ["Tutor", "Student"], required: true },
+    profile: { type: profileSchema },
+  },
+  {
+    timestamps: true, // Adding timestamps here
+  }
+);
 
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
@@ -53,6 +60,21 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-const User = model("User", userSchema);
+// Define the message schema
+const messageSchema = new Schema(
+  {
+    senderId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    receiverId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    content: { type: String, required: true },
+    read: { type: Boolean, default: false },
+  },
+  {
+    timestamps: true, // Adding timestamps here
+  }
+);
 
-module.exports = User;
+// Create models
+const User = model("User", userSchema);
+const Message = model("Message", messageSchema);
+
+module.exports = { User, Message };

@@ -25,7 +25,7 @@ const MyProfile = ({ results }) => {
     if (authUser) {
       try {
         const response = await axios.put(
-          `http://localhost:7777/profile/${authUser.userId}`,
+          `http://localhost:7777/api/user/profile/${authUser.userId}`,
           data
         );
         console.log(data);
@@ -88,6 +88,20 @@ const MyProfile = ({ results }) => {
         </div>
         <div className="flex items-center text-gray-700">
           <label htmlFor="field4" className="w-1/3 px-4">
+            Price per Hour:
+          </label>
+          <div className="w-full px-4">
+            <input
+              type="number"
+              name="hourlyRate"
+              value={data.profile.hourlyRate}
+              onChange={handleInputChange}
+              className="rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 w-full py-2 px-3 sm:text-sm"
+            />
+          </div>
+        </div>
+        <div className="flex items-center text-gray-700">
+          <label htmlFor="field5" className="w-1/3 px-4">
             Biography:
           </label>
           <div className="w-full px-4">

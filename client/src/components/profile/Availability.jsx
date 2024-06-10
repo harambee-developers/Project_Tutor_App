@@ -11,7 +11,7 @@ const Availability = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:7777/availability/${user.userId}`);
+        const response = await axios.get(`http://localhost:7777/api/user/availability/${user.userId}`);
         // Ensure data is in the expected format, e.g., [{day: "Monday", times: ["8:00AM", "9:00AM"]}]
         setAvailability(response.data[0].days || []);
       } catch (error) {
@@ -33,7 +33,7 @@ const Availability = () => {
     setIsLoading(true);
     try {
       const response = await axios.put(
-        `http://localhost:7777/availability/${user.userId}`,
+        `http://localhost:7777/api/user/availability/${user.userId}`,
         { days: validDays }
       );
       console.log("Data:", response.data);

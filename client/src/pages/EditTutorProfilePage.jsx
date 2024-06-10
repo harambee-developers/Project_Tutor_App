@@ -34,7 +34,7 @@ const EditTutorProfilePage = () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          `http://localhost:7777/user/${authUser?.userId}`
+          `http://localhost:7777/api/user/user/${authUser?.userId}`
         );
         setResults(response.data);
       } catch (error) {
@@ -53,7 +53,7 @@ const EditTutorProfilePage = () => {
   const handleDeleteProfile = async () => {
     try {
       await axios.delete(
-        `http://localhost:7777/users/delete/${authUser.userId}`
+        `http://localhost:7777/api/user/users/delete/${authUser.userId}`
       );
       alert("Profile deleted successfully");
       // Redirect to another page and log out the user
@@ -64,14 +64,6 @@ const EditTutorProfilePage = () => {
       setError("Failed to delete profile");
     }
   };
-
-  const curriculumLevels = [
-    { id: 1, name: "GCSE" },
-    { id: 2, name: "A-Level" },
-    { id: 3, name: "IB" },
-    { id: 4, name: "Undergraduate" },
-    { id: 5, name: "Postgraduate" },
-  ];
 
   const renderComponent = () => {
     switch (selectedTab) {
