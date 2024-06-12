@@ -4,6 +4,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/userRoutes");
+const path = require('path')
 const http = require("http");
 const socketIo = require("socket.io");
 const { Message } = require("./model/User");
@@ -26,7 +27,7 @@ if (!JWT_SECRET) {
 }
 
 mongoose.connect(
-  `mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@localhost:27017/?authMechanism=DEFAULT`
+  `mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongodb:27017/?authMechanism=DEFAULT`
 );
 
 const corsOptions = {
@@ -40,8 +41,10 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Static routes
-app.use("/uploads", express.static("uploads"));
-app.use("/images", express.static("images"));
+app.use('/routes/uploads', express.static(path.join(__dirname, 'routes/uploads')));
+
+// Setting up the route for images
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // Modularized routes
 app.use("/api/auth", authRoutes);

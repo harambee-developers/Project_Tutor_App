@@ -1,0 +1,21 @@
+# Ignore node_modules in both client and server directories
+client/node_modules
+server/node_modules
+
+# Ignore log files
+*.log
+
+# Ignore Docker-related files
+Dockerfile
+.dockerignore
+
+# Ignore any build outputs from local environment
+client/dist
+server/public
+
+# Ignore other unnecessary files
+.git
+.gitignore
+.env
+.vscode
+.DS_Store

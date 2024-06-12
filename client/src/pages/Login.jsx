@@ -31,7 +31,6 @@ const Login = () => {
           <FaUser />
           Login
         </h1>
-        <hr className="mt-3" />
         <div className="mt-3">
           <label htmlFor="username" className="block text-base mb-2">
             {" "}

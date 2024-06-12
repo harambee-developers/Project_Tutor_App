@@ -172,7 +172,7 @@ router.post(
     const userId = req.body.userId; // Extract userId sent from the frontend
 
     try {
-      const filePath = `/uploads/${req.file.filename}`;
+      const filePath = `/routes/uploads/${req.file.filename}`;
       const user = await User.findById(userId);
       if (user) {
         user.avatarUrl = `${req.protocol}://${req.get("host")}${filePath}`;

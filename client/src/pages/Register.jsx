@@ -86,7 +86,6 @@ const Register = () => {
           <FaUser />
           Sign up
         </h1>
-        <hr className="mt-3" />
         <form onSubmit={handleSubmit}>
           <div className="mt-3">
             <label htmlFor="username" className="block text-base mb-2">

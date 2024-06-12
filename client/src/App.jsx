@@ -7,12 +7,14 @@ import Register from "./pages/Register";
 import TutorProfile from "./pages/TutorProfile";
 import TutorProfilePage from "./pages/TutorProfilePage";
 import EditTutorProfilePage from "./pages/EditTutorProfilePage";
-import PrivateRoute from "./components/layout/PrivateRoute";
 import LoginConfirmation from "./components/layout/LoginConfirmation";
 import { ToastContainer } from "react-toastify";
+import io from 'socket.io-client';
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
+  
+
   return (
     <BrowserRouter>
       <div>
