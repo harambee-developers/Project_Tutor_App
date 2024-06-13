@@ -137,11 +137,11 @@ const TutorProfilePage = () => {
           <option value="Maths">KCSE</option>
           <option value="Science">College or Degree Equivalent</option>
         </select>
-        <button className="w-full mr-8 mt-4 mb-4 bg-teal-500 hover:bg-teal-600 hover:text-black text-white py-2 rounded-full">
+        <button className="border-2 bg-teal-500 border-teal-700 text-white py-1 w-full rounded-md hover:bg-transparent hover:text-teal-500 font-semibold">
           Book Now
         </button>
         <button
-          className="w-full mr-8 mt-4 mb-4 hover:bg-teal-600 bg-teal-500 hover:text-black text-white py-2 rounded-full"
+          className="border-2 bg-teal-500 border-teal-700 text-white py-1 w-full rounded-md hover:bg-transparent hover:text-teal-500 font-semibold mt-5 mb-5"
           onClick={() => setIsModalOpen(true)}
         >
           Send Message
@@ -155,7 +155,7 @@ const TutorProfilePage = () => {
             onChange={(e) => setMessage(e.target.value)}
           />
           <button
-            className="w-full mt-4 bg-teal-500 hover:bg-teal-600 hover:text-black text-white py-2 rounded-full"
+            className="border-2 bg-teal-500 border-teal-700 text-white py-1 w-full rounded-md hover:bg-transparent hover:text-teal-500 font-semibold"
             onClick={sendMessage}
           >
             Send

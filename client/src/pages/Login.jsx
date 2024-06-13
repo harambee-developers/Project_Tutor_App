@@ -80,7 +80,7 @@ const Login = () => {
         <div className="mt-5">
           <button
             onClick={handleLogin}
-            className="border-2 bg-teal-500 border-teal-700 text-white py-1 w-full rounded-md hover-bg-transparent hover:text-teal-500 font-semibold"
+            className="border-2 bg-teal-500 border-teal-700 text-white py-1 w-full rounded-md hover:bg-transparent hover:text-teal-500 font-semibold"
             type="submit"
           >
             Submit
