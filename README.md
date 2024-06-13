@@ -43,13 +43,13 @@ cd tutor-application
 ### Build and start the containers:
 
 ```sh
-    docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build
 ```
-    This command will start the frontend on http://localhost:5173 and the backend on http://localhost:7777.
+This command will start the frontend on http://localhost:5173 and the backend on http://localhost:7777.
 
-    Access the application:
-        Frontend: http://localhost:5173
-        Backend: http://localhost:7777
+Access the application:
+    Frontend: http://localhost:5173
+    Backend: http://localhost:7777
 
 ### Production
 
