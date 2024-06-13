@@ -37,8 +37,8 @@ To run the application in development mode:
 
 ### Clone the repository:
 ```sh 
-git clone https://github.com/yourusername/tutor-application.git
-cd tutor-application
+git clone https://github.com/harambee-developers/Project_Tutor_App.git
+cd Project_Tutor_App
 ```
 ### Build and start the containers:
 
@@ -57,8 +57,8 @@ To run the application in production mode:
 
 ### Clone the repository:
 ```sh
-git clone https://github.com/yourusername/tutor-application.git
-cd tutor-application
+git clone https://github.com/harambee-developers/Project_Tutor_App.git
+cd Project_Tutor_App
 ```
 ### Build and start the containers:
 ```sh
