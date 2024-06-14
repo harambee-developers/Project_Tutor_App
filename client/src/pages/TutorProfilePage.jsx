@@ -7,6 +7,7 @@ import InitialsCircle from "../data/initialsCircle";
 import ShowMoreText from "../components/features/ShowMoreText";
 import AvailabilityTable from "../components/features/AvailabilityTable";
 import ChatModal from "../components/features/ChatModal";
+import CheckoutModal from "../components/features/CheckoutModal"; // Import the CheckoutModal
 
 // Connect to the WebSocket server
 const socket = io.connect("http://localhost:7777", {
@@ -15,6 +16,7 @@ const socket = io.connect("http://localhost:7777", {
 });
 
 const TutorProfilePage = () => {
+  const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -66,19 +68,44 @@ const TutorProfilePage = () => {
   const sendMessage = () => {
     if (message.trim()) {
       // Socket operations
-      socket.emit("joinRoom", 'Student');
+      socket.emit("joinRoom", "Student");
 
       socket.emit("sendMessage", {
         senderId: userId, // this should match the logged-in user's ID or something unique
         receiverId: userId, // Ensure this matches a receiver ID expected on the server
-        content: message
+        content: message,
       });
-      
+
       setMessage("");
 
       setIsModalOpen(false); // Close modal after sending
     }
   };
+
+  const handlePayment = async () => {
+    try {
+      const items = [{ id: subjectId, quantity: hours }]; // Example payload, adjust based on your actual data structure
+      const response = await axios.post(
+        `http://localhost:7777/api/payment/create-checkout-session/`,
+        { items }
+      );
+      window.location = response.data.url;
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Example data for subjects and availability
+  const subjects = [
+    { id: 1, name: "Maths" },
+    { id: 2, name: "English" },
+  ];
+  const availabilityPayload = [
+    { id: 1, label: "9:00 AM - 10:00 AM" },
+    { id: 2, label: "10:00 AM - 11:00 AM" },
+  ];
 
   if (loading) {
     return <div className="text-center mt-8">Loading...</div>;
@@ -137,9 +164,19 @@ const TutorProfilePage = () => {
           <option value="Maths">KCSE</option>
           <option value="Science">College or Degree Equivalent</option>
         </select>
-        <button className="border-2 bg-teal-500 border-teal-700 text-white py-1 w-full rounded-md hover:bg-transparent hover:text-teal-500 font-semibold">
+        <button
+          className="border-2 bg-teal-500 border-teal-700 text-white py-1 w-full rounded-md hover:bg-transparent hover:text-teal-500 font-semibold"
+          onClick={() => setIsCheckoutModalOpen(true)}
+        >
           Book Now
         </button>
+        <CheckoutModal
+          isOpen={isCheckoutModalOpen}
+          onClose={() => setIsCheckoutModalOpen(false)}
+          subjects={subjects}
+          availability={availabilityPayload}
+          createCheckoutSession={handlePayment}
+        />
         <button
           className="border-2 bg-teal-500 border-teal-700 text-white py-1 w-full rounded-md hover:bg-transparent hover:text-teal-500 font-semibold mt-5 mb-5"
           onClick={() => setIsModalOpen(true)}

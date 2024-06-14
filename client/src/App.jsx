@@ -9,7 +9,8 @@ import TutorProfilePage from "./pages/TutorProfilePage";
 import EditTutorProfilePage from "./pages/EditTutorProfilePage";
 import LoginConfirmation from "./components/layout/LoginConfirmation";
 import { ToastContainer } from "react-toastify";
-import io from 'socket.io-client';
+import SuccessPayment from "./components/layout/SuccessPayment";
+import CancelledPayment from "./components/layout/CancelledPayment";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
@@ -26,6 +27,8 @@ function App() {
           <Route path="/tutor/:userId" element={<TutorProfilePage />} />
           <Route path="/dashboard" element={<EditTutorProfilePage />} />
           <Route path="/confirm" element={<LoginConfirmation />} />
+          <Route path="/success" element={<SuccessPayment />} />
+          <Route path="/cancel" element={<CancelledPayment />} />
         </Routes>
         <ToastContainer />
         <CustomFooter />

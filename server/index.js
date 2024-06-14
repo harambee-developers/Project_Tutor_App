@@ -4,6 +4,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/userRoutes");
+const paymentRoutes = require("./routes/paymentRoutes");
 const path = require('path')
 const http = require("http");
 const socketIo = require("socket.io");
@@ -31,7 +32,7 @@ mongoose.connect(
 );
 
 const corsOptions = {
-  origin: FRONTEND_URL,
+  origin: [FRONTEND_URL,'https://js.stripe.com'],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE"], // Ensure all necessary methods are allowed
 };
@@ -49,6 +50,7 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 // Modularized routes
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/payment", paymentRoutes)
 
 const server = http.createServer(app);
 const io = socketIo(server, {
