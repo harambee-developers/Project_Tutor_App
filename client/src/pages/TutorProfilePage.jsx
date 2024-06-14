@@ -1,25 +1,37 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+<<<<<<< HEAD
 import StarRating from "../components/features/StarRating";
 import io from "socket.io-client";
 import InitialsCircle from "../data/initialsCircle";
 import ShowMoreText from "../components/features/ShowMoreText";
 import AvailabilityTable from "../components/features/AvailabilityTable";
 import ChatModal from "../components/features/ChatModal";
+import CheckoutModal from "../components/features/CheckoutModal"; // Import the CheckoutModal
 
 // Connect to the WebSocket server
 const socket = io.connect("http://localhost:7777", {
   withCredentials: true,
   transports: ["websocket", "polling"],
 });
+=======
+import Calender from "../components/features/Calender";
+import PaymentModal from "../components/features/PaymentModal";
+>>>>>>> bb3283bc41d18cf372b744d99ba3bb4ea2bb713e
 
 const TutorProfilePage = () => {
+  const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+<<<<<<< HEAD
   const [availability, setAvailability] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+=======
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+>>>>>>> bb3283bc41d18cf372b744d99ba3bb4ea2bb713e
   const { userId } = useParams();
 
   useEffect(() => {
@@ -36,6 +48,7 @@ const TutorProfilePage = () => {
       }
     };
 
+<<<<<<< HEAD
     const fetchAvailability = async () => {
       try {
         const response = await axios.get(
@@ -66,19 +79,48 @@ const TutorProfilePage = () => {
   const sendMessage = () => {
     if (message.trim()) {
       // Socket operations
-      socket.emit("joinRoom", 'Student');
+      socket.emit("joinRoom", "Student");
 
       socket.emit("sendMessage", {
         senderId: userId, // this should match the logged-in user's ID or something unique
         receiverId: userId, // Ensure this matches a receiver ID expected on the server
-        content: message
+        content: message,
       });
-      
+
       setMessage("");
 
       setIsModalOpen(false); // Close modal after sending
     }
   };
+
+  const handlePayment = async () => {
+    try {
+      const items = [{ id: subjectId, quantity: hours }]; // Example payload, adjust based on your actual data structure
+      const response = await axios.post(
+        `http://localhost:7777/api/payment/create-checkout-session/`,
+        { items }
+      );
+      window.location = response.data.url;
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Example data for subjects and availability
+  const subjects = [
+    { id: 1, name: "Maths" },
+    { id: 2, name: "English" },
+  ];
+  const availabilityPayload = [
+    { id: 1, label: "9:00 AM - 10:00 AM" },
+    { id: 2, label: "10:00 AM - 11:00 AM" },
+  ];
+=======
+    fetchTutors();
+  }, [userId]);
+>>>>>>> bb3283bc41d18cf372b744d99ba3bb4ea2bb713e
 
   if (loading) {
     return <div className="text-center mt-8">Loading...</div>;
@@ -88,7 +130,12 @@ const TutorProfilePage = () => {
     return <div className="text-center mt-8">Error: {error}</div>;
   }
 
+<<<<<<< HEAD
   const hasReviews = results?.profile?.review?.rating;
+=======
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+>>>>>>> bb3283bc41d18cf372b744d99ba3bb4ea2bb713e
 
   return (
     <div className="grid md:grid-cols-2 gap-10 p-20">
@@ -128,6 +175,7 @@ const TutorProfilePage = () => {
           </p>
           <p className="px-2">/ per hour</p>
         </div>
+<<<<<<< HEAD
         <select className="w-full mt-4 mb-4 text-black px-4 py-2" id="Levels">
           <option value="" disabled selected>
             Select subject and levels
@@ -137,13 +185,32 @@ const TutorProfilePage = () => {
           <option value="Maths">KCSE</option>
           <option value="Science">College or Degree Equivalent</option>
         </select>
-        <button className="border-2 bg-teal-500 border-teal-700 text-white py-1 w-full rounded-md hover:bg-transparent hover:text-teal-500 font-semibold">
+        <button
+          className="border-2 bg-teal-500 border-teal-700 text-white py-1 w-full rounded-md hover:bg-transparent hover:text-teal-500 font-semibold"
+          onClick={() => setIsCheckoutModalOpen(true)}
+        >
           Book Now
         </button>
+        <CheckoutModal
+          isOpen={isCheckoutModalOpen}
+          onClose={() => setIsCheckoutModalOpen(false)}
+          subjects={subjects}
+          availability={availabilityPayload}
+          createCheckoutSession={handlePayment}
+        />
         <button
           className="border-2 bg-teal-500 border-teal-700 text-white py-1 w-full rounded-md hover:bg-transparent hover:text-teal-500 font-semibold mt-5 mb-5"
           onClick={() => setIsModalOpen(true)}
         >
+=======
+        <button
+          className="w-3/4 m-4 bg-teal-500 hover:bg-blue-600 text-white py-2 rounded-full"
+          onClick={openModal}
+        >
+          Book Now
+        </button>
+        <button className="w-3/4 m-4 bg-teal-500 hover:bg-blue-600 text-white py-2 rounded-full">
+>>>>>>> bb3283bc41d18cf372b744d99ba3bb4ea2bb713e
           Send Message
         </button>
         <ChatModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
@@ -249,6 +316,7 @@ const TutorProfilePage = () => {
         <AvailabilityTable availability={availability} />{" "}
         {/* Render AvailabilityTable component */}
       </div>
+      <PaymentModal isOpen={isModalOpen} onRequestClose={closeModal} />
     </div>
   );
 };

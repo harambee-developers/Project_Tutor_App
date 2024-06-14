@@ -1,4 +1,3 @@
-// Improved Navbar with React Router's Link and better toggle handling
 import React, { useState, useEffect } from "react";
 import { FiMenu } from "react-icons/fi";
 import logo from "../../assets/logo.png";
