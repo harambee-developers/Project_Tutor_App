@@ -180,7 +180,7 @@ const Navbar = () => {
                 <li>
                   <Link
                     to="/register"
-                    className="bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out"
+                    className="bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-4 md:rounded-full transition duration-300 ease-in-out"
                     onClick={toggleMenu}
                   >
                     Sign Up
