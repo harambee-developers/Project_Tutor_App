@@ -12,10 +12,11 @@ import { ToastContainer } from "react-toastify";
 import SuccessPayment from "./components/layout/SuccessPayment";
 import CancelledPayment from "./components/layout/CancelledPayment";
 import "react-toastify/dist/ReactToastify.css";
+import Modal from "react-modal";
 
 function App() {
-  
-
+  // Assuming root app element has an ID of 'root'
+  Modal.setAppElement("#root");
   return (
     <BrowserRouter>
       <div>

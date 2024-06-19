@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { FiMenu } from "react-icons/fi";
+import { FaBell } from "react-icons/fa";
 import logo from "../../assets/logo.png";
 import { IoCloseSharp } from "react-icons/io5";
 import { useAuth } from "../features/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
-import { MdMailOutline } from "react-icons/md";
 import Modal from "react-modal";
 import axios from "axios";
 import io from "socket.io-client";
 import MessageList from "../features/MessageList";
 
 // Connect to the WebSocket server
-const socket = io.connect("http://localhost:7777", {
+const socket = io.connect(`${import.meta.env.VITE_BACKEND_URL}`, {
   withCredentials: true,
   transports: ["websocket", "polling"],
 });
@@ -32,7 +32,7 @@ const Navbar = () => {
     const fetchProfileInfo = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:7777/api/user/user/${authUser.userId}`
+          `${import.meta.env.VITE_BACKEND_URL}/api/user/user/${authUser.userId}`
         );
         setUser(response.data);
       } catch (error) {
@@ -44,7 +44,9 @@ const Navbar = () => {
     const fetchMessages = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:7777/api/user/messages/${authUser.userId}`
+          `${import.meta.env.VITE_BACKEND_URL}/api/user/messages/${
+            authUser.userId
+          }`
         );
         setMessages(response.data); // Assuming the API returns an array of messages
       } catch (error) {
@@ -76,10 +78,6 @@ const Navbar = () => {
 
   const toggleMenu = () => {
     setOpen((prev) => !prev);
-  };
-
-  const closeMenu = () => {
-    setOpen(false);
   };
 
   const handleLogout = () => {
@@ -114,6 +112,7 @@ const Navbar = () => {
                   <Link
                     to="/"
                     className="md:hidden hover:text-blue-500 text-white"
+                    onClick={toggleMenu}
                   >
                     Home
                   </Link>
@@ -123,9 +122,9 @@ const Navbar = () => {
                     onClick={openModal}
                     className="relative text-3xl text-white hover:text-blue-500"
                   >
-                    <MdMailOutline />
+                    <FaBell />
                     {unreadCount > 0 && (
-                      <span className="absolute top-0 right-0 flex items-center justify-center h-5 w-5 bg-red-500 text-white text-xs rounded-full">
+                      <span className="absolute top-0 right-0 flex items-center justify-center h-5 w-5 bg-red-500 text-white text-xs rounded-full transition duration-300 ease-in-out">
                         {unreadCount}
                       </span>
                     )}
@@ -135,6 +134,7 @@ const Navbar = () => {
                   <Link
                     to="/dashboard"
                     className="md:text-gray-700 hover:text-blue-500"
+                    onClick={toggleMenu}
                   >
                     Edit Profile
                   </Link>
@@ -142,7 +142,7 @@ const Navbar = () => {
                 <li>
                   <button
                     onClick={handleLogout}
-                    className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 md:rounded-full"
+                    className="bg-red-500 hover:bg-red-700 hover:border-2 text-white font-bold py-2 px-4 md:rounded-full transition duration-300 ease-in-out"
                   >
                     Logout
                   </button>
@@ -164,7 +164,7 @@ const Navbar = () => {
             ) : (
               <>
                 <li>
-                  <Link to="/" className="hover:text-blue-500 md:text-black">
+                  <Link to="/" className="hover:text-blue-500 md:text-black" onClick={toggleMenu}>
                     Find a Tutor
                   </Link>
                 </li>
@@ -172,6 +172,7 @@ const Navbar = () => {
                   <Link
                     to="/login"
                     className="hover:text-blue-500 md:text-black"
+                    onClick={toggleMenu}
                   >
                     Login
                   </Link>
@@ -179,7 +180,8 @@ const Navbar = () => {
                 <li>
                   <Link
                     to="/register"
-                    className="bg-teal-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                    className="bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out"
+                    onClick={toggleMenu}
                   >
                     Sign Up
                   </Link>

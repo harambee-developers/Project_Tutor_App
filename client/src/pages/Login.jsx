@@ -14,12 +14,12 @@ const Login = () => {
   const handleLogin = async () => {
     try {
       await login(username, password);
-      toast.success("Login successful!", { position: "top-center" });
+      toast.success("Login successful!", { position: "top-right", autoClose: 3000 });
       navigate('/confirm')
       setUsername("");
       setPassword("");
     } catch (error) {
-      toast.error("Login Failed", { position: "top-center" });
+      toast.error("Login Failed", { position: "top-right" });
       console.error("Login failed:", error);
     }
   };
@@ -80,7 +80,7 @@ const Login = () => {
         <div className="mt-5">
           <button
             onClick={handleLogin}
-            className="border-2 bg-teal-500 border-teal-700 text-white py-1 w-full rounded-md hover:bg-transparent hover:text-teal-500 font-semibold"
+            className="border bg-teal-500 border-teal-700 text-white py-1 w-full rounded-md hover:bg-teal-700 font-semibold transition-all duration-300 ease-in-out"
             type="submit"
           >
             Submit

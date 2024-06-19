@@ -76,7 +76,7 @@ const ProfilePictureModal = ({ isOpen, onClose }) => {
         try {
           const response = await axios({
             method: "post",
-            url: "http://localhost:7777/api/auth/profile/upload",
+            url: `${import.meta.env.VITE_BACKEND_URL}/api/auth/profile/upload`,
             data: formData,
             headers: { "Content-Type": "multipart/form-data" },
           });

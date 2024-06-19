@@ -18,7 +18,8 @@ const PORT = process.env.PORT || 7777;
 const {
   MONGO_INITDB_ROOT_USERNAME,
   MONGO_INITDB_ROOT_PASSWORD,
-  FRONTEND_URL,
+  FRONTEND_URL_DEV,
+  FRONTEND_URL_PROD,
   JWT_SECRET,
 } = process.env;
 
@@ -32,7 +33,7 @@ mongoose.connect(
 );
 
 const corsOptions = {
-  origin: [FRONTEND_URL,'https://js.stripe.com'],
+  origin: [FRONTEND_URL_DEV,'https://js.stripe.com', FRONTEND_URL_PROD],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE"], // Ensure all necessary methods are allowed
 };

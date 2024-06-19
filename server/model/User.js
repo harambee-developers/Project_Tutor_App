@@ -73,8 +73,16 @@ const messageSchema = new Schema(
   }
 );
 
+const serviceSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  description: { type: String, required: true },
+  pricePerHourInCents: { type: Number, required: true }, // Store price in cents to avoid floating point imprecisions
+  currency: { type: String, default: 'gbp' }, // Default currency can be set as 'GBP'
+});
+
 // Create models
 const User = model("User", userSchema);
 const Message = model("Message", messageSchema);
+const Service = model("Service", serviceSchema);
 
-module.exports = { User, Message };
+module.exports = { User, Message, Service };

@@ -53,7 +53,7 @@ const Subjects = ({ initialSubjects = [] }) => {
 
     setIsLoading(true);
     try {
-      const response = await axios.put(`http://localhost:7777/api/user/subject/${user.userId}`, { subjects: rows });
+      const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/user/subject/${user.userId}`, { subjects: rows });
       console.log("Data:", response.data);
       alert("Data saved successfully");
     } catch (error) {
@@ -65,14 +65,15 @@ const Subjects = ({ initialSubjects = [] }) => {
 
   return (
     <div className="p-4">
-      <section className="subjects-section">
-        <div className="flex justify-between items-center mb-2">
-          <h1 className="font-semibold text-gray-700 text-xl p-4">Subjects</h1>
-          <button className="mt-4 bg-teal-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={addRow}>
-            Add Subject
-          </button>
-        </div>
-        <form onSubmit={saveSubjects}>
+    <section className="subjects-section">
+      <div className="flex justify-between items-center mb-2 md:flex-row">
+        <h1 className="font-semibold text-gray-700 text-xl p-4">Subjects</h1>
+        <button className="px-4 py-2 bg-teal-500 text-white rounded hover:bg-teal-700 transition-all duration-300 ease-in-out" onClick={addRow}>
+          Add Subject
+        </button>
+      </div>
+      <form onSubmit={saveSubjects}>
+        <div className="overflow-x-auto">
           <table className="min-w-full bg-white border-collapse divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
@@ -129,18 +130,19 @@ const Subjects = ({ initialSubjects = [] }) => {
               ))}
             </tbody>
           </table>
-          <div className="flex justify-end p-4">
-            <button
-              className="px-4 py-2 bg-teal-500 text-white rounded hover:bg-blue-600"
-              disabled={isLoading}
-              type="submit"
-            >
-              {isLoading ? "Saving..." : "Submit"}
-            </button>
-          </div>
-        </form>
-      </section>
-    </div>
+        </div>
+        <div className="flex justify-end p-4">
+          <button
+            className="px-4 py-2 bg-teal-500 text-white rounded hover:bg-teal-700 transition-all duration-300 ease-in-out"
+            disabled={isLoading}
+            type="submit"
+          >
+            {isLoading ? "Saving..." : "Submit"}
+          </button>
+        </div>
+      </form>
+    </section>
+  </div>
   );
 };
 

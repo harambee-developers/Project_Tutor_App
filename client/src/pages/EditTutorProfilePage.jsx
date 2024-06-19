@@ -11,7 +11,7 @@ import {
 import MyProfile from "../components/profile/MyProfile";
 import Reviews from "../components/profile/Reviews";
 import Subjects from "../components/profile/Subjects";
-import Availability from "../components/profile/Availability"; // Corrected spelling from 'Avaialbility'
+import Availability from "../components/profile/Availability";
 import StarRating from "../components/features/StarRating";
 import ProfilePictureModal from "../components/features/ProfilePictureModal";
 import defaultProfilePic from "../assets/default_avatar.jpg";
@@ -34,7 +34,9 @@ const EditTutorProfilePage = () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          `http://localhost:7777/api/user/user/${authUser?.userId}`
+          `${import.meta.env.VITE_BACKEND_URL}/api/user/user/${
+            authUser?.userId
+          }`
         );
         setResults(response.data);
       } catch (error) {
@@ -53,7 +55,9 @@ const EditTutorProfilePage = () => {
   const handleDeleteProfile = async () => {
     try {
       await axios.delete(
-        `http://localhost:7777/api/user/users/delete/${authUser.userId}`
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/users/delete/${
+          authUser.userId
+        }`
       );
       alert("Profile deleted successfully");
       // Redirect to another page and log out the user
@@ -80,6 +84,21 @@ const EditTutorProfilePage = () => {
     }
   };
 
+  const renderIcon = (option) => {
+    switch (option) {
+      case "Profile":
+        return <FaUser className="inline mr-2" />;
+      case "Review":
+        return <FaStar className="inline mr-2" />;
+      case "Subjects":
+        return <FaBook className="inline mr-2" />;
+      case "Availability":
+        return <FaCalendar className="inline mr-2" />;
+      default:
+        return null;
+    }
+  };
+
   const handleOnClick = (value) => {
     setSelectedTab(value);
   };
@@ -92,45 +111,44 @@ const EditTutorProfilePage = () => {
     return <div className="text-center mt-8 min-h-screen">Error: {error}</div>;
   }
 
+  const isTutor = results.usertype === "Tutor";
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-10 p-20">
-      <div className="bg-white shadow-lg rounded-lg overflow-hidden col-span-3">
-        <div className="p-2 md:flex justify-between items-center">
-          <div className="flex items-center">
-            {" "}
-            {/* Container for the image and camera icon */}
-            <div className="relative w-32 h-32">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 p-4 lg:p-20">
+      <div className="bg-white shadow-lg rounded-lg overflow-hidden col-span-1 lg:col-span-3">
+        <div className="p-4 flex justify-between items-center flex-wrap">
+          <div className="flex items-center space-x-4">
+            <div className="relative w-24 h-24 lg:w-32 lg:h-32">
               <img
-                src={results.avatarUrl || { defaultProfilePic }}
+                src={results.avatarUrl || defaultProfilePic}
                 alt="Profile"
                 className="h-full w-full object-cover rounded-full"
               />
-              <div className="absolute bottom-2 left-2">
-                <div className="bg-gray-800 bg-opacity-50 p-2 rounded-full">
-                  <FaCamera
-                    className="h-6 w-6 text-white"
-                    onClick={() => setIsModalOpen(true)}
-                  />
-                  <ProfilePictureModal
-                    isOpen={isModalOpen}
-                    onClose={() => setIsModalOpen(false)}
-                  />
-                </div>
-              </div>
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="absolute bottom-0 left-0 bg-gray-800 bg-opacity-50 p-2 rounded-full text-white"
+                aria-label="Edit picture"
+              >
+                <FaCamera className="h-6 w-6" />
+              </button>
+              <ProfilePictureModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+              />
             </div>
-            <div className="px-2 mt-5 uppercase tracking-wide text-sm text-gray-700 font-semibold mb-2">
+            <div className="text-sm lg:text-base text-gray-700 font-semibold">
               {results.username}
-              <div className="py-4 rounded-lg">
+              <div className="pt-2">
                 <StarRating rating={results.profile.review.rating} />
               </div>
             </div>
           </div>
           <button
             onClick={() => setIsModalDeleteOpen(true)}
-            className="ml-auto bg-red-500 text-white p-2 rounded hover:bg-red-700 transition duration-150 ease-in-out"
+            className="mt-4 lg:mt-0 bg-red-500 text-white p-2 rounded hover:bg-red-700 transition duration-150 ease-in-out flex items-center justify-center"
             title="Delete Profile"
           >
-            <FaTrash className="h-6 w-6" /> {/* FontAwesome Trash Icon */}
+            <FaTrash className="h-6 w-6" />
           </button>
           <ConfirmationDelete
             isOpen={isModalDeleteOpen}
@@ -142,82 +160,26 @@ const EditTutorProfilePage = () => {
           />
         </div>
       </div>
-      <div className="bg-white shadow-lg rounded-lg overflow-hidden md:col-span-1 col-span-3">
-        <ul>
-          <li>
-            <button
-              onClick={() => handleOnClick("Profile")}
-              className={`w-full rounded flex justify-start text-center font-semibold gap-2 hover:bg-teal-500 hover:text-white hover:py-2 mb-4 ${
-                selectedTab === "Profile"
-                  ? "bg-teal-500 text-white py-2 mb-4"
-                  : ""
-              }`}
-            >
-              <div className="flex space-x-2">
-                <div className="px-2 py-1">
-                  <FaUser />
-                </div>
-                <p>My Profile</p>
-              </div>
-            </button>
-          </li>
-          <li>
-            <button
-              onClick={() => handleOnClick("Review")}
-              className={`w-full rounded flex justify-start text-center font-semibold gap-2 hover:bg-teal-500 hover:text-white hover:py-2 mb-4 ${
-                selectedTab === "Review"
-                  ? "bg-teal-500 text-white py-2 mb-4"
-                  : ""
-              }`}
-            >
-              {" "}
-              <div className="flex space-x-2">
-                <div className="px-2 py-1">
-                  <FaStar />
-                </div>
-                <p>Reviews</p>
-              </div>
-            </button>
-          </li>
-          <li>
-            <button
-              onClick={() => handleOnClick("Subjects")}
-              className={`w-full rounded flex justify-start text-center font-semibold gap-2 hover:bg-teal-500 hover:text-white hover:py-2 mb-4 ${
-                selectedTab === "Subjects"
-                  ? "bg-teal-500 text-white py-2 mb-4"
-                  : ""
-              }`}
-            >
-              {" "}
-              <div className="flex space-x-2">
-                <div className="px-2 py-1">
-                  <FaBook />
-                </div>
-                <p>Subjects</p>
-              </div>
-            </button>
-          </li>
-          <li>
-            <button
-              onClick={() => handleOnClick("Availability")}
-              className={`w-full rounded flex justify-start text-center font-semibold gap-2 hover:bg-teal-500 hover:text-white hover:py-2 mb-4 ${
-                selectedTab === "Availability"
-                  ? "bg-teal-500 text-white py-2 mb-4"
-                  : ""
-              }`}
-            >
-              {" "}
-              <div className="flex space-x-2">
-                <div className="px-2 py-1">
-                  <FaCalendar />
-                </div>
-                <p>Availability</p>
-              </div>
-            </button>
-          </li>
+      <div className="bg-white shadow-lg rounded-lg p-4 overflow-hidden">
+        <ul className="space-y-1">
+          {["Profile", "Review", "Subjects", "Availability"].map((option) => (
+            <li key={option}>
+              <button
+                onClick={() => handleOnClick(option)}
+                className={`w-full text-left font-semibold py-2 px-4 rounded transition duration-300 ease-in-out ${
+                  selectedTab === option
+                    ? "bg-teal-500 text-white"
+                    : "hover:bg-teal-500 hover:text-white"
+                }`}
+              >
+                {renderIcon(option)}
+                {option}
+              </button>
+            </li>
+          ))}
         </ul>
       </div>
-      <div className="bg-white shadow-lg rounded-lg overflow-hidden md:col-span-2 col-span-3 min-h-screen w-full">
+      <div className="bg-white shadow-lg rounded-lg p-4 overflow-hidden col-span-1 lg:col-span-2">
         {renderComponent()}
       </div>
     </div>

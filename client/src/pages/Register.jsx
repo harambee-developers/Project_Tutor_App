@@ -57,7 +57,7 @@ const Register = () => {
     data.append('avatar', blob, 'default_avatar.jpg');
 
     try {
-      const response = await fetch(`http://localhost:7777/api/auth/register`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/register`, {
         method: 'POST',
         body: data,
       });
@@ -153,7 +153,7 @@ const Register = () => {
             </label>
             <select
               name="usertype"
-              className="border w-full text-base px-2 focus:outline-none focus:ring-0 focus:border-gray-500"
+              className="border w-full text-base px-2 focus:outline-none focus:ring-0 focus:border-gray-500 py-2"
               id="usertype"
               value={formData.usertype}
               onChange={handleChange}
@@ -166,7 +166,7 @@ const Register = () => {
           </div>
           <div className="mt-5">
             <button
-              className={`border-2 ${isSubmitting ? 'bg-gray-500' : 'bg-teal-500'} border-teal-700 text-white py-1 w-full rounded-md hover:bg-transparent hover:text-teal-500 font-semibold`}
+              className={`border ${isSubmitting ? 'bg-gray-500' : 'bg-teal-500'} border-teal-700 text-white py-1 w-full rounded-md hover:bg-teal-700 font-semibold transition-all duration-300 ease-in-out`}
               type="submit"
               disabled={isSubmitting}
             >
