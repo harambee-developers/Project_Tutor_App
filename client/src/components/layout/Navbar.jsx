@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FiMenu } from "react-icons/fi";
 import { FaBell } from "react-icons/fa";
-import logo from "../../assets/logo.png";
+import logo from "../../assets/harambee-logo-trans.png";
 import { IoCloseSharp } from "react-icons/io5";
 import { useAuth } from "../features/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
@@ -88,40 +88,49 @@ const Navbar = () => {
 
   return (
     <nav className="shadow-md w-full top-0 bg-gray-200 md:px-20">
-      <div className="md:flex items-center justify-between text-white mr-6 text-xl md:px-10 px-7">
-        <div className="font-bold md:flex items-center text-white">
+      <div className="flex items-center justify-between text-white md:px-10 px-7">
+        <div className="font-bold">
           <Link to="/">
             <img src={logo} alt="logo" className="h-32 md:w-full" />
           </Link>
         </div>
-        <button
-          className="absolute right-10 top-7 cursor-pointer md:hidden mt-5 text-gray-800 z-10 hover:text-white"
-          onClick={toggleMenu}
-        >
-          {isOpen ? <IoCloseSharp size={30} /> : <FiMenu size={30} />}
-        </button>
+        <div className="md:hidden flex items-center">
+          {authUser && (
+            <button onClick={openModal} className="p-2 relative mr-2 cursor-pointer hover:text-black">
+              <FaBell />
+              {unreadCount > 0 && (
+                <span className="absolute top-0 right-0 flex items-center justify-center h-5 w-5 bg-red-500 text-white text-xs rounded-full transition duration-300 ease-in-out">
+                  {unreadCount}
+                </span>
+              )}
+            </button>
+          )}
+          <button
+            className="p-2 text-gray-800 hover:text-white z-50"
+            onClick={toggleMenu}
+          >
+            {isOpen ? <IoCloseSharp size={30} /> : <FiMenu size={30} />}
+          </button>
+        </div>
         <div
           className={`${
             isOpen ? "flex" : "hidden"
-          } md:flex items-center justify-center absolute md:relative inset-0 md:inset-auto bg-black md:bg-transparent bg-opacity-75 md:bg-opacity-0 transition-all duration-500 ease-in-out`}
+          } z-40 md:flex items-center fixed md:relative inset-0 md:inset-auto bg-black md:bg-transparent bg-opacity-80 md:bg-opacity-0 transition-all duration-500 ease-in-out md:w-auto w-full justify-center`}
         >
-          <ul className="md:flex md:items-center md:space-x-4 md:space-y-0 space-y-4 text-base">
+          <ul className="md:flex md:items-center md:space-x-4 space-y-4 md:space-y-0 text-base md:text-black text-white">
             {authUser ? (
               <>
                 <li>
                   <Link
                     to="/"
-                    className="md:hidden hover:text-blue-500 text-white"
+                    className="md:hidden hover:text-blue-500"
                     onClick={toggleMenu}
                   >
                     Home
                   </Link>
                 </li>
                 <li>
-                  <button
-                    onClick={openModal}
-                    className="relative text-3xl text-white hover:text-blue-500"
-                  >
+                  <button onClick={openModal} className="hidden md:flex relative p-2 mr-2 cursor-pointer hover:text-white">
                     <FaBell />
                     {unreadCount > 0 && (
                       <span className="absolute top-0 right-0 flex items-center justify-center h-5 w-5 bg-red-500 text-white text-xs rounded-full transition duration-300 ease-in-out">
@@ -142,7 +151,7 @@ const Navbar = () => {
                 <li>
                   <button
                     onClick={handleLogout}
-                    className="bg-red-500 hover:bg-red-700 hover:border-2 text-white font-bold py-2 px-4 md:rounded-full transition duration-300 ease-in-out"
+                    className="bg-red-500 hover:bg-red-700 hover:border-1 text-white font-bold py-2 px-4 md:rounded-full transition duration-300 ease-in-out"
                   >
                     Logout
                   </button>
@@ -151,27 +160,29 @@ const Navbar = () => {
                   <img
                     src={user?.avatarUrl}
                     alt="avatar"
-                    className={`${
-                      isOpen ? "hidden" : "h-8 w-8 rounded-full object-cover"
-                    }`}
+                    className="hidden md:flex h-8 w-8 rounded-full object-cover"
                   />
                 </li>
-                <li className={`${isOpen ? "hidden" : "text-black"}`}>
-                  <p className="text-2xl">Hello!</p>
-                  <p>{user?.username}</p>
+                <li>
+                  <p className="hidden md:flex text-2xl">Hello!</p>
+                  <p className="hidden md:contents">{user?.username}</p>
                 </li>
               </>
             ) : (
               <>
                 <li>
-                  <Link to="/" className="hover:text-blue-500 md:text-black" onClick={toggleMenu}>
+                  <Link
+                    to="/"
+                    className="hover:text-blue-500"
+                    onClick={toggleMenu}
+                  >
                     Find a Tutor
                   </Link>
                 </li>
                 <li>
                   <Link
                     to="/login"
-                    className="hover:text-blue-500 md:text-black"
+                    className="hover:text-blue-500"
                     onClick={toggleMenu}
                   >
                     Login
@@ -194,7 +205,7 @@ const Navbar = () => {
             onRequestClose={closeModal}
             contentLabel="Inbox"
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white border border-gray-300 shadow-lg rounded-lg overflow-hidden"
-            overlayClassName="fixed inset-0 bg-black bg-opacity-50"
+            overlayClassName="fixed inset-0 bg-black bg-opacity-80 z-50"
           >
             {/* Component or JSX to display messages */}
             <div className="p-4 max-w-xl w-full">

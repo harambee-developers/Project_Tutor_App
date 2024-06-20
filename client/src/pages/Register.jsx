@@ -1,20 +1,22 @@
 import React, { useState } from "react";
 import { FaUser } from "react-icons/fa";
-import defaultAvatarImage from '../assets/default_avatar.jpg';
+import defaultAvatarImage from "../assets/default_avatar.jpg";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet";
+import favicon from "../assets/harambee-logo.png"
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    usertype: '', 
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    usertype: "",
   });
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,7 +28,8 @@ const Register = () => {
     if (!formData.username) formErrors.username = "Username is required";
     if (!formData.email) formErrors.email = "Email is required";
     if (!formData.password) formErrors.password = "Password is required";
-    if (!formData.confirmPassword) formErrors.confirmPassword = "Confirm password is required";
+    if (!formData.confirmPassword)
+      formErrors.confirmPassword = "Confirm password is required";
     if (formData.password !== formData.confirmPassword) {
       formErrors.confirmPassword = "Passwords do not match";
     }
@@ -46,41 +49,53 @@ const Register = () => {
     setIsSubmitting(true);
 
     const data = new FormData();
-    data.append('username', formData.username);
-    data.append('email', formData.email);
-    data.append('password', formData.password);
-    data.append('usertype', formData.usertype);
+    data.append("username", formData.username);
+    data.append("email", formData.email);
+    data.append("password", formData.password);
+    data.append("usertype", formData.usertype);
 
     // Fetch the default avatar image and convert it to a Blob
     const response = await fetch(defaultAvatarImage);
     const blob = await response.blob();
-    data.append('avatar', blob, 'default_avatar.jpg');
+    data.append("avatar", blob, "default_avatar.jpg");
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/register`, {
-        method: 'POST',
-        body: data,
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/auth/register`,
+        {
+          method: "POST",
+          body: data,
+        }
+      );
 
       const result = await response.json();
       setIsSubmitting(false);
 
       if (response.ok) {
-        alert('Registration successful!');
+        alert("Registration successful!");
         // Handle successful registration (e.g., redirect to login page)
-        navigate("/login")
+        navigate("/login");
       } else {
-        alert('Registration failed: ' + result.message);
+        alert("Registration failed: " + result.message);
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
       setIsSubmitting(false);
-      alert('An error occurred. Please try again later.');
+      alert("An error occurred. Please try again later.");
     }
   };
 
   return (
     <div className="flex items-center justify-center h-screen border">
+      <Helmet>
+        <link
+          rel="icon"
+          type="image/png"
+          href={favicon}
+          sizes="16x16"
+        />
+        <title>Harambee Tutors | Sign Up </title>
+      </Helmet>
       <div className="w-96 p-6 shadow-lg bg-white rounded-md">
         <h1 className="text-3xl flex justify-center text-center font-semibold gap-2 mb-4">
           <FaUser />
@@ -100,7 +115,9 @@ const Register = () => {
               value={formData.username}
               onChange={handleChange}
             />
-            {errors.username && <p className="text-red-500 text-sm">{errors.username}</p>}
+            {errors.username && (
+              <p className="text-red-500 text-sm">{errors.username}</p>
+            )}
           </div>
           <div className="mt-3">
             <label htmlFor="email" className="block text-base mb-2">
@@ -115,7 +132,9 @@ const Register = () => {
               value={formData.email}
               onChange={handleChange}
             />
-            {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+            {errors.email && (
+              <p className="text-red-500 text-sm">{errors.email}</p>
+            )}
           </div>
           <div className="mt-3">
             <label htmlFor="password" className="block text-base mb-2">
@@ -130,7 +149,9 @@ const Register = () => {
               value={formData.password}
               onChange={handleChange}
             />
-            {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
+            {errors.password && (
+              <p className="text-red-500 text-sm">{errors.password}</p>
+            )}
           </div>
           <div className="mt-3">
             <label htmlFor="confirmPassword" className="block text-base mb-2">
@@ -145,7 +166,9 @@ const Register = () => {
               value={formData.confirmPassword}
               onChange={handleChange}
             />
-            {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword}</p>}
+            {errors.confirmPassword && (
+              <p className="text-red-500 text-sm">{errors.confirmPassword}</p>
+            )}
           </div>
           <div className="mt-3">
             <label htmlFor="usertype" className="block text-base mb-2 mt-2">
@@ -162,15 +185,19 @@ const Register = () => {
               <option value="Student">Student</option>
               <option value="Tutor">Tutor</option>
             </select>
-            {errors.usertype && <p className="text-red-500 text-sm">{errors.usertype}</p>}
+            {errors.usertype && (
+              <p className="text-red-500 text-sm">{errors.usertype}</p>
+            )}
           </div>
           <div className="mt-5">
             <button
-              className={`border ${isSubmitting ? 'bg-gray-500' : 'bg-teal-500'} border-teal-700 text-white py-1 w-full rounded-md hover:bg-teal-700 font-semibold transition-all duration-300 ease-in-out`}
+              className={`border ${
+                isSubmitting ? "bg-gray-500" : "bg-teal-500"
+              } border-teal-700 text-white py-1 w-full rounded-md hover:bg-teal-700 font-semibold transition-all duration-300 ease-in-out`}
               type="submit"
               disabled={isSubmitting}
             >
-              {isSubmitting ? 'Creating Account...' : 'Create Account'}
+              {isSubmitting ? "Creating Account..." : "Create Account"}
             </button>
           </div>
         </form>

@@ -3,19 +3,25 @@ import { FaUser } from "react-icons/fa";
 import { useAuth } from "../components/features/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { Helmet } from "react-helmet";
+import favicon from "../assets/harambee-logo.png"
 import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const { login } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate()
+  const [rememberMe, setRememberMe] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
-      await login(username, password);
-      toast.success("Login successful!", { position: "top-right", autoClose: 3000 });
-      navigate('/confirm')
+      await login(username, password, rememberMe);
+      toast.success("Login successful!", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+      navigate("/confirm");
       setUsername("");
       setPassword("");
     } catch (error) {
@@ -26,6 +32,15 @@ const Login = () => {
 
   return (
     <div className="flex items-center justify-center h-screen border">
+      <Helmet>
+        <link
+          rel="icon"
+          type="image/png"
+          href={favicon}
+          sizes="16x16"
+        />
+        <title>Harambee Tutors | Login</title>
+      </Helmet>
       <div className="w-96 p-6 shadow-lg bg-white rounded-md">
         <h1 className="text-3xl flex justify-center text-center font-semibold gap-2 mb-4">
           <FaUser />
@@ -65,7 +80,11 @@ const Login = () => {
         </div>
         <div className="mt-3 flex justify-between items-center">
           <div>
-            <input type="checkbox" />
+            <input
+              type="checkbox"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.click)}
+            />
             <label htmlFor="">Remember Me?</label>
           </div>
           <div>

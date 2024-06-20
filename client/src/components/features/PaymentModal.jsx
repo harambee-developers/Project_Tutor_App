@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import Modal from "react-modal";
 import stripe_logo from "../../assets/stripe_logo.png";
 import mpesa_logo from "../../assets/mpesa_logo.png";
@@ -36,6 +36,33 @@ const PaymentModal = ({
   const [selectedDay, setSelectedDay] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
   const [hours, setHours] = useState(1);
+  // Add the maxHours state initialization at the start of your component
+  const [maxHours, setMaxHours] = useState(1);
+
+  const calculateAvailableHours = () => {
+    if (!selectedDay || !selectedTime) {
+      return 1; // Default value when no day or time is selected
+    }
+
+    const daySchedule = availability.find((day) => day.day === selectedDay);
+    if (!daySchedule) {
+      return 1;
+    }
+
+    const startTimeIndex = daySchedule.times.findIndex(
+      (time) => time === selectedTime
+    );
+    return daySchedule.times.length - startTimeIndex; // Remaining slots in the day
+  };
+
+  // Update your useEffect dependency array and logic as shown earlier
+  useEffect(() => {
+    const maxHours = calculateAvailableHours();
+    if (hours > maxHours) {
+      setHours(maxHours);
+    }
+    setMaxHours(maxHours); // Assuming you have a state [maxHours, setMaxHours] for this
+  }, [selectedDay, selectedTime, availability]);
 
   return (
     <Modal
@@ -120,7 +147,7 @@ const PaymentModal = ({
           <input
             type="number"
             min="1"
-            max="8"
+            max={maxHours}
             value={hours}
             onChange={(e) => setHours(e.target.value)}
             className="block w-full p-2 border rounded mb-4"

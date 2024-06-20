@@ -14,10 +14,9 @@ export const AuthProvider = ({ children }) => {
   // Set up Axios to send cookies with every request
   axios.defaults.withCredentials = true;
 
-  const login = async (username, password) => {
+  const login = async (username, password, rememberMe) => {
     try {
-      console.log("Attempting login with", username, password);
-      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/login`, { username, password });
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/login`, { username, password, rememberMe });
 
       if (response.status === 200) {
         verifyToken(); // Verifies token and fetches user data

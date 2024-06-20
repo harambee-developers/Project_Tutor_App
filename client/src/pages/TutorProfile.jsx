@@ -3,6 +3,8 @@ import axios from "axios";
 import SearchAndFilter from "../components/features/SearchAndFilter";
 import StarRating from "../components/features/StarRating";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet";
+import favicon from "../assets/harambee-logo.png"
 
 const TutorProfile = () => {
   const [tutors, setTutors] = useState([]);
@@ -41,6 +43,15 @@ const TutorProfile = () => {
 
   return (
     <div className="container mx-auto px-4 min-h-screen">
+      <Helmet>
+        <link
+          rel="icon"
+          type="image/png"
+          href={favicon}
+          sizes="16x16"
+        />
+        <title>Harambee Tutors | Tutor Search </title>
+      </Helmet>
       <div className="flex flex-col md:flex-row">
         <select
           className="mb-4 md:mb-0 md:mr-4 mt-4 px-4 border-gray-400 rounded w-full md:w-auto py-2"
@@ -50,10 +61,6 @@ const TutorProfile = () => {
           <option value="" disabled>
             All Subjects...
           </option>
-          <option value="English">English</option>
-          <option value="Maths">Maths</option>
-          <option value="Science">Science</option>
-          <option value="ICT">ICT</option>
         </select>
         <select
           className="mb-4 md:mb-0 md:mr-4 mt-4 px-4 border-gray-400 rounded w-full md:w-auto py-2"
@@ -63,10 +70,6 @@ const TutorProfile = () => {
           <option value="" disabled>
             All Levels...
           </option>
-          <option value="Primary">Primary</option>
-          <option value="KCPE">KCPE</option>
-          <option value="KCSE">KCSE</option>
-          <option value="College">College or Degree Equivalent</option>
         </select>
         <SearchAndFilter
           data={tutors} // Assume tutors data is passed to the component

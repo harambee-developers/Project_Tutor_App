@@ -18,6 +18,8 @@ import defaultProfilePic from "../assets/default_avatar.jpg";
 import { useAuth } from "../components/features/AuthContext";
 import ConfirmationDelete from "../components/features/ConfirmationDelete";
 import { useNavigate } from "react-router-dom";
+import favicon from "../assets/harambee-logo.png";
+import { Helmet } from "react-helmet";
 
 const EditTutorProfilePage = () => {
   const [results, setResults] = useState([]);
@@ -115,6 +117,10 @@ const EditTutorProfilePage = () => {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 p-4 lg:p-20">
+      <Helmet>
+        <link rel="icon" type="image/png" href={favicon} sizes="16x16" />
+        <title>Harambee Tutors | Login</title>
+      </Helmet>
       <div className="bg-white shadow-lg rounded-lg overflow-hidden col-span-1 lg:col-span-3">
         <div className="p-4 flex justify-between items-center flex-wrap">
           <div className="flex items-center space-x-4">

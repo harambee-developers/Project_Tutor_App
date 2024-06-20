@@ -86,7 +86,7 @@ const Subjects = ({ initialSubjects = [] }) => {
             <tbody className="divide-y divide-gray-400">
               {rows.map((row, index) => (
                 <tr key={index}>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-2 md:px-6 py-4 whitespace-nowrap">
                     <input
                       className="border-gray-400 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border rounded-md"
                       name="subject"
@@ -109,7 +109,7 @@ const Subjects = ({ initialSubjects = [] }) => {
                       ))}
                     </select>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-4 md:px-6 py-4 whitespace-nowrap">
                     <input
                       className="border-gray-400 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border rounded-md"
                       type="number"

@@ -1,4 +1,5 @@
 import React from "react";
+import { Helmet } from 'react-helmet';
 import Navbar from "./components/layout/Navbar";
 import CustomFooter from "./components/layout/CustomFooter";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -11,8 +12,8 @@ import LoginConfirmation from "./components/layout/LoginConfirmation";
 import { ToastContainer } from "react-toastify";
 import SuccessPayment from "./components/layout/SuccessPayment";
 import CancelledPayment from "./components/layout/CancelledPayment";
-import "react-toastify/dist/ReactToastify.css";
 import Modal from "react-modal";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   // Assuming root app element has an ID of 'root'

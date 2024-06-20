@@ -2,8 +2,7 @@ import React from 'react';
 
 const AvailabilityTable = ({ availability }) => {
   const dayOfWeek = [
-    "Monday", "Tuesday", "Wednesday", "Thursday",
-    "Friday", "Saturday", "Sunday"
+    "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"
   ];
   const timeSlots = [
     "8:00AM", "9:00AM", "10:00AM", "11:00AM", "12:00PM",
@@ -17,13 +16,13 @@ const AvailabilityTable = ({ availability }) => {
   };
 
   return (
-    <div className="overflow-x-auto p-4">
+    <div className="overflow-x-auto p-2">
       <table className="min-w-full divide-y divide-gray-200 border">
         <thead>
           <tr className="bg-gray-200">
-            <th className="px-2 md:px-4 py-2 sticky top-0 bg-white border">Time</th>
+            <th className="px-1 md:px-4 py-1 sticky top-0 bg-white border">Time</th>
             {dayOfWeek.map(day => (
-              <th key={day} className="px-2 md:px-4 py-2 text-center sticky top-0 border">
+              <th key={day} className="px-1 md:px-4 py-1 text-center sticky top-0 border">
                 {day}
               </th>
             ))}
@@ -32,11 +31,11 @@ const AvailabilityTable = ({ availability }) => {
         <tbody>
           {timeSlots.map(time => (
             <tr key={time} className="bg-white">
-              <td className="px-2 md:px-4 py-2 border">{time}</td>
+              <td className="px-1 md:px-4 py-1 border">{time}</td>
               {dayOfWeek.map(day => (
                 <td
                   key={`${day}-${time}`}
-                  className={`px-2 md:px-4 py-2 text-center border ${
+                  className={`px-1 md:px-4 py-1 text-center border ${
                     isTimeSlotSelected(day, time) ? 'bg-green-200' : 'bg-red-200'
                   }`}
                 >

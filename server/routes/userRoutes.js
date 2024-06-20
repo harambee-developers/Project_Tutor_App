@@ -98,7 +98,7 @@ router.put("/profile/:userid", async (req, res) => {
         username: username,
         email: email,
         headline: headline,
-        'profile.hourlyRate': profile.hourlyRate
+        "profile.hourlyRate": profile.hourlyRate,
       },
       { new: true }
     );
@@ -186,6 +186,27 @@ router.delete("/users/delete/:id", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
+  }
+});
+
+// Endpoint to fetch all messages
+router.get("/messages/:id", async (req, res) => {
+  const { userId } = req.params;
+
+  let filter = {};
+  if (userId) {
+    filter = {
+      $or: [{ senderId: userId }, { receiverId: userId }],
+    };
+  }
+  try {
+    const messages = await Message.find(filter);
+    res.status(200).json(messages);
+  } catch (error) {
+    console.error("Error fetching messages:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while fetching messages" });
   }
 });
 

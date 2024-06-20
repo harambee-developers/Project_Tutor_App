@@ -100,7 +100,7 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    const { username, password } = req.body;
+    const { username, password, rememberMe } = req.body;
 
     try {
       const user = await User.findOne({ username });
@@ -116,14 +116,14 @@ router.post(
       const token = jwt.sign(
         { userId: user._id, username: user.username },
         JWT_SECRET,
-        { expiresIn: "1d" }
+        { expiresIn: rememberMe ? "7d": '1h' }
       );
 
       // Set the token in a secure, httpOnly cookie
       res.cookie("token", token, {
         httpOnly: true,
         sameSite: "Strict",
-        maxAge: 3600000, // 1 hour
+        maxAge: rememberMe ? 7*24*60*60*1000: 60*60*1000 // 7 days when rememberMe is implemented, but 1 hour when not
       });
 
       res.json({ token });
