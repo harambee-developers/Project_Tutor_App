@@ -4,7 +4,7 @@ import { useAuth } from "../components/features/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Helmet } from "react-helmet";
-import favicon from "../assets/harambee-logo.png"
+import favicon from "../assets/harambee-logo.png";
 import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
@@ -33,13 +33,31 @@ const Login = () => {
   return (
     <div className="flex items-center justify-center h-screen border">
       <Helmet>
-        <link
-          rel="icon"
-          type="image/png"
-          href={favicon}
-          sizes="16x16"
-        />
+        <link rel="icon" type="image/png" href={favicon} sizes="16x16" />
         <title>Harambee Tutors | Login</title>
+        <meta
+          name="description"
+          content="Login to Harambee Tutors to access personalized tutoring services and connect with professional tutors for various subjects and levels."
+        />
+        <meta
+          name="keywords"
+          content="Harambee Tutors, login, tutor login, student login, tutoring services, personalized tutoring"
+        />
+        <meta name="author" content="Harambee Tutors" />
+        <meta property="og:title" content="Harambee Tutors | Login" />
+        <meta
+          property="og:description"
+          content="Access your Harambee Tutors account to connect with professional tutors and manage your tutoring sessions."
+        />
+        <meta property="og:image" content={favicon} />
+        <meta property="og:url" content={import.meta.env.VITE_BACKEND_URL}/>
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Harambee Tutors | Login" />
+        <meta
+          name="twitter:description"
+          content="Login to Harambee Tutors to access personalized tutoring services and connect with professional tutors."
+        />
+        <meta name="twitter:image" content={favicon} />
       </Helmet>
       <div className="w-96 p-6 shadow-lg bg-white rounded-md">
         <h1 className="text-3xl flex justify-center text-center font-semibold gap-2 mb-4">

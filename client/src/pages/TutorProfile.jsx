@@ -4,7 +4,7 @@ import SearchAndFilter from "../components/features/SearchAndFilter";
 import StarRating from "../components/features/StarRating";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import favicon from "../assets/harambee-logo.png"
+import favicon from "../assets/harambee-logo.png";
 
 const TutorProfile = () => {
   const [tutors, setTutors] = useState([]);
@@ -17,7 +17,20 @@ const TutorProfile = () => {
         const response = await axios.get(
           `${import.meta.env.VITE_BACKEND_URL}/api/user/tutors`
         );
-        setTutors(response.data);
+        // Calculate min and max rates for each tutor
+        const tutorsWithRates = response.data.map((tutor) => {
+          if (tutor.profile?.subject?.length > 0) {
+            const rates = tutor.profile.subject.map((subject) => subject.price);
+            tutor.minRate = Math.min(...rates);
+            tutor.maxRate = Math.max(...rates);
+          } else {
+            tutor.minRate = null;
+            tutor.maxRate = null;
+          }
+          return tutor;
+        });
+
+        setTutors(tutorsWithRates);
         setLoading(false);
       } catch (error) {
         setError(error.message);
@@ -44,13 +57,31 @@ const TutorProfile = () => {
   return (
     <div className="container mx-auto px-4 min-h-screen">
       <Helmet>
-        <link
-          rel="icon"
-          type="image/png"
-          href={favicon}
-          sizes="16x16"
-        />
+        <link rel="icon" type="image/png" href={favicon} sizes="16x16" />
         <title>Harambee Tutors | Tutor Search </title>
+        <meta
+          name="description"
+          content="Find the best tutors with Harambee Tutors. Search and connect with professional tutors for various subjects and levels."
+        />
+        <meta
+          name="keywords"
+          content="tutors, tutor search, find tutors, professional tutors, tutoring services, Harambee Tutors"
+        />
+        <meta name="author" content="Harambee Tutors" />
+        <meta property="og:title" content="Harambee Tutors | Tutor Search" />
+        <meta
+          property="og:description"
+          content="Search and connect with professional tutors for various subjects and levels at Harambee Tutors."
+        />
+        <meta property="og:image" content="URL_to_image" />
+        <meta property="og:url" content={import.meta.env.VITE_BACKEND_URL} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Harambee Tutors | Tutor Search" />
+        <meta
+          name="twitter:description"
+          content="Search and connect with professional tutors for various subjects and levels at Harambee Tutors."
+        />
+        <meta name="twitter:image" content={favicon} />
       </Helmet>
       <div className="flex flex-col md:flex-row">
         <select
@@ -101,8 +132,10 @@ const TutorProfile = () => {
                 <p>{tutor.headline}</p>
               </div>
               <div className="mt-2">
-                <span className="font-semibold">Hourly Rate:</span> $
-                {tutor.profile.hourlyRate}
+                <span className="font-semibold">Hourly Rate:</span>£
+                {tutor.minRate === tutor.maxRate
+                  ? tutor.minRate
+                  : `${tutor.minRate} - £${tutor.maxRate}`}
               </div>
             </div>
           </div>

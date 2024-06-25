@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { FRONTEND_URL_DEV, FRONTEND_URL_PROD ,STRIPE_PRIVATE_KEY } = process.env;
+const { FRONTEND_URL, STRIPE_PRIVATE_KEY } = process.env;
 const express = require("express");
 const router = express.Router();
 const stripe = require("stripe")(STRIPE_PRIVATE_KEY);
@@ -7,7 +7,7 @@ const { User } = require("../model/User");
 
 router.post("/create-checkout-session", async (req, res) => {
   try {
-    const items = req.body.items; // [{ id: "tutorId", quantity: 2 }]
+    const items = req.body.items; // [{ id: "tutorId", subject: "python", price: 30, hours: 2 }]
     const line_items = await Promise.all(
       items.map(async (item) => {
         // Fetch the tutor's details from the database
@@ -16,18 +16,15 @@ router.post("/create-checkout-session", async (req, res) => {
           throw new Error("Tutor not found");
         }
 
-        // Calculate the total price for the session
-        const totalCost = tutor.profile.hourlyRate * 100 * item.quantity; // Convert to cents
-
         return {
           price_data: {
             currency: "gbp",
             product_data: {
-              name: `Tutoring session with ${tutor.username}`,
+              name: `${item.subject} session with ${tutor.username}`,
             },
-            unit_amount: totalCost,
+            unit_amount: item.price * 100,
           },
-          quantity: 1, // This could represent the number of hours booked
+          quantity: item.hours, // This could represent the number of hours booked
         };
       })
     );
@@ -36,8 +33,8 @@ router.post("/create-checkout-session", async (req, res) => {
       payment_method_types: ["card"],
       line_items,
       mode: "payment",
-      success_url: `${FRONTEND_URL_PROD}/success`,
-      cancel_url: `${FRONTEND_URL_PROD}/cancel`,
+      success_url: `${FRONTEND_URL}/success`,
+      cancel_url: `${FRONTEND_URL}/cancel`,
     });
 
     res.json({ url: session.url });

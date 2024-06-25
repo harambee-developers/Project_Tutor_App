@@ -119,7 +119,30 @@ const EditTutorProfilePage = () => {
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 p-4 lg:p-20">
       <Helmet>
         <link rel="icon" type="image/png" href={favicon} sizes="16x16" />
-        <title>Harambee Tutors | Login</title>
+        <title>Harambee Tutors | Edit Profile</title>
+        <meta
+          name="description"
+          content="Edit your profile on Harambee Tutors to update your information and improve your tutoring services. Ensure your profile is up-to-date for better connections with students."
+        />
+        <meta
+          name="keywords"
+          content="Harambee Tutors, edit profile, update profile, tutoring services, tutor information, personalized tutoring"
+        />
+        <meta name="author" content="Harambee Tutors" />
+        <meta property="og:title" content="Harambee Tutors | Edit Profile" />
+        <meta
+          property="og:description"
+          content="Update your profile on Harambee Tutors to provide the most accurate and up-to-date information for your tutoring services."
+        />
+        <meta property="og:image" content={favicon} />
+        <meta property="og:url" content={import.meta.env.VITE_BACKEND_URL}/>
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Harambee Tutors | Edit Profile" />
+        <meta
+          name="twitter:description"
+          content="Edit your profile on Harambee Tutors to update your information and improve your tutoring services."
+        />
+        <meta name="twitter:image" content={favicon} />
       </Helmet>
       <div className="bg-white shadow-lg rounded-lg overflow-hidden col-span-1 lg:col-span-3">
         <div className="p-4 flex justify-between items-center flex-wrap">

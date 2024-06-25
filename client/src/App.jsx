@@ -1,5 +1,4 @@
 import React from "react";
-import { Helmet } from 'react-helmet';
 import Navbar from "./components/layout/Navbar";
 import CustomFooter from "./components/layout/CustomFooter";
 import { BrowserRouter, Route, Routes } from "react-router-dom";

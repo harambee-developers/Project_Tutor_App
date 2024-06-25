@@ -8,10 +8,10 @@ const fs = require("fs");
 const { User } = require("../model/User");
 const { body, validationResult } = require("express-validator");
 
-require("dotenv").config();
+require("dotenv").config({ path: `./.env.${process.env.NODE_ENV}` });
 
 const router = express.Router();
-const { JWT_SECRET } = process.env;
+const { JWT_SECRET, BACKEND_URL } = process.env;
 
 // Ensure uploads directory exists
 const uploadDir = path.join(__dirname, "uploads");
@@ -65,10 +65,7 @@ function generateDefaultProfile() {
 
 router.post("/register", upload.single("avatar"), async (req, res) => {
   const { username, email, password, usertype } = req.body;
-
-  const avatarUrl = `${req.protocol}://${req.get(
-    "host"
-  )}/images/default_avatar.jpg`; // Path to default avatar
+  const avatarUrl = `${BACKEND_URL}/images/default_avatar.jpg`; // Path to default avatar
 
   try {
     const existingUser = await User.findOne({ email });
@@ -175,7 +172,7 @@ router.post(
       const filePath = `/routes/uploads/${req.file.filename}`;
       const user = await User.findById(userId);
       if (user) {
-        user.avatarUrl = `${req.protocol}://${req.get("host")}${filePath}`;
+        user.avatarUrl = `${PUBLIC_URL}${filePath}`;
         await user.save();
         res.send({
           message: "Profile image updated successfully!",

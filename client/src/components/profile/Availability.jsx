@@ -44,7 +44,6 @@ const Availability = () => {
         `${import.meta.env.VITE_BACKEND_URL}/api/user/availability/${user.userId}`,
         { days: validDays }
       );
-      console.log("Data:", response.data);
       alert("Availability data saved successfully");
     } catch (error) {
       console.error("Error saving availability", error);

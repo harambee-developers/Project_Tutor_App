@@ -11,7 +11,7 @@ import PaymentModal from "../components/features/PaymentModal";
 import { useAuth } from "../components/features/AuthContext";
 import SignUpModal from "../components/features/SignUpModal";
 import { Helmet } from "react-helmet";
-import favicon from "../assets/harambee-logo.png"
+import favicon from "../assets/harambee-logo.png";
 
 // Connect to the WebSocket server
 const socket = io.connect(`${import.meta.env.VITE_BACKEND_URL}`, {
@@ -29,6 +29,8 @@ const TutorProfilePage = () => {
   const [showSignUpModal, setShowSignUpModal] = useState(false);
   const { userId } = useParams();
   const { user: authUser } = useAuth();
+  const [minRate, setMinRate] = useState(null);
+  const [maxRate, setMaxRate] = useState(null);
 
   useEffect(() => {
     const fetchTutorData = async () => {
@@ -37,6 +39,13 @@ const TutorProfilePage = () => {
           `${import.meta.env.VITE_BACKEND_URL}/api/user/user/${userId}`
         );
         setResults(response.data);
+        if (response.data.profile?.subject?.length > 0) {
+          const rates = response.data.profile.subject.map(
+            (subject) => subject.price
+          );
+          setMinRate(Math.min(...rates));
+          setMaxRate(Math.max(...rates));
+        }
       } catch (error) {
         setError(error.message);
       } finally {
@@ -88,7 +97,7 @@ const TutorProfilePage = () => {
   };
 
   // Example items added to cart or selected for booking
-  const payload = [{ id: userId, quantity: 1 }];
+  const payload = [{ id: userId, subject: "Python", price: 30, hours: 3 }];
 
   const handlePayment = async () => {
     try {
@@ -135,13 +144,37 @@ const TutorProfilePage = () => {
   return (
     <div className="container mx-auto px-4 min-h-screen">
       <Helmet>
-        <link
-          rel="icon"
-          type="image/png"
-          href={favicon}
-          sizes="16x16"
-        />
+        <link rel="icon" type="image/png" href={favicon} sizes="16x16" />
         <title>Harambee Tutors | {results.username} | Tutor Profile Page</title>
+        <meta
+          name="description"
+          content={`${results.username}'s profile on Harambee Tutors. Connect with ${results.username} for personalized tutoring in various subjects and levels.`}
+        />
+        <meta
+          name="keywords"
+          content={`Harambee Tutors, ${results.username}, tutor profile, personalized tutoring, professional tutors, tutoring services`}
+        />
+        <meta name="author" content="Harambee Tutors" />
+        <meta
+          property="og:title"
+          content={`Harambee Tutors | ${results.username} | Tutor Profile Page`}
+        />
+        <meta
+          property="og:description"
+          content={`Learn more about ${results.username}, a professional tutor on Harambee Tutors. Connect with ${results.username} for personalized tutoring services.`}
+        />
+        <meta property="og:image" content={favicon} />
+        <meta property="og:url" content={import.meta.env.VITE_BACKEND_URL} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content={`Harambee Tutors | ${results.username} | Tutor Profile Page`}
+        />
+        <meta
+          name="twitter:description"
+          content={`${results.username}'s profile on Harambee Tutors. Connect with ${results.username} for personalized tutoring services.`}
+        />
+        <meta name="twitter:image" content={favicon} />
       </Helmet>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
         <div className="bg-white shadow-lg rounded-lg overflow-hidden">
@@ -179,7 +212,7 @@ const TutorProfilePage = () => {
             <div className="flex-grow">
               <div className="flex flex-col md:flex-row items-center md:items-start">
                 <p className="font-bold text-3xl text-gray-600">
-                  $ {results.profile.hourlyRate}
+                  £ {minRate === maxRate ? minRate : `${minRate} - £${maxRate}`}
                 </p>
                 <p className="text-gray-600 ml-2 py-2">/ per hour</p>
               </div>
@@ -264,46 +297,48 @@ const TutorProfilePage = () => {
         <div className="bg-white shadow-lg rounded-lg overflow-hidden md:col-span-2 px-4">
           <h1 className="font-semibold text-xl py-4">Subjects Offered</h1>
           {results.profile?.subject?.length > 0 ? (
-            <table className="min-w-full leading-normal">
-              <thead>
-                <tr>
-                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Subject
-                  </th>
-                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Qualification
-                  </th>
-                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Price
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {results.profile.subject.map((subject, index) => (
-                  <tr key={index}>
-                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      <div className="flex items-center">
-                        <div className="ml-3">
-                          <p className="text-gray-900 whitespace-no-wrap">
-                            {subject.subject}
-                          </p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      <p className="text-gray-900 whitespace-no-wrap">
-                        {subject.qualification}
-                      </p>
-                    </td>
-                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      <p className="text-gray-900 whitespace-no-wrap">
-                        ${subject.price}/hr
-                      </p>
-                    </td>
+            <div className="overflow-x-auto">
+              <table className="min-w-full leading-normal">
+                <thead>
+                  <tr>
+                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      Subject
+                    </th>
+                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      Qualification
+                    </th>
+                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      Price
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {results.profile.subject.map((subject, index) => (
+                    <tr key={index}>
+                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <div className="flex items-center">
+                          <div className="ml-3">
+                            <p className="text-gray-900 whitespace-no-wrap">
+                              {subject.subject}
+                            </p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <p className="text-gray-900 whitespace-no-wrap">
+                          {subject.qualification}
+                        </p>
+                      </td>
+                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <p className="text-gray-900 whitespace-no-wrap">
+                          £{subject.price}/hr
+                        </p>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           ) : (
             <div className="py-5 border-b border-gray-200 bg-white text-sm">
               No subjects listed.

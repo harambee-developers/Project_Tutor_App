@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
       target: frontend-prod
-    image: hmohammed2/frontend:v1
+    image: hmohammed2/frontend:latest
     ports:
       - "80:80"
     depends_on:
@@ -17,7 +17,7 @@ services:
       context: .
       dockerfile: Dockerfile
       target: backend-prod
-    image: hmohammed2/backend:v1
+    image: hmohammed2/backend:latest
     ports:
       - "7777:7777"
     environment:

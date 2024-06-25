@@ -10,7 +10,10 @@ const http = require("http");
 const socketIo = require("socket.io");
 const { Message } = require("./model/User");
 
-require("dotenv").config();
+require("dotenv").config({ path: `./.env.${process.env.NODE_ENV}` });
+
+//I reccomend doing a console.log as well to make sure the names match*
+console.log(`./.env.${process.env.NODE_ENV}`)
 
 const app = express();
 const PORT = process.env.PORT || 7777;
@@ -18,8 +21,8 @@ const PORT = process.env.PORT || 7777;
 const {
   MONGO_INITDB_ROOT_USERNAME,
   MONGO_INITDB_ROOT_PASSWORD,
-  FRONTEND_URL_DEV,
-  FRONTEND_URL_PROD,
+  FRONTEND_URL,
+  BACKEND_URL,
   JWT_SECRET,
 } = process.env;
 
@@ -33,7 +36,7 @@ mongoose.connect(
 );
 
 const corsOptions = {
-  origin: [FRONTEND_URL_DEV,'https://js.stripe.com', FRONTEND_URL_PROD],
+  origin: [FRONTEND_URL,'https://js.stripe.com', BACKEND_URL],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE"], // Ensure all necessary methods are allowed
 };
@@ -56,7 +59,7 @@ app.use("/api/payment", paymentRoutes)
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: process.env.FRONTEND_URL,
+    origin: [FRONTEND_URL, BACKEND_URL],
     methods: ["GET", "POST"],
     credentials: true,
   },

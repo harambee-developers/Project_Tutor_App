@@ -3,7 +3,7 @@ import { FaUser } from "react-icons/fa";
 import defaultAvatarImage from "../assets/default_avatar.jpg";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import favicon from "../assets/harambee-logo.png"
+import favicon from "../assets/harambee-logo.png";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -88,13 +88,31 @@ const Register = () => {
   return (
     <div className="flex items-center justify-center h-screen border">
       <Helmet>
-        <link
-          rel="icon"
-          type="image/png"
-          href={favicon}
-          sizes="16x16"
+        <link rel="icon" type="image/png" href={favicon} sizes="16x16" />
+        <title>Harambee Tutors | Sign Up</title>
+        <meta
+          name="description"
+          content="Sign up for Harambee Tutors to access personalized tutoring services and connect with professional tutors for various subjects and levels."
         />
-        <title>Harambee Tutors | Sign Up </title>
+        <meta
+          name="keywords"
+          content="Harambee Tutors, sign up, register, tutoring services, personalized tutoring, professional tutors"
+        />
+        <meta name="author" content="Harambee Tutors" />
+        <meta property="og:title" content="Harambee Tutors | Sign Up" />
+        <meta
+          property="og:description"
+          content="Create your Harambee Tutors account to connect with professional tutors and manage your tutoring sessions."
+        />
+        <meta property="og:image" content={favicon} />
+        <meta property="og:url" content={import.meta.env.VITE_BACKEND_URL}/>
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Harambee Tutors | Sign Up" />
+        <meta
+          name="twitter:description"
+          content="Sign up for Harambee Tutors to access personalized tutoring services and connect with professional tutors."
+        />
+        <meta name="twitter:image" content={favicon} />
       </Helmet>
       <div className="w-96 p-6 shadow-lg bg-white rounded-md">
         <h1 className="text-3xl flex justify-center text-center font-semibold gap-2 mb-4">

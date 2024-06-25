@@ -5,11 +5,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: frontend-dev
+      target: frontend-prod
+    image: hmohammed2/frontend:v1
     ports:
-      - "5173:5173"
-    volumes:
-      - ./client:/app/frontend
+      - "80:80"
     depends_on:
       - backend
 
@@ -17,13 +16,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: backend-dev
+      target: backend-prod
+    image: hmohammed2/backend:v1
     ports:
       - "7777:7777"
     environment:
       - MONGODB_URL=${MONGODB_URL}
-      - NODE_ENV=development
-    volumes:
-      - ./server:/app/backend
+      - NODE_ENV=uat
     depends_on:
       - mongodb

@@ -28,8 +28,6 @@ const MyProfile = ({ results }) => {
           `${import.meta.env.VITE_BACKEND_URL}/api/user/profile/${authUser.userId}`,
           data
         );
-        console.log(data);
-        console.log("Response:", response.data);
         alert("Profile Data saved successfully");
       } catch (error) {
         console.error("Error saving profile data", error);

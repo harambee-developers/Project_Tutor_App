@@ -54,7 +54,6 @@ const Subjects = ({ initialSubjects = [] }) => {
     setIsLoading(true);
     try {
       const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/user/subject/${user.userId}`, { subjects: rows });
-      console.log("Data:", response.data);
       alert("Data saved successfully");
     } catch (error) {
       alert(`Error: ${error.response ? error.response.data.message : error.message}`);
