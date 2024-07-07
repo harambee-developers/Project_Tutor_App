@@ -1,4 +1,5 @@
 import React from 'react';
+import './circles.css'
 
 const getInitials = (name) => {
     let initials = name.split(' ').map(word => word.charAt(0).toUpperCase()).join('');
@@ -8,20 +9,34 @@ const getInitials = (name) => {
     return initials;
 };
 
-const InitialsCircle = ({ name, size = 50, backgroundColor = 'bg-blue-500', textColor = 'text-white' }) => {
-    const initials = getInitials(name);
+const getRandomColor = () => {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+};
 
-    const circleClass = `${backgroundColor} ${textColor} rounded-full flex items-center justify-center`;
+const InitialsCircle = ({ name, size = 50, textColor = 'white' }) => {
+    const initials = getInitials(name);
+    const backgroundColor = getRandomColor();
 
     const circleStyle = {
+        backgroundColor,
+        color: textColor,
         width: `${size}px`,
         height: `${size}px`,
         fontSize: `${size / 2}px`,
         fontWeight: 'bold',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: '50%',
     };
 
     return (
-        <div className={circleClass} style={circleStyle}>
+        <div className="initials-circle" style={circleStyle}>
             {initials}
         </div>
     );

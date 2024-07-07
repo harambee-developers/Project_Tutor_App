@@ -3,7 +3,8 @@ import { FaUser } from "react-icons/fa";
 import defaultAvatarImage from "../assets/default_avatar.jpg";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import favicon from "../assets/harambee-logo.png";
+import favicon from "../../public/favicon.ico";
+import { countriesData } from "../data/Countries";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -34,6 +35,7 @@ const Register = () => {
       formErrors.confirmPassword = "Passwords do not match";
     }
     if (!formData.usertype) formErrors.usertype = "User type is required";
+    if (!formData.location) formErrors.location = "Please select location!";
 
     return formErrors;
   };
@@ -53,6 +55,7 @@ const Register = () => {
     data.append("email", formData.email);
     data.append("password", formData.password);
     data.append("usertype", formData.usertype);
+    data.append("location", formData.location);
 
     // Fetch the default avatar image and convert it to a Blob
     const response = await fetch(defaultAvatarImage);
@@ -105,7 +108,7 @@ const Register = () => {
           content="Create your Harambee Tutors account to connect with professional tutors and manage your tutoring sessions."
         />
         <meta property="og:image" content={favicon} />
-        <meta property="og:url" content={import.meta.env.VITE_BACKEND_URL}/>
+        <meta property="og:url" content={import.meta.env.VITE_BACKEND_URL} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Harambee Tutors | Sign Up" />
         <meta
@@ -186,6 +189,29 @@ const Register = () => {
             />
             {errors.confirmPassword && (
               <p className="text-red-500 text-sm">{errors.confirmPassword}</p>
+            )}
+          </div>
+          <div className="mt-3">
+            <label htmlFor="location" className="block text-base mb-2 mt-2">
+              Location
+            </label>
+            <select
+              name="location"
+              className="border w-full text-base px-2 focus:outline-none focus:ring-0 focus:border-gray-500 py-2"
+              id="location"
+              value={formData.location}
+              onChange={handleChange}
+              defaultValue={"default"}
+            >
+              <option value="default" disabled>Select location</option>
+              {countriesData.map((item) => (
+                <option key={item.code} value={item.name}>
+                  {item.name}
+                </option>
+              ))}
+            </select>
+            {errors.location && (
+              <p className="text-red-500 text-sm">{errors.location}</p>
             )}
           </div>
           <div className="mt-3">

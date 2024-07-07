@@ -38,7 +38,6 @@ const StarRating = ({ rating }) => {
   return (
     <div className="flex items-center">
       <div className="flex mr-2">{renderStars()}</div>
-      <span className="text-sm text-gray-600">{numericRating.toFixed(1)}</span>
     </div>
   );
 };

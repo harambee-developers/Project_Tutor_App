@@ -74,6 +74,7 @@ const ProfilePictureModal = ({ isOpen, onClose }) => {
         formData.append("userId", authUser.userId); // Add the userId field
 
         try {
+          setIsLoading(true)
           const response = await axios({
             method: "post",
             url: `${import.meta.env.VITE_BACKEND_URL}/api/auth/profile/upload`,

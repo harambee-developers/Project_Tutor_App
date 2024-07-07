@@ -12,7 +12,7 @@ router.get("/tutors", async (req, res) => {
   }
 });
 
-router.get("/user/:id", async (req, res) => {
+router.get("/profile/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const user = await User.findById(id);
@@ -87,18 +87,20 @@ router.put("/availability/:userid", async (req, res) => {
   }
 });
 
-router.put("/profile/:userid", async (req, res) => {
+router.put("/updateProfile/:userid", async (req, res) => {
   const userId = req.params.userid;
-  const { username, email, profile, headline } = req.body;
+  const { username, firstname, lastname, location, email, profile, headline } = req.body;
   try {
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       {
         "profile.bio": profile.bio,
         username: username,
+        firstname: firstname,
+        lastname: lastname,
         email: email,
+        location: location,
         headline: headline,
-        "profile.hourlyRate": profile.hourlyRate,
       },
       { new: true }
     );

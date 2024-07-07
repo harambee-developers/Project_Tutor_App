@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FiMenu } from "react-icons/fi";
-import { FaBell } from "react-icons/fa";
+import { FaMessage } from "react-icons/fa6";
 import logo from "../../assets/harambee-logo-trans.png";
 import { IoCloseSharp } from "react-icons/io5";
 import { useAuth } from "../features/AuthContext";
@@ -24,6 +24,7 @@ const Navbar = () => {
   const [messages, setMessages] = useState([]);
   const navigate = useNavigate();
   const [unreadCount, setUnreadCount] = useState(0);
+  
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
@@ -32,7 +33,7 @@ const Navbar = () => {
     const fetchProfileInfo = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/api/user/user/${authUser.userId}`
+          `${import.meta.env.VITE_BACKEND_URL}/api/user/profile/${authUser.userId}`
         );
         setUser(response.data);
       } catch (error) {
@@ -96,8 +97,8 @@ const Navbar = () => {
         </div>
         <div className="md:hidden flex items-center">
           {authUser && (
-            <button onClick={openModal} className="p-2 relative mr-2 cursor-pointer hover:text-black">
-              <FaBell />
+            <button onClick={openModal} className="p-2 relative mr-2 cursor-pointer text-black hover:text-white">
+              <FaMessage />
               {unreadCount > 0 && (
                 <span className="absolute top-0 right-0 flex items-center justify-center h-5 w-5 bg-red-500 text-white text-xs rounded-full transition duration-300 ease-in-out">
                   {unreadCount}
@@ -130,8 +131,8 @@ const Navbar = () => {
                   </Link>
                 </li>
                 <li>
-                  <button onClick={openModal} className="hidden md:flex relative p-2 mr-2 cursor-pointer hover:text-white">
-                    <FaBell />
+                  <button onClick={openModal} className="hidden md:flex relative p-2 mr-2 cursor-pointer text-black hover:text-white">
+                    <FaMessage />
                     {unreadCount > 0 && (
                       <span className="absolute top-0 right-0 flex items-center justify-center h-5 w-5 bg-red-500 text-white text-xs rounded-full transition duration-300 ease-in-out">
                         {unreadCount}

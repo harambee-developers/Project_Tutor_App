@@ -1,0 +1,15 @@
+# robots.txt for Harambee Tutors
+
+# Allow all user agents
+User-agent: *
+
+# Disallow crawling of sensitive or irrelevant pages
+Disallow: /login
+Disallow: /register
+Disallow: /dashboard
+
+# Allow crawling of all other pages
+Allow: /
+
+# Sitemap location
+Sitemap: https://harambeedevops.com/sitemap.xml

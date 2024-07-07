@@ -21,7 +21,6 @@ services:
     ports:
       - "7777:7777"
     environment:
-      - MONGODB_URL=${MONGODB_URL}
       - NODE_ENV=development
     volumes:
       - ./server:/app/backend

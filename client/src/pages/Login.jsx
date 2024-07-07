@@ -4,7 +4,7 @@ import { useAuth } from "../components/features/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Helmet } from "react-helmet";
-import favicon from "../assets/harambee-logo.png";
+import favicon from "../../public/favicon.ico";
 import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
@@ -101,7 +101,7 @@ const Login = () => {
             <input
               type="checkbox"
               checked={rememberMe}
-              onChange={(e) => setRememberMe(e.target.click)}
+              onChange={(e) => setRememberMe(e.target.checked)}
             />
             <label htmlFor="">Remember Me?</label>
           </div>

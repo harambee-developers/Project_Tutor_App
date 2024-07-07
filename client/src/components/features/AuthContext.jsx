@@ -44,8 +44,8 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/auth/verify-token`);
       if (response.status === 200 && response.data.valid) {
-        const { userId, username } = response.data;
-        const userData = { userId, username };
+        const { userId, username, usertype} = response.data;
+        const userData = { userId, username, usertype};
         setUser(userData); // Update user state
         console.log("Token verification successful:", userData);
       } else {

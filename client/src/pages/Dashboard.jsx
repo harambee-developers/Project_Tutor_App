@@ -18,10 +18,10 @@ import defaultProfilePic from "../assets/default_avatar.jpg";
 import { useAuth } from "../components/features/AuthContext";
 import ConfirmationDelete from "../components/features/ConfirmationDelete";
 import { useNavigate } from "react-router-dom";
-import favicon from "../assets/harambee-logo.png";
+import favicon from "../../public/favicon.ico";
 import { Helmet } from "react-helmet";
 
-const EditTutorProfilePage = () => {
+const Dashboard = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -36,7 +36,7 @@ const EditTutorProfilePage = () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/api/user/user/${
+          `${import.meta.env.VITE_BACKEND_URL}/api/user/profile/${
             authUser?.userId
           }`
         );
@@ -78,9 +78,11 @@ const EditTutorProfilePage = () => {
       case "Review":
         return <Reviews />;
       case "Subjects":
-        return <Subjects initialSubjects={results.profile.subject} />;
+        return isTutor ? (
+          <Subjects initialSubjects={results.profile.subject} />
+        ) : null;
       case "Availability":
-        return <Availability />;
+        return isTutor ? <Availability /> : null;
       default:
         return null;
     }
@@ -96,6 +98,8 @@ const EditTutorProfilePage = () => {
         return <FaBook className="inline mr-2" />;
       case "Availability":
         return <FaCalendar className="inline mr-2" />;
+      case "Assignments":
+        return <FaBook className="inline mr-2" />;
       default:
         return null;
     }
@@ -114,6 +118,9 @@ const EditTutorProfilePage = () => {
   }
 
   const isTutor = results.usertype === "Tutor";
+  const tabs = isTutor
+    ? ["Profile", "Review", "Subjects", "Availability"]
+    : ["Profile", "Review", "Assignments"];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 p-4 lg:p-20">
@@ -135,7 +142,7 @@ const EditTutorProfilePage = () => {
           content="Update your profile on Harambee Tutors to provide the most accurate and up-to-date information for your tutoring services."
         />
         <meta property="og:image" content={favicon} />
-        <meta property="og:url" content={import.meta.env.VITE_BACKEND_URL}/>
+        <meta property="og:url" content={import.meta.env.VITE_BACKEND_URL} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Harambee Tutors | Edit Profile" />
         <meta
@@ -191,7 +198,7 @@ const EditTutorProfilePage = () => {
       </div>
       <div className="bg-white shadow-lg rounded-lg p-4 overflow-hidden">
         <ul className="space-y-1">
-          {["Profile", "Review", "Subjects", "Availability"].map((option) => (
+          {tabs.map((option) => (
             <li key={option}>
               <button
                 onClick={() => handleOnClick(option)}
@@ -215,4 +222,4 @@ const EditTutorProfilePage = () => {
   );
 };
 
-export default EditTutorProfilePage;
+export default Dashboard;

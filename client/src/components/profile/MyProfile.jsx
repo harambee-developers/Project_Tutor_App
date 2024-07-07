@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useAuth } from "../features/AuthContext";
+import { countriesData } from "../../data/Countries";
 
 const MyProfile = ({ results }) => {
   const { user: authUser } = useAuth();
@@ -25,7 +26,9 @@ const MyProfile = ({ results }) => {
     if (authUser) {
       try {
         const response = await axios.put(
-          `${import.meta.env.VITE_BACKEND_URL}/api/user/profile/${authUser.userId}`,
+          `${import.meta.env.VITE_BACKEND_URL}/api/user/updateProfile/${
+            authUser.userId
+          }`,
           data
         );
         alert("Profile Data saved successfully");
@@ -111,6 +114,34 @@ const MyProfile = ({ results }) => {
         </div>
         <div className="flex items-center text-gray-700">
           <label htmlFor="username" className="w-1/3 px-4">
+            First Name:
+          </label>
+          <div className="w-full px-4">
+            <input
+              type="text"
+              name="firstname"
+              value={data.firstname}
+              onChange={handleInputChange}
+              className="rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 w-full py-2 px-3 sm:text-sm"
+            />
+          </div>
+        </div>
+        <div className="flex items-center text-gray-700">
+          <label htmlFor="username" className="w-1/3 px-4">
+            Last Name:
+          </label>
+          <div className="w-full px-4">
+            <input
+              type="text"
+              name="lastname"
+              value={data.lastname}
+              onChange={handleInputChange}
+              className="rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 w-full py-2 px-3 sm:text-sm"
+            />
+          </div>
+        </div>
+        <div className="flex items-center text-gray-700">
+          <label htmlFor="username" className="w-1/3 px-4">
             Email:
           </label>
           <div className="w-full px-4">
@@ -121,6 +152,31 @@ const MyProfile = ({ results }) => {
               onChange={handleInputChange}
               className="rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 w-full py-2 px-3 sm:text-sm"
             />
+          </div>
+        </div>
+        <div className="flex items-center text-gray-700">
+          <label htmlFor="location" className="w-1/3 px-4">
+            Location:
+          </label>
+          <div className="w-full px-4 relative">
+            <select
+              className="border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 w-full sm:text-sm rounded-md overflow-y-auto py-2 px-3"
+              name="location"
+              value={data.location}
+              onChange={handleInputChange}
+              size="1" // Ensures the dropdown opens downwards
+              style={{ maxHeight: "150px" }} // Limits the height of the dropdown to show fewer options
+              defaultValue={"default"}
+            >
+              <option value="default" disabled>
+                Select location
+              </option>
+              {countriesData.map((item) => (
+                <option key={item.code} value={item.name}>
+                  {item.name}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
 

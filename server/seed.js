@@ -1,46 +1,82 @@
-const mongoose = require('mongoose');
-const { faker } = require('@faker-js/faker');
-const {generateRandomAvatarURL} = require('./generateAvatar')
+const mongoose = require("mongoose");
+const { faker } = require("@faker-js/faker");
+const { generateRandomAvatarURL } = require("./generateAvatar");
+const { User } = require("./model/User");
 
-mongoose.connect(`mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@localhost:27017/?authMechanism=DEFAULT`);
+const { MONGO_INITDB_ROOT_USERNAME, MONGO_INITDB_ROOT_PASSWORD } = process.env;
 
-const User = require('./model/User');
+const mongoUri = `mongodb://root:password@localhost:27017/`;
 
-function generateRandomHourlyRate() {
-  return (Math.random() * (100 - 10) + 10).toFixed(2); 
-}
+console.log(process.env.NODE_ENV);
+console.log(MONGO_INITDB_ROOT_USERNAME, MONGO_INITDB_ROOT_PASSWORD);
+
+// mongodb://root:password@localhost:27017/
+
+mongoose
+  .connect(mongoUri, {
+    serverSelectionTimeoutMS: 30000,
+    socketTimeoutMS: 45000,
+  })
+  .then(() => {
+    console.log("Database connected successfully");
+    seed();
+  })
+  .catch((err) => {
+    console.error("Database connection error:", err);
+    process.exit(1);
+  });
 
 function generateReview() {
-  const name = faker.internet.userName();
-  const description = faker.lorem.paragraph();
-  const rating = Math.floor(Math.random() * 5) + 1;
-  return { name, description, rating };
+  return {
+    name: faker.internet.userName(),
+    description: faker.lorem.paragraph(),
+    rating: Math.floor(Math.random() * 5) + 1,
+  };
+}
+
+function generateSubject() {
+  return {
+    subject: faker.lorem.word(),
+    qualification: faker.person.jobTitle(),
+    price: Math.floor(Math.random() * (100 - 10 + 1)) + 10,
+  };
+}
+
+function generateAvailability() {
+  const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  return {
+    days: days.map((day) => ({
+      day,
+      times: Array.from(
+        { length: 3 },
+        () => `${Math.floor(Math.random() * 12) + 1}:00`
+      ),
+    })),
+  };
 }
 
 function generateTutorProfile() {
-  const bio = faker.lorem.sentence();
-  const hourlyRate = generateRandomHourlyRate();
   return {
-    bio,
-    hourlyRate,
-    review:generateReview()
+    bio: faker.lorem.sentence(),
+    review: Array.from({ length: 5 }, generateReview),
+    subject: Array.from({ length: 5 }, generateSubject),
+    availability: generateAvailability(),
   };
 }
 
 async function generateTutorsWithProfiles() {
   const usersWithProfiles = [];
-  for (let i = 0; i < 500; i++) {
-    const avatarUrl = generateRandomAvatarURL();
-    const email = faker.internet.email();
-    const password = 'defaultPassword123'
-    const username = faker.internet.userName();
-    const usertype = 'Tutor';
+  for (let i = 0; i < 200; i++) {
     usersWithProfiles.push({
-      avatarUrl,
-      email,
-      username,
-      password,
-      usertype,
+      avatarUrl: generateRandomAvatarURL(),
+      headline: faker.lorem.word(),
+      email: faker.internet.email(),
+      password: "defaultPassword123",
+      username: faker.internet.userName(),
+      usertype: "Tutor",
+      firstname: faker.person.firstName(),
+      lastname: faker.person.lastName(),
+      location: faker.location.country(),
       profile: generateTutorProfile(),
     });
   }
@@ -49,13 +85,17 @@ async function generateTutorsWithProfiles() {
 
 function generateStudents() {
   const students = [];
-  for (let i = 0; i < 500; i++) {
-    const avatarUrl = generateRandomAvatarURL();
-    const email = faker.internet.email();
-    const username = faker.internet.userName();
-    const usertype = 'Student';
-    const password = faker.internet.password();
-    students.push({ avatarUrl, email, username, usertype, password });
+  for (let i = 0; i < 200; i++) {
+    students.push({
+      avatarUrl: generateRandomAvatarURL(),
+      email: faker.internet.email(),
+      username: faker.internet.userName(),
+      usertype: "Student",
+      firstname: faker.person.firstName(),
+      lastname: faker.person.lastName(),
+      password: faker.internet.password(),
+      location: faker.location.city(),
+    });
   }
   return students;
 }
@@ -65,18 +105,12 @@ async function seed() {
     const tutors = await generateTutorsWithProfiles();
     const students = generateStudents();
 
-    await User.create(tutors);
-    await User.create(students);
+    await User.create([...tutors, ...students]);
 
-    console.log('Database seeded successfully');
+    console.log("Database seeded successfully");
   } catch (error) {
-    console.error('Error seeding database:', error);
+    console.error("Error seeding database:", error);
   } finally {
-    // Close the connection after seeding
     mongoose.disconnect();
   }
 }
-
-seed();
-
-  

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 function ShowMoreText({ text, limit = 100 }) {
   const [isShown, setIsShown] = useState(false);
@@ -19,12 +19,12 @@ function ShowMoreText({ text, limit = 100 }) {
     <div>
       <p>{renderText()}</p>
       {textExceedsLimit && (
-        <div 
-          onClick={toggleText} 
+        <button
+          onClick={toggleText}
           className="hover:text-teal-400 text-teal-700 font-bold mt-2 text-sm"
         >
-          {isShown ? 'Show Less' : 'Show More'}
-        </div>
+          {isShown ? "Show Less" : "Show More"}
+        </button>
       )}
     </div>
   );

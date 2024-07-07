@@ -30,10 +30,9 @@ const subjectSchema = new mongoose.Schema({
 
 const profileSchema = new mongoose.Schema({
   bio: { type: String, default: null },
-  hourlyRate: { type: Number, required: true },
-  review: { type: reviewSchema },
-  subject: [subjectSchema],
-  availability: [availabilitySchema],
+  review: { type: [reviewSchema] },
+  subject: { type: [subjectSchema] },
+  availability: { type: [availabilitySchema] },
 });
 
 const userSchema = new Schema(
@@ -43,7 +42,10 @@ const userSchema = new Schema(
     headline: { type: String, required: false },
     password: { type: String, required: true },
     username: { type: String, unique: true, required: true },
+    firstname: { type: String, required: false },
+    lastname: { type: String, required: false },
     usertype: { type: String, enum: ["Tutor", "Student"], required: true },
+    location: { type: String, required: true, trim: true },
     profile: { type: profileSchema },
   },
   {
@@ -77,7 +79,7 @@ const serviceSchema = new mongoose.Schema({
   name: { type: String, required: true },
   description: { type: String, required: true },
   pricePerHourInCents: { type: Number, required: true }, // Store price in cents to avoid floating point imprecisions
-  currency: { type: String, default: 'gbp' }, // Default currency can be set as 'GBP'
+  currency: { type: String, default: "gbp" }, // Default currency can be set as 'GBP'
 });
 
 // Create models

@@ -7,8 +7,15 @@ const SearchAndFilter = ({ data, setData }) => {
 
   useEffect(() => {
     const filterResults = () => {
+      if (!query) {
+        setFilteredData([]);
+        setData(data); // Reset to original data
+        return;
+      }
       const filteredResults = data.filter((item) =>
-        item.username.toLowerCase().includes(query.toLowerCase())
+        item.profile?.subject?.some((subjectObj) =>
+          subjectObj.subject.toLowerCase().includes(query.toLowerCase())
+        )
       );
       setFilteredData(filteredResults);
     };
@@ -19,9 +26,16 @@ const SearchAndFilter = ({ data, setData }) => {
     setQuery(value);
   }, []); // handleOnChange doesn't depend on any other state or props
 
-  const handleDropdownItemClick = useCallback((username) => {
-    setQuery(username); // This function also might benefit from useCallback
-  }, []);
+  const handleDropdownItemClick = useCallback((object) => {
+    setQuery(object);
+    const filteredResults = data.filter((item) =>
+      item.profile?.subject?.some((subjectObj) =>
+        subjectObj.subject.toLowerCase().includes(object.toLowerCase())
+      )
+    );
+    setFilteredData([]); // Hide the dropdown
+    setData(filteredResults);
+  }, [data, setData]);
 
   return (
     <>
@@ -29,10 +43,10 @@ const SearchAndFilter = ({ data, setData }) => {
         className="w-full font-medium items-center justify-center md:mt-4"
         id="searchbar"
       >
-        <div className="flex justify-center items-center md:ml-4">
+        <div className="flex justify-center items-center">
           <div className="relative w-full mr-6">
             <input
-              placeholder="Search..."
+              placeholder="Keyword Search..."
               type="search"
               value={query}
               onChange={(e) => handleOnChange(e.target.value)}
@@ -44,17 +58,27 @@ const SearchAndFilter = ({ data, setData }) => {
           </div>
         </div>
         {query && (
-          <div className="absolute mt-1 w-1/2 bg-white border border-gray-300 rounded-lg shadow-lg">
+          <div className="absolute mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-10">
             <ul className="py-2 text-sm text-gray-700 max-h-60 overflow-y-auto">
-              {filteredData.map((item) => (
-                <li
-                  key={item.id}
-                  onClick={() => handleDropdownItemClick(item.username)}
-                  className="px-4 py-2 cursor-pointer hover:bg-blue-400 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  {item.username}
-                </li>
-              ))}
+              {filteredData.flatMap((item) =>
+                item.profile.subject
+                  .filter((subjectObj) =>
+                    subjectObj.subject
+                      .toLowerCase()
+                      .includes(query.toLowerCase())
+                  )
+                  .map((subjectObj) => (
+                    <li
+                      key={subjectObj._id}
+                      onClick={() =>
+                        handleDropdownItemClick(subjectObj.subject)
+                      }
+                      className="px-4 py-2 cursor-pointer hover:bg-blue-400 dark:hover:bg-gray-600 dark:hover:text-white"
+                    >
+                      {subjectObj.subject}
+                    </li>
+                  ))
+              )}
             </ul>
           </div>
         )}

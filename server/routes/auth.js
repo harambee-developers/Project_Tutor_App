@@ -64,7 +64,7 @@ function generateDefaultProfile() {
 }
 
 router.post("/register", upload.single("avatar"), async (req, res) => {
-  const { username, email, password, usertype } = req.body;
+  const { username, email, password, usertype, location } = req.body;
   const avatarUrl = `${BACKEND_URL}/images/default_avatar.jpg`; // Path to default avatar
 
   try {
@@ -78,6 +78,7 @@ router.post("/register", upload.single("avatar"), async (req, res) => {
       avatarUrl,
       password,
       usertype,
+      location,
       profile: generateDefaultProfile(),
     });
     await user.save();
@@ -111,7 +112,7 @@ router.post(
       }
 
       const token = jwt.sign(
-        { userId: user._id, username: user.username },
+        { userId: user._id, username: user.username, usertype: user.usertype },
         JWT_SECRET,
         { expiresIn: rememberMe ? "7d": '1h' }
       );
@@ -155,6 +156,7 @@ router.get("/verify-token", async (req, res) => {
       valid: true,
       userId: decoded.userId,
       username: decoded.username,
+      usertype: decoded.usertype
     });
   } catch (error) {
     console.error("Token verification error:", error);
@@ -172,7 +174,7 @@ router.post(
       const filePath = `/routes/uploads/${req.file.filename}`;
       const user = await User.findById(userId);
       if (user) {
-        user.avatarUrl = `${PUBLIC_URL}${filePath}`;
+        user.avatarUrl = `${BACKEND_URL}${filePath}`;
         await user.save();
         res.send({
           message: "Profile image updated successfully!",

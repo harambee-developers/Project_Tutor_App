@@ -1,9 +1,49 @@
 require("dotenv").config();
-const { FRONTEND_URL, STRIPE_PRIVATE_KEY } = process.env;
+const { FRONTEND_URL, STRIPE_PRIVATE_KEY, GOOGLE_REFRESH_TOKEN } = process.env;
 const express = require("express");
 const router = express.Router();
 const stripe = require("stripe")(STRIPE_PRIVATE_KEY);
 const { User } = require("../model/User");
+const { google } = require('googleapis');
+
+const oauth2Client = new google.auth.OAuth2(
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET,
+  process.env.GOOGLE_REDIRECT_URI
+);
+oauth2Client.setCredentials({ refresh_token: GOOGLE_REFRESH_TOKEN });
+
+const createGoogleMeetLink = async () => {
+  const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
+
+  const event = {
+    summary: 'Tutoring Session',
+    description: 'Tutoring session booked through our platform',
+    conferenceData: {
+      createRequest: {
+        requestId: 'some-random-string',
+        conferenceSolutionKey: { type: 'hangoutsMeet' },
+      },
+    },
+    start: {
+      dateTime: '2024-06-28T10:00:00-07:00', // Set this to the appropriate time
+      timeZone: 'America/Los_Angeles',
+    },
+    end: {
+      dateTime: '2024-06-28T11:00:00-07:00', // Set this to the appropriate time
+      timeZone: 'America/Los_Angeles',
+    },
+    attendees: [{ email: 'attendee@example.com' }], // Add attendee email
+  };
+
+  const response = calendar.events.insert({
+    calendarId: 'primary',
+    resource: event,
+    conferenceDataVersion: 1,
+  });
+
+  return response.data.hangoutLink;
+};
 
 router.post("/create-checkout-session", async (req, res) => {
   try {
@@ -33,7 +73,7 @@ router.post("/create-checkout-session", async (req, res) => {
       payment_method_types: ["card"],
       line_items,
       mode: "payment",
-      success_url: `${FRONTEND_URL}/success`,
+      success_url: `${FRONTEND_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${FRONTEND_URL}/cancel`,
     });
 
@@ -43,5 +83,58 @@ router.post("/create-checkout-session", async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 });
+
+router.post("/payment-success", async (req, res) => {
+  try {
+    const { sessionId } = req.body;
+
+    // Retrieve the session. If you need more details, you can expand the line_items or customer
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+    if (session.payment_status === "paid") {
+      const meetLink = await createGoogleMeetLink();
+
+      // Send email to the user with the Google Meet link
+      const emailResponse = await sendEmail({
+        to: session.customer_email,
+        subject: "Your Tutoring Session Link",
+        text: `Thank you for your payment. Here is your Google Meet link for the tutoring session: ${meetLink}`,
+      });
+
+      res
+        .status(200)
+        .json({ message: "Meet link sent successfully", meetLink });
+    } else {
+      res.status(400).json({ message: "Payment not successful" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+const sendEmail = async ({ to, subject, text }) => {
+  // Use your preferred email sending service (e.g., SendGrid, Nodemailer)
+  // Example with Nodemailer:
+  const nodemailer = require("nodemailer");
+
+  let transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
+
+  let info = await transporter.sendMail({
+    from: process.env.EMAIL_USER,
+    to,
+    subject,
+    text,
+  });
+
+  console.log("Message sent: %s", info.messageId);
+  return info;
+};
 
 module.exports = router;

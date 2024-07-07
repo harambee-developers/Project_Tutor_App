@@ -11,7 +11,8 @@ import PaymentModal from "../components/features/PaymentModal";
 import { useAuth } from "../components/features/AuthContext";
 import SignUpModal from "../components/features/SignUpModal";
 import { Helmet } from "react-helmet";
-import favicon from "../assets/harambee-logo.png";
+import favicon from "../../public/favicon.ico";
+import "./tutorprofile.css";
 
 // Connect to the WebSocket server
 const socket = io.connect(`${import.meta.env.VITE_BACKEND_URL}`, {
@@ -36,7 +37,7 @@ const TutorProfilePage = () => {
     const fetchTutorData = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/api/user/user/${userId}`
+          `${import.meta.env.VITE_BACKEND_URL}/api/user/profile/${userId}`
         );
         setResults(response.data);
         if (response.data.profile?.subject?.length > 0) {
@@ -96,28 +97,8 @@ const TutorProfilePage = () => {
     }
   };
 
-  // Example items added to cart or selected for booking
-  const payload = [{ id: userId, subject: "Python", price: 30, hours: 3 }];
-
-  const handlePayment = async () => {
-    try {
-      const response = await axios.post(
-        `${
-          import.meta.env.VITE_BACKEND_URL
-        }/api/payment/create-checkout-session/`,
-        { items: payload }
-      );
-      window.location = response.data.url;
-      console.log(response.data.url);
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleBooking = () => {
-    if (!authUser?.username) {
+    if (!authUser?.username || authUser?.usertype !== "Student") {
       setShowSignUpModal(true); // Show modal if not authorized
     } else {
       setIsCheckoutModalOpen(true);
@@ -125,12 +106,13 @@ const TutorProfilePage = () => {
   };
 
   const handleMessage = () => {
-    if (!authUser?.username) {
+    if (!authUser?.username || authUser?.usertype !== "Student") {
       setShowSignUpModal(true); // Show modal if not authorized
     } else {
       setIsModalOpen(true);
     }
   };
+
   if (loading) {
     return <div className="text-center mt-8">Loading...</div>;
   }
@@ -139,7 +121,15 @@ const TutorProfilePage = () => {
     return <div className="text-center mt-8">Error: {error}</div>;
   }
 
-  const hasReviews = results?.profile?.review?.rating;
+  const hasReviews = results?.profile?.review;
+
+  // Calculate the average rating
+  const averageRating = hasReviews
+    ? (
+        results.profile.review.reduce((acc, review) => acc + review.rating, 0) /
+        results.profile.review.length
+      ).toFixed(1)
+    : 0;
 
   return (
     <div className="container mx-auto px-4 min-h-screen">
@@ -189,7 +179,7 @@ const TutorProfilePage = () => {
                 {results.username}
               </div>
               <div className="tracking-wide text-sm text-gray-700">
-                <StarRating rating={results.profile.review.rating} />
+                <StarRating rating={averageRating} />
               </div>
               <div className="tracking-wide text-sm text-gray-700">
                 {results.headline}
@@ -198,9 +188,9 @@ const TutorProfilePage = () => {
           </div>
           <div>
             <h1 className="font-semibold p-4">About me</h1>
-            <p className="text-gray-600 px-4">
+            <div className="text-gray-600 px-4">
               <ShowMoreText text={results.profile.bio} limit={100} />
-            </p>
+            </div>
           </div>
         </div>
         <div className="bg-white shadow-lg rounded-lg overflow-hidden">
@@ -212,7 +202,7 @@ const TutorProfilePage = () => {
             <div className="flex-grow">
               <div className="flex flex-col md:flex-row items-center md:items-start">
                 <p className="font-bold text-3xl text-gray-600">
-                  £ {minRate === maxRate ? minRate : `${minRate} - £${maxRate}`}
+                  £{minRate === maxRate ? minRate : `${minRate} - £${maxRate}`}
                 </p>
                 <p className="text-gray-600 ml-2 py-2">/ per hour</p>
               </div>
@@ -220,12 +210,6 @@ const TutorProfilePage = () => {
           </div>
           {/* Full-width button section for all screen sizes, especially focused for medium and up */}
           <div className="px-4 py-6 space-y-4">
-            <button
-              className="md:mt-10 bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 w-full rounded-md transition duration-300 ease-in-out"
-              onClick={handleBooking}
-            >
-              Book Now
-            </button>
             <SignUpModal
               isOpen={showSignUpModal}
               onClose={() => setShowSignUpModal(false)}
@@ -234,16 +218,24 @@ const TutorProfilePage = () => {
             <PaymentModal
               isOpen={isCheckoutModalOpen}
               onRequestClose={() => setIsCheckoutModalOpen(false)}
-              createCheckoutSession={handlePayment}
               subjects={results.profile.subject}
               availability={availability}
+              userId={userId}
             />
-            <button
-              className="bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 w-full rounded-md transition duration-300 ease-in-out"
-              onClick={handleMessage}
-            >
-              Send Message
-            </button>
+            <div className="fixed-bottom">
+              <button
+                className="bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 w-full rounded-md transition duration-300 ease-in-out"
+                onClick={handleBooking}
+              >
+                Book Now
+              </button>
+              <button
+                className="mt-3 bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 w-full rounded-md transition duration-300 ease-in-out"
+                onClick={handleMessage}
+              >
+                Send Message
+              </button>
+            </div>
           </div>
           <ChatModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
             <h2 className="text-lg font-semibold mb-4 px-4">Send a Message</h2>
@@ -263,30 +255,31 @@ const TutorProfilePage = () => {
         </div>
         <div className="bg-white shadow-lg rounded-lg overflow-hidden md:col-span-2">
           <h1 className="font-semibold text-xl p-4">Ratings and Reviews</h1>
-          {hasReviews ? (
+          {hasReviews.length > 1 ? (
             <div>
-              <span className="text-8xl px-4">
-                {results.profile.review.rating}
-              </span>
-              <div className="p-4 rounded-lg">
-                <StarRating rating={results.profile.review.rating} />
+              <span className="text-8xl px-4">{averageRating}</span>
+              <div className="p-4 rounded-lg flex items-center gap-2">
+                <StarRating rating={averageRating} />
+                <p className="text-sm font-semibold">
+                  {results.profile.review.length} Reviews
+                </p>
               </div>
               <hr className="mb-5" />
-              <div className="flex mb-5 px-5">
-                <InitialsCircle
-                  name={results.profile.review.name}
-                  size={50}
-                  backgroundColor="bg-red-500"
-                  textColor="text-white"
-                />
-                <div className="ml-5">
-                  <h1 className="font-semibold text-xl px-4">
-                    {results.profile.review.name}
-                  </h1>
-                  <p className="p-4">{results.profile.review.description}</p>
+              {results.profile.review.map((reviews, index) => (
+                <div key={index} className="flex mb-5 px-5">
+                  <InitialsCircle name={reviews.name} />
+                  <div className="ml-5">
+                    <h1 className="font-semibold text-xl px-4">
+                      {reviews.name}
+                    </h1>
+                    <div className="p-4">
+                      <StarRating rating={reviews.rating} />
+                      <p>{reviews.description}</p>
+                    </div>
+                  </div>
+                  <hr className="mb-5" />
                 </div>
-              </div>
-              <hr />
+              ))}
             </div>
           ) : (
             <div className="px-5 py-5 border-b border-gray-200 bg-white text-sm">

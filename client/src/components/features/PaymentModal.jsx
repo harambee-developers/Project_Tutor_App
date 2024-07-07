@@ -2,13 +2,14 @@ import { React, useState, useEffect } from "react";
 import Modal from "react-modal";
 import stripe_logo from "../../assets/stripe_logo.png";
 import mpesa_logo from "../../assets/mpesa_logo.png";
+import axios from "axios";
 
 const PaymentModal = ({
   isOpen,
   onRequestClose,
-  createCheckoutSession,
   subjects,
   availability,
+  userId,
 }) => {
   const customStyles = {
     content: {
@@ -38,6 +39,9 @@ const PaymentModal = ({
   const [hours, setHours] = useState(1);
   // Add the maxHours state initialization at the start of your component
   const [maxHours, setMaxHours] = useState(1);
+  const [subjectPrice, setSubjectPrice] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const calculateAvailableHours = () => {
     if (!selectedDay || !selectedTime) {
@@ -64,6 +68,47 @@ const PaymentModal = ({
     setMaxHours(maxHours); // Assuming you have a state [maxHours, setMaxHours] for this
   }, [selectedDay, selectedTime, availability]);
 
+  const handlePayment = async () => {
+    setLoading(true);
+    setError(null);
+    // Example items added to cart or selected for booking
+    const payload = [
+      {
+        id: userId,
+        subject: selectedSubject,
+        price: subjectPrice,
+        hours: hours,
+      },
+    ];
+
+    try {
+      const response = await axios.post(
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }/api/payment/create-checkout-session/`,
+        { items: payload }
+      );
+      window.location = response.data.url;
+      console.log(response.data.url);
+      setError(error);
+    } catch (error) {
+      setError(error);
+      console.log(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSubjectChange = (e) => {
+    const selectedId = e.target.value;
+    const selectedSubjectObj = subjects.find(
+      (subject) => subject._id === selectedId
+    );
+
+    setSelectedSubject(selectedSubjectObj ? selectedSubjectObj.subject : "");
+    setSubjectPrice(selectedSubjectObj ? selectedSubjectObj.price : 0);
+  };
+
   return (
     <Modal
       isOpen={isOpen}
@@ -72,44 +117,20 @@ const PaymentModal = ({
       style={customStyles}
     >
       <div className="flex flex-col items-center justify-center bg-white rounded-lg p-6 shadow-lg">
-        <h2 className="text-2xl font-semibold mb-4">Booking Checkout</h2>
+        <h2 className="text-2xl font-semibold mb-4">Checkout</h2>
         <form className="w-full grid gap-4">
-          <div>
-            <label className="block font-bold">First name</label>
-            <input
-              type="text"
-              name="firstName"
-              className="w-full p-2 border border-gray-300 rounded"
-              required
-            />
-          </div>
-          <div>
-            <label className="block font-bold">Last name</label>
-            <input
-              type="text"
-              name="lastName"
-              className="w-full p-2 border border-gray-300 rounded"
-              required
-            />
-          </div>
-          <div>
-            <label className="block font-bold">Email</label>
-            <input
-              type="text"
-              name="email"
-              className="w-full p-2 border border-gray-300 rounded"
-              required
-            />
-          </div>
           <select
-            value={selectedSubject}
-            onChange={(e) => setSelectedSubject(e.target.value)}
+            value={selectedSubject.id}
+            onChange={handleSubjectChange}
             className="block w-full p-2 border rounded mb-4"
+            defaultValue={"default"}
           >
-            <option value="">Select Subject</option>
+            <option value="default" disabled>
+              Select Subject
+            </option>
             {subjects.map((subject) => (
-              <option key={subject.id} value={subject.name}>
-                {subject.subject} - {subject.qualification}
+              <option key={subject._id} value={subject._id}>
+                {subject.subject} - £{subject.price}
               </option>
             ))}
           </select>
@@ -120,8 +141,9 @@ const PaymentModal = ({
               setSelectedTime(""); // Reset time when day changes
             }}
             className="block w-full p-2 border rounded mb-4"
+            defaultValue={"default"}
           >
-            <option value="">Select Day</option>
+            <option value="default">Select Day</option>
             {availability.map((day) => (
               <option key={day.day} value={day.day}>
                 {day.day}
@@ -132,8 +154,9 @@ const PaymentModal = ({
             value={selectedTime}
             onChange={(e) => setSelectedTime(e.target.value)}
             className="block w-full p-2 border rounded mb-4"
+            defaultValue={"default"}
           >
-            <option value="">Select Time</option>
+            <option value="default">Select Time</option>
             {selectedDay &&
               availability
                 .find((day) => day.day === selectedDay)
@@ -155,15 +178,20 @@ const PaymentModal = ({
           <button
             type="button"
             className="w-full flex justify-center items-center p-2 bg-green-500 text-white rounded font-bold hover:bg-transparent hover:text-teal-500 hover:border-2 transition duration-300 ease-in-out"
-            onClick={createCheckoutSession}
+            onClick={handlePayment}
           >
-            Pay with
-            <img src={stripe_logo} alt="Stripe" className="ml-2 h-10" />
+            {loading ? (
+              "Processing..."
+            ) : (
+              <>
+                Pay with{" "}
+                <img src={stripe_logo} alt="Stripe" className="ml-2 h-10" />
+              </>
+            )}
           </button>
         </form>
         <button className="mt-4 w-full p-2 flex justify-center items-center bg-teal-600 text-white rounded font-bold hover:bg-transparent hover:text-teal-500 hover:border-2 transition duration-300 ease-in-out">
-          Pay with
-          <img src={mpesa_logo} alt="Mpesa" className="ml-2 h-10" />
+          Pay with <img src={mpesa_logo} alt="Mpesa" className="ml-2 h-10" />
         </button>
         <button
           className="mt-4 px-4 py-2 bg-gray-600 text-white rounded"

@@ -2,13 +2,13 @@ import React from "react";
 import Navbar from "./components/layout/Navbar";
 import CustomFooter from "./components/layout/CustomFooter";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import TutorProfile from "./pages/TutorProfile";
 import TutorProfilePage from "./pages/TutorProfilePage";
-import EditTutorProfilePage from "./pages/EditTutorProfilePage";
+import Dashboard from "./pages/Dashboard";
 import LoginConfirmation from "./components/layout/LoginConfirmation";
-import { ToastContainer } from "react-toastify";
 import SuccessPayment from "./components/layout/SuccessPayment";
 import CancelledPayment from "./components/layout/CancelledPayment";
 import Modal from "react-modal";
@@ -26,7 +26,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/" element={<TutorProfile />} />
           <Route path="/tutor/:userId" element={<TutorProfilePage />} />
-          <Route path="/dashboard" element={<EditTutorProfilePage />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/confirm" element={<LoginConfirmation />} />
           <Route path="/success" element={<SuccessPayment />} />
           <Route path="/cancel" element={<CancelledPayment />} />
