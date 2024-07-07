@@ -269,7 +269,7 @@ const TutorProfilePage = () => {
                 <div key={index} className="flex mb-5 px-5">
                   <InitialsCircle name={reviews.name} />
                   <div className="ml-5">
-                    <h1 className="font-semibold text-xl px-4">
+                    <h1 className="font-semibold text-sm px-4">
                       {reviews.name}
                     </h1>
                     <div className="p-4">

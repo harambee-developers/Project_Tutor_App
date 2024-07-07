@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../features/AuthContext";
 import axios from "axios";
+import { curriculumLevels } from "../../data/data";
 
 const Subjects = ({ initialSubjects = [] }) => {
   const [rows, setRows] = useState(initialSubjects.length > 0 ? initialSubjects : [
@@ -32,17 +33,6 @@ const Subjects = ({ initialSubjects = [] }) => {
     updatedRows[index][field] = value;
     setRows(updatedRows);
   };
-
-  const curriculumLevels = [
-    { id: 1, name: "KS1" },
-    { id: 2, name: "KS2" },
-    { id: 3, name: "KS3" },
-    { id: 4, name: "GCSE" },
-    { id: 5, name: "A-Level" },
-    { id: 6, name: "IB" },
-    { id: 7, name: "Undergraduate" },
-    { id: 8, name: "Postgraduate" },
-  ];
 
   const saveSubjects = async (e) => {
     e.preventDefault();
