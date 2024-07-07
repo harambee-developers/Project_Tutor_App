@@ -21,7 +21,7 @@ Ensure you have the following installed:
 
 ### Environment Variables
 
-Create a `.env` file in the root directory of the project and add the following environment variables:
+Create a `.env` file in the root directory of the project and add the following environment variables. Fill in depending upon your required values:
 
 ```env
 MONGO_INITDB_ROOT_USERNAME=root
@@ -43,7 +43,7 @@ cd Project_Tutor_App
 ### Build and start the containers:
 
 ```sh
-docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+docker-compose -f docker-compose.dev.yml up --build
 ```
 This command will start the frontend on http://localhost:5173 and the backend on http://localhost:7777.
 
@@ -62,7 +62,7 @@ cd Project_Tutor_App
 ```
 ### Build and start the containers:
 ```sh
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml up --build
+docker-compose -f docker-compose.prod.yml up --build
 ```
 This command will start the frontend on http://localhost (port 80) and the backend on http://localhost:7777.
 

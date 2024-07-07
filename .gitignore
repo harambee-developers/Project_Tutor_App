@@ -137,4 +137,5 @@ docker_data
 uploads
 misc
 /init-mongo
+/mongodb_data
 
