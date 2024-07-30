@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import favicon from "../../public/favicon.ico";
+import { curriculumLevels } from "../data/data";
 
 const TutorProfile = () => {
   const [tutors, setTutors] = useState([]);
@@ -17,6 +18,8 @@ const TutorProfile = () => {
   const [priceRange, setPriceRange] = useState([10, 100]); // Assuming 0 to 100 as default range
   const [isSidebarVisible, setIsSidebarVisible] = useState(false); // State for sidebar visibility
   const [isPriceFilterActive, setIsPriceFilterActive] = useState(false);
+  const [selectedGender, setSelectedGender] = useState("default");
+  const [selectedLevel, setSelectedLevel] = useState("default");
 
   useEffect(() => {
     const fetchTutors = async () => {
@@ -62,24 +65,38 @@ const TutorProfile = () => {
   }, []);
 
   useEffect(() => {
-    if (!isPriceFilterActive) {
-      setFilteredTutors(tutors); // Reset to show all tutors
-      return;
-    }
+    const filterTutors = () => {
+      let filtered = tutors;
 
-    const filterByPrice = () => {
-      const filtered = tutors.filter((tutor) => {
-        // Check if any subject price falls within the selected price range
-        return tutor.profile.subject.some(
-          (subject) =>
-            subject.price >= priceRange[0] && subject.price <= priceRange[1]
+      // Price filter
+      if (isPriceFilterActive) {
+        filtered = filtered.filter((tutor) => {
+          return tutor.profile.subject.some(
+            (subject) =>
+              subject.price >= priceRange[0] && subject.price <= priceRange[1]
+          );
+        });
+      }
+
+      // Gender filter
+      if (selectedGender !== "default") {
+        filtered = filtered.filter(
+          (tutor) => tutor.gender === selectedGender
         );
-      });
+      }
+
+      // Level filter
+      if (selectedLevel !== "default") {
+        filtered = filtered.filter((tutor) =>
+          tutor.profile.subject.some((subject) => subject.qualification === selectedLevel)
+        );
+      }
+
       setFilteredTutors(filtered);
     };
 
-    filterByPrice();
-  }, [priceRange, tutors, isPriceFilterActive]);
+    filterTutors();
+  }, [priceRange, selectedGender, selectedLevel, tutors, isPriceFilterActive]);
 
   if (loading) {
     return <div className="text-center mt-8">Loading...</div>;
@@ -118,8 +135,12 @@ const TutorProfile = () => {
         />
         <meta name="twitter:image" content={favicon} />
       </Helmet>
-      <h1 className="px-4 py-4 font-bold text-3xl">Find a private tutor that fits your schedule</h1>
-      <p className="px-4 py-4 text-sm">Find your tutor and book a session to fit your schedule</p>
+      <h1 className="px-4 py-4 font-bold text-3xl">
+        Find a private tutor that fits your schedule
+      </h1>
+      <p className="px-4 py-4 text-sm">
+        Find your tutor and book a session to fit your schedule
+      </p>
       <button
         className="font-semibold text-black hover:text-blue-500 flex items-center p-4 gap-2"
         onClick={() => setIsSidebarVisible(!isSidebarVisible)}
@@ -180,14 +201,18 @@ const TutorProfile = () => {
               Filter by Level
             </h5>
             <select
-              name="subject_filter"
-              id="subject_filter"
+              name="level_filter"
+              id="level_filter"
               className="py-2 px-4 mb-4 md:mb-0 border-gray-400 rounded w-full"
               defaultValue={"default"}
+              onChange={(e) => setSelectedLevel(e.target.value)}
             >
-              <option value="default" disabled>
+              <option value="default">
                 All Levels
               </option>
+              {curriculumLevels.map((level) => (
+                <option key={level.id} value={level.name}>{level.name}</option>
+              ))}
             </select>
           </div>
           <div className="mt-6">
@@ -199,12 +224,14 @@ const TutorProfile = () => {
               id="gender_filter"
               className="py-2 px-4 mb-4 md:mb-0 border-gray-400 rounded w-full"
               defaultValue={"default"}
+              onChange={(e) => setSelectedGender(e.target.value)}
             >
-              <option value="default" disabled>
+              <option value="default">
                 All genders
               </option>
-              <option value="Men">Men</option>
-              <option value="Women">Women</option>
+              <option value="male">male</option>
+              <option value="female">female</option>
+              <option value="other">other</option>
             </select>
           </div>
         </div>

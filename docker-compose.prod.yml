@@ -21,6 +21,7 @@ services:
       - "7777:7777"
     environment:
       - MONGODB_URL=${MONGODB_URL}
+      - NODE_ENV=production
     depends_on:
       - mongodb
   mongodb:
