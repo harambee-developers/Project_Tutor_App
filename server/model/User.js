@@ -46,6 +46,7 @@ const userSchema = new Schema(
     lastname: { type: String, required: false },
     usertype: { type: String, enum: ["Tutor", "Student"], required: true },
     location: { type: String, required: true, trim: true },
+    gender: { type: String, enum: ["male", "female", "other"], required: true },
     profile: { type: profileSchema },
   },
   {

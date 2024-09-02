@@ -48,7 +48,7 @@ function generateAvailability() {
     days: days.map((day) => ({
       day,
       times: Array.from(
-        { length: 3 },
+        { length: 6 },
         () => `${Math.floor(Math.random() * 12) + 1}:00`
       ),
     })),
@@ -76,6 +76,7 @@ async function generateTutorsWithProfiles() {
       usertype: "Tutor",
       firstname: faker.person.firstName(),
       lastname: faker.person.lastName(),
+      gender: faker.person.sex(),
       location: faker.location.country(),
       profile: generateTutorProfile(),
     });
@@ -93,7 +94,8 @@ function generateStudents() {
       usertype: "Student",
       firstname: faker.person.firstName(),
       lastname: faker.person.lastName(),
-      password: faker.internet.password(),
+      password: "defaultPassword123",
+      gender: faker.person.sex(),
       location: faker.location.city(),
     });
   }

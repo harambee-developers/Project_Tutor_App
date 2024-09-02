@@ -64,7 +64,7 @@ function generateDefaultProfile() {
 }
 
 router.post("/register", upload.single("avatar"), async (req, res) => {
-  const { username, email, password, usertype, location } = req.body;
+  const { username, email, password, usertype, gender, location } = req.body;
   const avatarUrl = `${BACKEND_URL}/images/default_avatar.jpg`; // Path to default avatar
 
   try {
@@ -78,6 +78,7 @@ router.post("/register", upload.single("avatar"), async (req, res) => {
       avatarUrl,
       password,
       usertype,
+      gender,
       location,
       profile: generateDefaultProfile(),
     });

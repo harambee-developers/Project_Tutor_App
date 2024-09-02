@@ -1,4 +1,4 @@
-require("dotenv").config();
+require("dotenv").config({ path: `./.env.${process.env.NODE_ENV}` });
 const { FRONTEND_URL, STRIPE_PRIVATE_KEY, GOOGLE_REFRESH_TOKEN } = process.env;
 const express = require("express");
 const router = express.Router();
@@ -11,38 +11,53 @@ const oauth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_SECRET,
   process.env.GOOGLE_REDIRECT_URI
 );
+
 oauth2Client.setCredentials({ refresh_token: GOOGLE_REFRESH_TOKEN });
 
 const createGoogleMeetLink = async () => {
-  const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
+  try {
+    const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
 
-  const event = {
-    summary: 'Tutoring Session',
-    description: 'Tutoring session booked through our platform',
-    conferenceData: {
-      createRequest: {
-        requestId: 'some-random-string',
-        conferenceSolutionKey: { type: 'hangoutsMeet' },
+    const attendeesEmails = [
+      { 'email': 'user1@example.com' },
+      { 'email': 'user2@example.com' }
+      ];
+
+    const event = {
+      summary: 'Tutoring Session',
+      description: 'Tutoring session booked through our platform',
+      conferenceData: {
+        createRequest: {
+          requestId: 'tutoring-session',
+          conferenceSolutionKey: { type: 'hangoutsMeet' },
+        },
       },
-    },
-    start: {
-      dateTime: '2024-06-28T10:00:00-07:00', // Set this to the appropriate time
-      timeZone: 'America/Los_Angeles',
-    },
-    end: {
-      dateTime: '2024-06-28T11:00:00-07:00', // Set this to the appropriate time
-      timeZone: 'America/Los_Angeles',
-    },
-    attendees: [{ email: 'attendee@example.com' }], // Add attendee email
-  };
+      start: {
+        dateTime: '2024-06-28T10:00:00-07:00', // Set this to the appropriate time
+        timeZone: 'America/Los_Angeles',
+      },
+      end: {
+        dateTime: '2024-06-28T11:00:00-07:00', // Set this to the appropriate time
+        timeZone: 'America/Los_Angeles',
+      },
+      attendees: attendeesEmails, // Add attendee email
+    };
 
-  const response = calendar.events.insert({
-    calendarId: 'primary',
-    resource: event,
-    conferenceDataVersion: 1,
-  });
+    const response = calendar.events.insert({
+      calendarId: 'primary',
+      resource: event,
+      conferenceDataVersion: 1,
+    });
 
-  return response.data.hangoutLink;
+    if (!response.data.hangoutLink) {
+      throw new Error('Failed to create Google Meet link');
+    }
+
+    return response.data.hangoutLink;
+  } catch (error) {
+    console.error('Error creating Google Meet link:', error);
+    throw new Error('Could not create Google Meet link');
+  }
 };
 
 router.post("/create-checkout-session", async (req, res) => {

@@ -139,3 +139,5 @@ misc
 /init-mongo
 /mongodb_data
 
+#secrets
+server/credentials.json

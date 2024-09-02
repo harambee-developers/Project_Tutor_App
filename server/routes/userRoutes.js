@@ -89,7 +89,7 @@ router.put("/availability/:userid", async (req, res) => {
 
 router.put("/updateProfile/:userid", async (req, res) => {
   const userId = req.params.userid;
-  const { username, firstname, lastname, location, email, profile, headline } = req.body;
+  const { username, firstname, lastname, location, email, profile, gender, headline } = req.body;
   try {
     const updatedUser = await User.findByIdAndUpdate(
       userId,
@@ -99,6 +99,7 @@ router.put("/updateProfile/:userid", async (req, res) => {
         firstname: firstname,
         lastname: lastname,
         email: email,
+        gender: gender,
         location: location,
         headline: headline,
       },

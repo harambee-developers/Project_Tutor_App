@@ -11,7 +11,9 @@ import Dashboard from "./pages/Dashboard";
 import LoginConfirmation from "./components/layout/LoginConfirmation";
 import SuccessPayment from "./components/layout/SuccessPayment";
 import CancelledPayment from "./components/layout/CancelledPayment";
+import AdminDashboard from "./pages/AdminDashboard";
 import Modal from "react-modal";
+import Layout from './components/layout/Layout';
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
@@ -19,22 +21,31 @@ function App() {
   Modal.setAppElement("#root");
   return (
     <BrowserRouter>
-      <div>
-        <Navbar />
         <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/" element={<TutorProfile />} />
-          <Route path="/tutor/:userId" element={<TutorProfilePage />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/confirm" element={<LoginConfirmation />} />
-          <Route path="/success" element={<SuccessPayment />} />
-          <Route path="/cancel" element={<CancelledPayment />} />
+          <Route
+            path="/admin"
+            element={<AdminDashboard />}
+          />
+          <Route
+            path="*"
+            element={
+              <Layout>
+                <Routes>
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/" element={<TutorProfile />} />
+                  <Route path="/tutor/:userId" element={<TutorProfilePage />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/confirm" element={<LoginConfirmation />} />
+                  <Route path="/success" element={<SuccessPayment />} />
+                  <Route path="/cancel" element={<CancelledPayment />} />
+                </Routes>
+                <ToastContainer />
+              </Layout>
+            }
+          />
         </Routes>
-        <ToastContainer />
-        <CustomFooter />
-      </div>
-    </BrowserRouter>
+      </BrowserRouter>
   );
 }
 
