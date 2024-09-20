@@ -172,11 +172,14 @@ const Dashboard = () => {
                 onClose={() => setIsModalOpen(false)}
               />
             </div>
+
             <div className="text-sm lg:text-base text-gray-700 font-semibold">
-              {results.username}
-              <div className="pt-2">
-                <StarRating rating={results.profile.review.rating} />
-              </div>
+              {results.username}{" "}
+              {isTutor && (
+                <div className="pt-2">
+                  <StarRating rating={results.profile.review.rating} />
+                </div>
+              )}
             </div>
           </div>
           <button

@@ -141,7 +141,25 @@ const MyProfile = ({ results }) => {
           </div>
         </div>
         <div className="flex items-center text-gray-700">
-          <label htmlFor="username" className="w-1/3 px-4">
+          <label htmlFor="gender" className="w-1/3 px-4">
+            Gender:
+          </label>
+          <div className="w-full px-4">
+            <select
+              type="text"
+              name="gender"
+              value={data.gender}
+              onChange={handleInputChange}
+              className="rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 w-full py-2 px-3 sm:text-sm"
+            >
+              <option value="male">male</option>
+              <option value="female">female</option>
+              <option value="other">other</option>
+            </select>
+          </div>
+        </div>
+        <div className="flex items-center text-gray-700">
+          <label htmlFor="email" className="w-1/3 px-4">
             Email:
           </label>
           <div className="w-full px-4">

@@ -1,5 +1,5 @@
 import React from 'react';
-import './circles.css'
+import './initialsCircle.css'
 
 const getInitials = (name) => {
     let initials = name.split(' ').map(word => word.charAt(0).toUpperCase()).join('');

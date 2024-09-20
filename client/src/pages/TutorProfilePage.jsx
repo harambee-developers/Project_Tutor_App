@@ -12,7 +12,7 @@ import { useAuth } from "../components/features/AuthContext";
 import SignUpModal from "../components/features/SignUpModal";
 import { Helmet } from "react-helmet";
 import favicon from "../../public/favicon.ico";
-import "./tutorprofile.css";
+import "./TutorProfile.css";
 
 // Connect to the WebSocket server
 const socket = io.connect(`${import.meta.env.VITE_BACKEND_URL}`, {

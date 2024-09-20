@@ -12,6 +12,7 @@ const Register = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    gender: "",
     usertype: "",
   });
 
@@ -35,6 +36,7 @@ const Register = () => {
       formErrors.confirmPassword = "Passwords do not match";
     }
     if (!formData.usertype) formErrors.usertype = "User type is required";
+    if (!formData.gender) formErrors.usertype = "Gender is required";
     if (!formData.location) formErrors.location = "Please select location!";
 
     return formErrors;
@@ -55,6 +57,7 @@ const Register = () => {
     data.append("email", formData.email);
     data.append("password", formData.password);
     data.append("usertype", formData.usertype);
+    data.append("gender", formData.gender);
     data.append("location", formData.location);
 
     // Fetch the default avatar image and convert it to a Blob
@@ -212,6 +215,27 @@ const Register = () => {
             </select>
             {errors.location && (
               <p className="text-red-500 text-sm">{errors.location}</p>
+            )}
+          </div>
+          <div className="mt-3">
+            <label htmlFor="gender" className="block text-base mb-2 mt-2">
+              Gender
+            </label>
+            <select
+              name="gender"
+              className="border w-full text-base px-2 focus:outline-none focus:ring-0 focus:border-gray-500 py-2"
+              id="gender"
+              value={formData.gender}
+              onChange={handleChange}
+              defaultValue={"default"}
+            >
+              <option value="default">Select Gender</option>
+              <option value="male">male</option>
+              <option value="female">female</option>
+              <option value="other">other</option>
+            </select>
+            {errors.gender && (
+              <p className="text-red-500 text-sm">{errors.usertype}</p>
             )}
           </div>
           <div className="mt-3">
