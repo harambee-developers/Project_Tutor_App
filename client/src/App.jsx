@@ -11,8 +11,10 @@ import Dashboard from "./pages/Dashboard";
 import LoginConfirmation from "./components/layout/LoginConfirmation";
 import SuccessPayment from "./components/layout/SuccessPayment";
 import CancelledPayment from "./components/layout/CancelledPayment";
+import LandingPage from "./pages/LandingPage"; // Import the LandingPage component
 import Modal from "react-modal";
 import "react-toastify/dist/ReactToastify.css";
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 function App() {
   // Assuming root app element has an ID of 'root'
@@ -22,9 +24,10 @@ function App() {
       <div>
         <Navbar />
         <Routes>
+          <Route path="/" element={<LandingPage />} /> {/* Default route set to LandingPage */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/" element={<TutorProfile />} />
+          <Route path="/tutor-profile" element={<TutorProfile />} />
           <Route path="/tutor/:userId" element={<TutorProfilePage />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/confirm" element={<LoginConfirmation />} />
